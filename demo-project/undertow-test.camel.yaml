@@ -9,6 +9,5 @@
       - id: get-dc4e
         path: /users
         to: https://jsonplaceholder.typicode.com/users
-        consumes: application/json
         produces: application/json
         routeId: get-users
