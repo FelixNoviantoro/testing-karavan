@@ -1,0 +1,14 @@
+- route:
+    id: route-7ce6
+    nodePrefixId: route-cfa
+    from:
+      id: from-81b6
+      uri: kamelet:timer-source
+      parameters:
+        message: hellow
+        period: 1000
+        repeatCount: 10
+      steps:
+        - log:
+            id: log-18f7
+            message: ${body}
