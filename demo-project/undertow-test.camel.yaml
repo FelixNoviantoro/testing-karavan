@@ -1,9 +1,8 @@
 - restConfiguration:
-    component: netty-http
+    component: undertow
     host: 0.0.0.0
     port: "8085"
     contextPath: /api
-    apiContextPath: /api
 - rest:
     id: rest-4c8f
     get:
