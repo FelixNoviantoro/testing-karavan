@@ -1,0 +1,15 @@
+- restConfiguration:
+    component: servlet
+    host: 0.0.0.0
+    port: "8085"
+    contextPath: /api
+    apiContextPath: /api
+- rest:
+    id: rest-4c8f
+    get:
+      - id: get-dc4e
+        path: /users
+        to: https://jsonplaceholder.typicode.com/users
+        consumes: application/json
+        produces: application/json
+        routeId: get-users
