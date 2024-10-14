@@ -1,7 +1,7 @@
 - restConfiguration:
     component: platform-http
     host: localhost
-    port: "8085"
+    port: "8080"
 - rest:
     id: rest-4c8f
     bindingMode: json
