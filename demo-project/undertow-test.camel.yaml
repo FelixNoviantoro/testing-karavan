@@ -5,6 +5,7 @@
     contextPath: /api
 - rest:
     id: rest-4c8f
+    bindingMode: json
     get:
       - id: get-dc4e
         path: /users
