@@ -1,5 +1,5 @@
 - restConfiguration:
-    component: undertow
+    component: platform-http
     host: localhost
     port: "8085"
 - rest:
