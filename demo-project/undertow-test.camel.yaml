@@ -8,6 +8,9 @@
       - id: get-test
         path: /users
         to: direct:direct-test
+      - id: get-8fd2
+        path: /jira
+        to: direct:jira-test
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -15,11 +18,60 @@
       id: direct-id
       uri: direct
       parameters:
-        name: direct-get
+        name: direct-test
       steps:
+        - to:
+            id: to-9250
+            uri: undertow
+            parameters:
+              httpURI: https://jsonplaceholder.typicode.com/users?bridgeEndpoint=true
+- route:
+    id: jira-test
+    from:
+      id: from-ae7e
+      uri: direct
+      parameters:
+        name: jira-test
+      steps:
+        - setHeader:
+            id: setHeader-17f3
+            name: ProjectKey
+            expression:
+              simple:
+                id: simple-0187
+                expression: SCRUM
+        - setHeader:
+            id: setHeader-d55e
+            name: IssueTypeName
+            expression:
+              simple:
+                id: simple-78d2
+                expression: Bug
+        - setHeader:
+            id: setHeader-c33a
+            name: IssueSummary
+            expression:
+              simple:
+                id: simple-c612
+                expression: Example Demo Bug jira ${date:now:yyyy-MM-dd HH:mm:ss}
         - setBody:
-            id: setBody-123
+            id: setBody-e4af
             expression:
               constant:
-                id: constant-123
-                expression: hello from the other side
+                id: constant-10f4
+                expression: A small description for a test issue.
+        - log:
+            id: log-e9ec
+            message: "JIRA new issue: ${body}"
+        - to:
+            id: to-5ea6
+            uri: jira
+            parameters:
+              type: addIssue
+              jiraUrl: https://felixnoviantoro16.atlassian.net
+              username: felixnoviantoro16@gmail.com
+              password: >-
+                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        - log:
+            id: log-e145
+            message: "Issue created: ${body}"
