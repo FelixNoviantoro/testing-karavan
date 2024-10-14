@@ -1,12 +1,25 @@
 - restConfiguration:
     component: platform-http
-    host: localhost
-    port: "8080"
+    contextPath: /api
 - rest:
-    id: rest-4c8f
+    id: rest-test
     bindingMode: json
     get:
-      - id: get-dc4e
-        path: /api/users
-        to: https://jsonplaceholder.typicode.com/users?bridgeEndpoint=true
-        routeId: get-users
+      - id: get-test
+        path: /users
+        to: direct:direct-test
+- route:
+    id: route-test
+    nodePrefixId: route-123
+    from:
+      id: direct-id
+      uri: direct
+      parameters:
+        name: direct-get
+      steps:
+        - setBody:
+            id: setBody-123
+            expression:
+              constant:
+                id: constant-123
+                expression: hello from the other side
