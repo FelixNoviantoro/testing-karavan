@@ -1,13 +1,12 @@
 - restConfiguration:
-    component: jetty
-    host: 0.0.0.0
+    component: undertow
+    host: localhost
     port: "8085"
-    contextPath: /api
 - rest:
     id: rest-4c8f
     bindingMode: json
     get:
       - id: get-dc4e
-        path: /users
-        to: https://jsonplaceholder.typicode.com/users
+        path: /api/users
+        to: https://jsonplaceholder.typicode.com/users?bridgeEndpoint=true
         routeId: get-users
