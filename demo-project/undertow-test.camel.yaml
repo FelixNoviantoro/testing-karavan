@@ -1,5 +1,5 @@
 - restConfiguration:
-    component: undertow
+    component: netty-http
     host: 0.0.0.0
     port: "8085"
     contextPath: /api
@@ -9,5 +9,4 @@
       - id: get-dc4e
         path: /users
         to: https://jsonplaceholder.typicode.com/users
-        produces: application/json
         routeId: get-users
