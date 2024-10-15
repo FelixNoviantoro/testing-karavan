@@ -4,13 +4,27 @@
 - rest:
     id: rest-test
     bindingMode: json
+    delete:
+      - id: delete-jira
+        path: /jira/delete
+        to: direct:jira-delete
     get:
       - id: get-test
         path: /users
         to: direct:direct-test
       - id: get-8fd2
-        path: /jira
-        to: direct:jira-test
+        path: /jira/addissue
+        to: direct:jira-addissue
+      - id: get-8fd3
+        path: /jira/addcomment
+        to: direct:jira-addcomment
+      - id: get-8fd4
+        path: /jira/transition
+        to: direct:jira-transition
+    post:
+      - id: post-attach
+        path: /jira/attach
+        to: direct:jira-attach
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -26,12 +40,12 @@
             parameters:
               httpURI: https://jsonplaceholder.typicode.com/users?bridgeEndpoint=true
 - route:
-    id: jira-test
+    id: jira-addissue
     from:
       id: from-ae7e
       uri: direct
       parameters:
-        name: jira-test
+        name: jira-addissue
       steps:
         - setHeader:
             id: setHeader-17f3
@@ -75,3 +89,172 @@
         - log:
             id: log-e145
             message: "Issue created: ${body}"
+- route:
+    id: jira-addcomment
+    from:
+      id: from-5d61
+      uri: direct
+      parameters:
+        name: jira-addcomment
+      steps:
+        - setHeader:
+            id: setHeader-17f4
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-0187
+                expression: SCRUM-7
+        - setBody:
+            id: setBody-8e30
+            expression:
+              constant:
+                id: constant-10f4
+                expression: Testing Comment dulu aja.
+        - log:
+            id: log-546f
+            message: "JIRA new issue: ${body}"
+        - to:
+            id: to-b9c8
+            uri: jira
+            parameters:
+              type: addComment
+              jiraUrl: https://felixnoviantoro16.atlassian.net
+              username: felixnoviantoro16@gmail.com
+              password: >-
+                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        - log:
+            id: log-4e91
+            message: "Issue created: ${body}"
+- route:
+    id: jira-attach
+    from:
+      id: from-edae
+      uri: direct
+      parameters:
+        name: jira-attach
+      steps:
+        - setHeader:
+            id: setHeader-351f
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-1ada
+                expression: SCRUM-7
+        - log:
+            id: log-4d1d
+            message: "JIRA new issue: ${body}"
+        - to:
+            id: to-07ba
+            uri: jira
+            parameters:
+              type: attach
+              jiraUrl: https://felixnoviantoro16.atlassian.net
+              username: felixnoviantoro16@gmail.com
+              password: >-
+                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        - log:
+            id: log-13f1
+            message: "Issue created: ${body}"
+- route:
+    id: jira-transition
+    from:
+      id: from-cdf0
+      uri: direct
+      parameters:
+        name: jira-transition
+      steps:
+        - setHeader:
+            id: setHeader-6f92
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-3c83
+                expression: SCRUM-7
+        - setHeader:
+            id: setHeader-7f5d
+            name: IssueTransitionId
+            expression:
+              simple:
+                id: simple-d9f7
+                expression: 21
+        - setBody:
+            id: setBody-ddfb
+            expression:
+              constant:
+                id: constant-e1e9
+                expression: Testing transition ke in progress dengan transition id 21.
+        - log:
+            id: log-5c88
+            message: "JIRA new transition: ${body}"
+        - to:
+            id: to-0e69
+            uri: jira
+            parameters:
+              type: transitionIssue
+              jiraUrl: https://felixnoviantoro16.atlassian.net
+              username: felixnoviantoro16@gmail.com
+              password: >-
+                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        - log:
+            id: log-7341
+            message: "transition : ${body}"
+- route:
+    id: jira-delete
+    from:
+      id: from-fc7d
+      uri: direct
+      parameters:
+        name: jira-delete
+      steps:
+        - setHeader:
+            id: setHeader-4d9c
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-47e3
+                expression: SCRUM-8
+        - log:
+            id: log-267d
+            message: "JIRA new transition: ${body}"
+        - to:
+            id: to-23f1
+            uri: jira
+            parameters:
+              type: deleteIssue
+              jiraUrl: https://felixnoviantoro16.atlassian.net
+              username: felixnoviantoro16@gmail.com
+              password: >-
+                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        - log:
+            id: log-37c4
+            message: "delete : ${body}"
+- route:
+    id: jira-update
+    from:
+      id: from-5bf8
+      uri: direct
+      parameters:
+        name: jira-update
+      steps:
+        - setHeader:
+            id: setHeader-ec46
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-e7df
+                expression: SCRUM-7
+        - log:
+            id: log-5c2e
+            message: "JIRA new update: ${body}"
+        - to:
+            id: to-5371
+            uri: jira
+            parameters:
+              type: updateIssue
+              jiraUrl: https://felixnoviantoro16.atlassian.net
+              username: felixnoviantoro16@gmail.com
+              password: >-
+                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        - log:
+            id: log-60ad
+            message: "update : ${body}"

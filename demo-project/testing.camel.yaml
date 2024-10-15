@@ -7,7 +7,7 @@
       parameters:
         message: hellow
         period: 1000
-        repeatCount: 10
+        repeatCount: 2
       steps:
         - log:
             id: log-18f7
