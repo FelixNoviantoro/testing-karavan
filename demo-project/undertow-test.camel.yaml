@@ -25,6 +25,9 @@
       - id: post-attach
         path: /jira/attach
         to: direct:jira-attach
+      - id: get-webhook
+        path: /jira/webhook
+        to: direct:direct-webhook
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -258,3 +261,46 @@
         - log:
             id: log-60ad
             message: "update : ${body}"
+- route:
+    id: jira-watch-create-issue
+    from:
+      id: from-f17e
+      uri: jira
+      parameters:
+        jiraUrl: https://felixnoviantoro16.atlassian.net
+        username: felixnoviantoro16@gmail.com
+        password: >-
+          ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        type: newIssues
+        jql: project=SCRUM
+      steps:
+        - log:
+            id: log-0920
+            message: "watch card : ${body}"
+- route:
+    id: jira-watch-update
+    from:
+      id: from-f17e
+      uri: jira
+      parameters:
+        jiraUrl: https://felixnoviantoro16.atlassian.net
+        username: felixnoviantoro16@gmail.com
+        password: >-
+          ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+        type: watchUpdates
+        jql: project=SCRUM
+      steps:
+        - log:
+            id: log-1003
+            message: "watch card : ${body}"
+- route:
+    id: jira-webhook
+    from:
+      id: from-6c2e
+      uri: direct
+      parameters:
+        name: direct-webhook
+      steps:
+        - log:
+            id: log-cfb5
+            message: "Webhook Test : ${body}"
