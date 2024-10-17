@@ -12,22 +12,26 @@
       - id: get-test
         path: /users
         to: direct:direct-test
-      - id: get-8fd2
-        path: /jira/addissue
-        to: direct:jira-addissue
       - id: get-8fd3
         path: /jira/addcomment
         to: direct:jira-addcomment
-      - id: get-8fd4
-        path: /jira/transition
-        to: direct:jira-transition
     post:
+      - id: get-8fd2
+        path: /jira/addissue
+        to: direct:jira-addissue
       - id: post-attach
         path: /jira/attach
         to: direct:jira-attach
+      - id: get-8fd4
+        path: /jira/transition
+        to: direct:jira-transition
       - id: get-webhook
         path: /jira/webhook
         to: direct:direct-webhook
+      - id: get-webhook
+        path: >-
+          /nutanix/v3/blueprints/5d1d4765-f94e-abcb-6d82-7377046d0f24/simple_launch
+        to: direct:direct-launcbp
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -56,39 +60,41 @@
             expression:
               simple:
                 id: simple-0187
-                expression: SCRUM
+                expression: PEG
         - setHeader:
             id: setHeader-d55e
             name: IssueTypeName
             expression:
               simple:
                 id: simple-78d2
-                expression: Bug
+                expression: Task
         - setHeader:
             id: setHeader-c33a
             name: IssueSummary
             expression:
               simple:
                 id: simple-c612
-                expression: Example Demo Bug jira ${date:now:yyyy-MM-dd HH:mm:ss}
+                expression: >-
+                  Example Demo Task jira ${date:now:yyyy-MM-dd HH:mm:ss}
+                  ${body[name]}
         - setBody:
             id: setBody-e4af
             expression:
-              constant:
-                id: constant-10f4
-                expression: A small description for a test issue.
+              simple:
+                id: simple-10f4
+                expression: ${body}
         - log:
-            id: log-e9ec
-            message: "JIRA new issue: ${body}"
+            id: log-e1132
+            message: "Issue created: ${body}"
         - to:
             id: to-5ea6
             uri: jira
             parameters:
               type: addIssue
-              jiraUrl: https://felixnoviantoro16.atlassian.net
-              username: felixnoviantoro16@gmail.com
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         - log:
             id: log-e145
             message: "Issue created: ${body}"
@@ -106,25 +112,22 @@
             expression:
               simple:
                 id: simple-0187
-                expression: SCRUM-7
+                expression: PEG-2
         - setBody:
             id: setBody-8e30
             expression:
               constant:
                 id: constant-10f4
                 expression: Testing Comment dulu aja.
-        - log:
-            id: log-546f
-            message: "JIRA new issue: ${body}"
         - to:
             id: to-b9c8
             uri: jira
             parameters:
               type: addComment
-              jiraUrl: https://felixnoviantoro16.atlassian.net
-              username: felixnoviantoro16@gmail.com
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         - log:
             id: log-4e91
             message: "Issue created: ${body}"
@@ -142,19 +145,16 @@
             expression:
               simple:
                 id: simple-1ada
-                expression: SCRUM-7
-        - log:
-            id: log-4d1d
-            message: "JIRA new issue: ${body}"
+                expression: PEG-2
         - to:
             id: to-07ba
             uri: jira
             parameters:
               type: attach
-              jiraUrl: https://felixnoviantoro16.atlassian.net
-              username: felixnoviantoro16@gmail.com
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         - log:
             id: log-13f1
             message: "Issue created: ${body}"
@@ -172,32 +172,29 @@
             expression:
               simple:
                 id: simple-3c83
-                expression: SCRUM-7
+                expression: ${body[cardId]}
         - setHeader:
             id: setHeader-7f5d
             name: IssueTransitionId
             expression:
               simple:
                 id: simple-d9f7
-                expression: 21
+                expression: "41"
         - setBody:
             id: setBody-ddfb
             expression:
               constant:
                 id: constant-e1e9
-                expression: Testing transition ke in progress dengan transition id 21.
-        - log:
-            id: log-5c88
-            message: "JIRA new transition: ${body}"
+                expression: On create VM transition to Done.
         - to:
             id: to-0e69
             uri: jira
             parameters:
               type: transitionIssue
-              jiraUrl: https://felixnoviantoro16.atlassian.net
-              username: felixnoviantoro16@gmail.com
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         - log:
             id: log-7341
             message: "transition : ${body}"
@@ -215,19 +212,16 @@
             expression:
               simple:
                 id: simple-47e3
-                expression: SCRUM-8
-        - log:
-            id: log-267d
-            message: "JIRA new transition: ${body}"
+                expression: PEG-2
         - to:
             id: to-23f1
             uri: jira
             parameters:
               type: deleteIssue
-              jiraUrl: https://felixnoviantoro16.atlassian.net
-              username: felixnoviantoro16@gmail.com
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         - log:
             id: log-37c4
             message: "delete : ${body}"
@@ -245,19 +239,16 @@
             expression:
               simple:
                 id: simple-e7df
-                expression: SCRUM-7
-        - log:
-            id: log-5c2e
-            message: "JIRA new update: ${body}"
+                expression: PEG-2
         - to:
             id: to-5371
             uri: jira
             parameters:
               type: updateIssue
-              jiraUrl: https://felixnoviantoro16.atlassian.net
-              username: felixnoviantoro16@gmail.com
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         - log:
             id: log-60ad
             message: "update : ${body}"
@@ -267,12 +258,12 @@
       id: from-f17e
       uri: jira
       parameters:
-        jiraUrl: https://felixnoviantoro16.atlassian.net
-        username: felixnoviantoro16@gmail.com
+        jiraUrl: https://pocntnx46.atlassian.net
+        username: pocntnx46@gmail.com
         password: >-
-          ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+          ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         type: newIssues
-        jql: project=SCRUM
+        jql: project=PEG
       steps:
         - log:
             id: log-0920
@@ -283,12 +274,12 @@
       id: from-f17e
       uri: jira
       parameters:
-        jiraUrl: https://felixnoviantoro16.atlassian.net
-        username: felixnoviantoro16@gmail.com
+        jiraUrl: https://pocntnx46.atlassian.net
+        username: pocntnx46@gmail.com
         password: >-
-          ATATT3xFfGF0JfRMTyz5Efhgr-Gk9uLOXLyDYYhlJyS2Zi8FuQOB_GjtiqR9UXDUIvqBhWT4dGsK0sM6s3kn01HHcC9h1laoO1-BeSt2fpbltbtH6RuT9HcY_kq9TP_4XXHUZRXE6tWW1HMlAR8VgG261P7E6cAhfvtMJUPjO6NMKCIykfGjjTQ=071A1E97
+          ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
         type: watchUpdates
-        jql: project=SCRUM
+        jql: project=PEG
       steps:
         - log:
             id: log-1003
@@ -303,4 +294,50 @@
       steps:
         - log:
             id: log-cfb5
-            message: "Webhook Test : ${body}"
+            message: "Webhook Test : ${body[]}"
+- route:
+    id: nutanix-launch-blueprint
+    from:
+      id: from-6c2e
+      uri: direct
+      parameters:
+        name: direct-launcbp
+      steps:
+        - setHeader:
+            id: setHeader-60bf
+            name: Accept
+            expression:
+              simple:
+                id: simple-8884
+                expression: application/json
+        - setHeader:
+            id: setHeader-75a3
+            name: Authorization
+            expression:
+              simple:
+                id: simple-b8c6
+                expression: Basic Ym90LWNhbG06VGFiZWxkYXRhLzR1
+        - setHeader:
+            id: setHeader-4415
+            name: Content-Type
+            expression:
+              simple:
+                id: simple-e426
+                expression: application/json
+        - process:
+            id: process-b357
+            ref: TestingProcessor
+        - to:
+            id: log-step
+            uri: log
+            parameters:
+              loggerName: DEBUG?showBody=true&showHeaders=true
+        - to:
+            id: to-5dea
+            uri: netty-http
+            parameters:
+              bridgeEndpoint: true
+              protocol: https
+              host: 192.168.100.51
+              port: "9440"
+              reuseAddress: false
