@@ -31,10 +31,13 @@
       - id: get-webhook
         path: /jira/webhook
         to: direct:direct-webhook
-      - id: get-webhook
+      - id: get-webhook-1
         path: >-
           /nutanix/v3/blueprints/5d1d4765-f94e-abcb-6d82-7377046d0f24/simple_launch
         to: direct:direct-launcbp
+      - id: get-webhook-2
+        path: /nutanix/v3/action_rules/trigger
+        to: direct:direct-trigger-playbook
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -78,16 +81,16 @@
               simple:
                 id: simple-c612
                 expression: >-
-                  Create VM VM ID        : ${body[name]} Created Date :
-                  ${date:now:yyyy-MM-dd HH:mm:ss}
+                  Create VM : ${body[name]} Created Date : ${date:now:yyyy-MM-dd
+                  HH:mm:ss}
         - setBody:
             id: setBody-e4af
             expression:
               simple:
                 id: simple-10f4
                 expression: >-
-                  Detail VM: VM Name     : ${body[name]} IP          :
-                  ${body[ip]} Playbook ID : ${body[id]}
+                  Detail VM: VM Name = ${body[vm_name]}, Project Name =
+                  ${body[project_name]}, Bp template = rocky 8
         - to:
             id: to-5ea6
             uri: jira
@@ -96,7 +99,7 @@
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0d7_dAZ6c2ZznlKl2VUhZ5mqjiD20k5gucC4LCTZAX2zNFuTNfietR3SUD_sfiaJqvbcVLAkkZ2SkmN3wPAeO_rAnOdwOqcz3aFIYB5nf_ClikwFnFinu4zGWnZYBwPvHqX67diF3SeapyfC2wTprWihGCzh22GZMVthtEOw56LE=2D4C1D36
+                ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         - log:
             id: log-e145
             message: "Issue created: ${body}"
@@ -129,28 +132,28 @@
               simple:
                 id: simple-c612
                 expression: >-
-                  Increse CPU VM ID        : ${body[name]} Created Date :
-                  ${date:now:yyyy-MM-dd HH:mm:ss}
+                  Increase CPU VM ID : ${body[name]} on ${date:now:yyyy-MM-dd
+                  HH:mm:ss}
         - setBody:
-            id: setBody-e4af
+            id: setBody-2efd
             expression:
               simple:
-                id: simple-10f4
+                id: simple-e436
                 expression: >-
-                  Detail VM: VM Name     : ${body[name]} IP          :
-                  ${body[ip]} Playbook ID : ${body[id]} Allert UUID :
-                  ${body[alert_uuid]} Allert Name : ${body[alert_name]}
+                  Detail Request : VM Name = ${body[name]}, IP = ${body[ip]},
+                  Playbook ID : ${body[id]}, Allert UUID : ${body[alert_uuid]},
+                  Allert Name : ${body[alert_name]}
         - to:
-            id: to-5ea6
+            id: to-fdfa
             uri: jira
             parameters:
               type: addIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0d7_dAZ6c2ZznlKl2VUhZ5mqjiD20k5gucC4LCTZAX2zNFuTNfietR3SUD_sfiaJqvbcVLAkkZ2SkmN3wPAeO_rAnOdwOqcz3aFIYB5nf_ClikwFnFinu4zGWnZYBwPvHqX67diF3SeapyfC2wTprWihGCzh22GZMVthtEOw56LE=2D4C1D36
+                ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         - log:
-            id: log-e145
+            id: log-312e
             message: "Increase CPU Issue: ${body}"
 - route:
     id: jira-addcomment
@@ -181,7 +184,7 @@
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
+                ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         - log:
             id: log-4e91
             message: "Issue created: ${body}"
@@ -208,7 +211,7 @@
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
+                ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         - log:
             id: log-13f1
             message: "Issue created: ${body}"
@@ -233,7 +236,7 @@
             expression:
               simple:
                 id: simple-d9f7
-                expression: "41"
+                expression: "5"
         - setBody:
             id: setBody-ddfb
             expression:
@@ -248,7 +251,7 @@
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
+                ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         - log:
             id: log-7341
             message: "transition : ${body}"
@@ -275,7 +278,7 @@
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
-                ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
+                ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         - log:
             id: log-37c4
             message: "delete : ${body}"
@@ -315,7 +318,7 @@
         jiraUrl: https://pocntnx46.atlassian.net
         username: pocntnx46@gmail.com
         password: >-
-          ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
+          ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         type: newIssues
         jql: project=PEG
       steps:
@@ -331,7 +334,7 @@
         jiraUrl: https://pocntnx46.atlassian.net
         username: pocntnx46@gmail.com
         password: >-
-          ATATT3xFfGF0WFS_DkyfnzYNhRYdgXnPEhVVJmPMa1tV0MJH1LsCV6V5ZiRZrKowdcq3xqbYxRt-DF-CR3890XWS6dlWPuBEb4LJ9i97kzPOGgnb9uqNNKTqduoZ1XFcO17sxWN3wkRAQzf5eUNOjy9wzBDz8xyeiP_zFuncAUN97tNkT4IdSac=41996F9E
+          ATATT3xFfGF0D-sDyVSCMSsYTmDWrlWUimBBZ1Rrceznb9-NeCptYm6AzAdxRs2rTPKTCK3dngcHWbq0URBQAausRoV3y6YJVaz4qeyFyG1b9cwwIsqUscc00hjNC8NV3Zvc-hQBFYT41aZj6jUaUnf9mhuiCnelFomhcXASHcKPD7LPwuGUNhw=A1721581
         type: watchUpdates
         jql: project=PEG
       steps:
@@ -352,66 +355,129 @@
         - to:
             id: to-b9cf
             uri: kamelet:json-deserialize-action
+        - process:
+            id: process-bd01
+            ref: SetValueProcessor
         - choice:
             id: choice-71f9
+            description: check if the card transition from create vm to done
             when:
-              - id: when-3e0a
+              - id: when-3e0asdf
                 expression:
                   simple:
-                    id: simple-1bb2
-                    expression: header.isComplete== true
+                    id: simple-ac67
+                    expression: ${header.isComplete} == 'true'
                 steps:
+                  - setHeader:
+                      id: setHeader-f480
+                      name: Content-Type
+                      expression:
+                        simple:
+                          id: simple-cdb1
+                          expression: application/json
+                  - setHeader:
+                      id: setHeader-3de3
+                      name: Accept
+                      expression:
+                        simple:
+                          id: simple-9956
+                          expression: application/json
+                  - setHeader:
+                      id: setHeader-f805
+                      name: Authorization
+                      expression:
+                        simple:
+                          id: simple-6319
+                          expression: Basic Ym90LWNhbG06VGFiZWxkYXRhLzR1
+                  - removeHeader:
+                      id: removeHeader-9bfa
+                      name: CamelHttpPath
                   - log:
-                      id: log-1d3c
+                      id: log-bd25
                       message: "Webhook Test : ${body[]}"
+                  - choice:
+                      id: choice-ef15
+                      description: check if the card is for increasing vm cpu
+                      when:
+                        - id: when-809b
+                          expression:
+                            simple:
+                              id: simple-3c91
+                              expression: ${header.isIncrease} == 'true'
+                          steps:
+                            - process:
+                                id: process-6464
+                                ref: IncreaseCpuProcessor
+                            - to:
+                                id: to-5d50
+                                uri: netty-http
+                                parameters:
+                                  protocol: https
+                                  host: 192.168.100.51
+                                  port: "9440"
+                                  path: api/nutanix/v3/action_rules/trigger
+                                  bridgeEndpoint: true
+                      otherwise:
+                        id: otherwise-cf67
+                        steps:
+                          - process:
+                              id: process-58e6
+                              ref: TestingProcessor
+                          - to:
+                              id: to-0766
+                              uri: netty-http
+                              parameters:
+                                protocol: https
+                                host: 192.168.100.51
+                                port: "9440"
+                                path: >-
+                                  api/nutanix/v3/blueprints/5d1d4765-f94e-abcb-6d82-7377046d0f24/simple_launch
+                                bridgeEndpoint: true
             otherwise:
               id: otherwise-b58e
               steps:
                 - log:
                     id: log-a2d1
                     message: KOSYONG GAES
-        - log:
-            id: log-cfb5
-            message: Flow beres
 - route:
-    id: nutanix-launch-blueprint
+    id: nutanix-trigger-playbook
     from:
-      id: from-6c2e
+      id: from-5810
       uri: direct
       parameters:
-        name: direct-launcbp
+        name: direct-trigger-playbook
       steps:
         - setHeader:
-            id: setHeader-60bf
+            id: setHeader-f9f3
             name: Accept
             expression:
               simple:
-                id: simple-8884
+                id: simple-57b8
                 expression: application/json
         - setHeader:
-            id: setHeader-75a3
+            id: setHeader-cc83
             name: Authorization
             expression:
               simple:
-                id: simple-b8c6
+                id: simple-9398
                 expression: Basic Ym90LWNhbG06VGFiZWxkYXRhLzR1
         - setHeader:
-            id: setHeader-4415
+            id: setHeader-acdf
             name: Content-Type
             expression:
               simple:
-                id: simple-e426
+                id: simple-c53d
                 expression: application/json
         - process:
-            id: process-b357
-            ref: TestingProcessor
+            id: process-b224
+            ref: IncreaseCpuProcessor
         - to:
-            id: log-step
+            id: to-777f
             uri: log
             parameters:
               loggerName: DEBUG?showBody=true&showHeaders=true
         - to:
-            id: to-5dea
+            id: to-fa73
             uri: netty-http
             parameters:
               bridgeEndpoint: true
