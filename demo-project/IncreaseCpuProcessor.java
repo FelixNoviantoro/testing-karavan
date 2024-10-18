@@ -67,6 +67,7 @@ public class IncreaseCpuProcessor implements Processor {
         // Create the first trigger instance map
         Map<String, String> triggerInstance = new HashMap<>();
         triggerInstance.put("webhook_id", "4d0b564d-e831-4f68-a7e6-e2c0d658c745");
+        triggerInstance.put("string1", "PEG-45");
         triggerInstance.put("entity1", "{\"type\":\"vm\",\"name\":\"vm-0-241016-214032\",\"uuid\":\"e45037a0-c7ef-4c19-868b-4bab3b7832da\"}");
         triggerInstance.put("entity2", "{\"type\":\"alert\",\"name\":\"bot-calm-VM-CPU-Usage\",\"uuid\":\"851e2f4f-65b1-4507-8033-3853b3c1c89e\"}");
 
