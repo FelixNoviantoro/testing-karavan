@@ -21,41 +21,44 @@ public class IncreaseCpuProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
         Gson gson = new Gson();
-        // exchange.getIn().setBody("Hello World");
-        // // Assuming the JSON object is in the body of the exchange
-        // String jsonBody = exchange.getIn().getBody(String.class);
-        
-        // // Parse the JSON body
-        // JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
-        
-        // // Get the description from the issue fields
-        // String description = jsonObject.getAsJsonObject("issue")
-        //                                .getAsJsonPrimitive("description").getAsString();
 
-        // // Regular expression pattern to match the required values
-        // String regex = "VM Name = (\\S+),.*Playbook ID : (\\S+),.*Allert UUID : (\\S+),.*Allert Name : (.+?) for";
-        // Pattern pattern = Pattern.compile(regex);
-        // Matcher matcher = pattern.matcher(description);
+        Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
+        Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
+        Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
+        String key = (String) issue.get("key");
+        String description = (String) fields.get("description");
 
-        // String vmName = matcher.group(1); // vm-0-241016-214032
-        // String playbookId = matcher.group(2); // e45037a0-c7ef-4c19-868b-4bab3b7832da
-        // String alertUUID = matcher.group(3); // f6e59c2f-bf14-44e5-8392-1050cc9924f4
-        // String alertName = matcher.group(4); // bot-calm -VM-CPU-Usage
+        // Regular expressions to extract the values
+        String vmNameRegex = "VM Name = ([\\w-]+)";
+        String playbookIdRegex = "Playbook ID : ([\\w-]+)";
+        String alertUuidRegex = "Allert UUID : ([\\w-]+)";
+        String alertNameRegex = "Allert Name : ([\\w-]+)";
 
-        // if (matcher.find()) {
-        //     vmName = matcher.group(1); // vm-0-241016-214032
-        //     playbookId = matcher.group(2); // e45037a0-c7ef-4c19-868b-4bab3b7832da
-        //     alertUUID = matcher.group(3); // f6e59c2f-bf14-44e5-8392-1050cc9924f4
-        //     alertName = matcher.group(4); // bot-calm -VM-CPU-Usage
+        // Compile the patterns
+        Pattern vmNamePattern = Pattern.compile(vmNameRegex);
+        Pattern playbookIdPattern = Pattern.compile(playbookIdRegex);
+        Pattern alertUuidPattern = Pattern.compile(alertUuidRegex);
+        Pattern alertNamePattern = Pattern.compile(alertNameRegex);
 
-        //     // Output the extracted values
-        //     System.out.println("VM Name: " + vmName);
-        //     System.out.println("Playbook ID: " + playbookId);
-        //     System.out.println("Alert UUID: " + alertUUID);
-        //     System.out.println("Alert Name: " + alertName);
-        // } else {
-        //     System.out.println("No matches found.");
-        // }
+        // Match the patterns
+        Matcher vmNameMatcher = vmNamePattern.matcher(description);
+        Matcher playbookIdMatcher = playbookIdPattern.matcher(description);
+        Matcher alertUuidMatcher = alertUuidPattern.matcher(description);
+        Matcher alertNameMatcher = alertNamePattern.matcher(description);
+
+        // Extract and print the values if found
+        if (vmNameMatcher.find()) {
+            System.out.println("VM Name: " + vmNameMatcher.group(1));
+        }
+        if (playbookIdMatcher.find()) {
+            System.out.println("Playbook ID: " + playbookIdMatcher.group(1));
+        }
+        if (alertUuidMatcher.find()) {
+            System.out.println("Alert UUID: " + alertUuidMatcher.group(1));
+        }
+        if (alertNameMatcher.find()) {
+            System.out.println("Alert Name: " + alertNameMatcher.group(1));
+        }
 
         // Create the main map
         Map<String, Object> mainMap = new HashMap<>();
@@ -67,9 +70,9 @@ public class IncreaseCpuProcessor implements Processor {
         // Create the first trigger instance map
         Map<String, String> triggerInstance = new HashMap<>();
         triggerInstance.put("webhook_id", "4d0b564d-e831-4f68-a7e6-e2c0d658c745");
-        triggerInstance.put("string1", "PEG-45");
-        triggerInstance.put("entity1", "{\"type\":\"vm\",\"name\":\"vm-0-241016-214032\",\"uuid\":\"e45037a0-c7ef-4c19-868b-4bab3b7832da\"}");
-        triggerInstance.put("entity2", "{\"type\":\"alert\",\"name\":\"bot-calm-VM-CPU-Usage\",\"uuid\":\"851e2f4f-65b1-4507-8033-3853b3c1c89e\"}");
+        triggerInstance.put("string1", key);
+        triggerInstance.put("entity1", "{\"type\":\"vm\",\"name\":\""+ vmNameMatcher.group(1) +"\",\"uuid\":\""+ playbookIdMatcher.group(1) +"\"}");
+        triggerInstance.put("entity2", "{\"type\":\"alert\",\"name\":\"bot-calm-VM-CPU-Usage\",\"uuid\":\""+ alertUuidMatcher.group(1) +"\"}");
 
         // Add the trigger instance to the list
         triggerInstanceList.add(triggerInstance);
