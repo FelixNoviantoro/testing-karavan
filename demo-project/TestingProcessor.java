@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import com.google.gson.Gson;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -63,6 +64,8 @@ public class TestingProcessor implements Processor {
         NettyHttpComponent nettyHttpComponent = exchange.getContext().getComponent("netty-http", NettyHttpComponent.class);
         nettyHttpComponent.getConfiguration().setSslContextParameters(sslContextParameters);
 
+        Gson gson = new Gson();
+
         System.out.println("Testing Processor end");
         System.out.println("==========================");
 
@@ -86,30 +89,35 @@ public class TestingProcessor implements Processor {
         // // Put "spec" into root
         // rootMap.put("spec", specMap);
 
-        String jsonBody = exchange.getIn().getBody(String.class);
 
-        // Parse the JSON body
-        JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
+
+
+
+
+        // String jsonBody = exchange.getIn().getBody(String.class);
+
+        // // Parse the JSON body
+        // JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
         
-        // Get the description from the issue fields
-        String key = jsonObject.getAsJsonObject("issue")
-                                       .getAsJsonPrimitive("key").getAsString();
+        // // Get the description from the issue fields
+        // String key = jsonObject.getAsJsonObject("issue")
+        //                                .getAsJsonPrimitive("key").getAsString();
 
-        // Get the description from the issue fields
-        String description = jsonObject.getAsJsonObject("issue")
-                                       .getAsJsonPrimitive("description").getAsString();
+        // // Get the description from the issue fields
+        // String description = jsonObject.getAsJsonObject("issue")
+        //                                .getAsJsonPrimitive("description").getAsString();
 
-        // Regular expression patterns to match VM Name and Project Name
-        String vmNamePattern = "VM Name = ([^,]+)";
-        String projectNamePattern = "Project Name = ([^,]+)";
+        // // Regular expression patterns to match VM Name and Project Name
+        // String vmNamePattern = "VM Name = ([^,]+)";
+        // String projectNamePattern = "Project Name = ([^,]+)";
 
-        // Extract VM Name
-        String vmName = extractValue(description, vmNamePattern);
-        System.out.println("VM Name: " + vmName);
+        // // Extract VM Name
+        // String vmName = extractValue(description, vmNamePattern);
+        // System.out.println("VM Name: " + vmName);
 
-        // Extract Project Name
-        String projectName = extractValue(description, projectNamePattern);
-        System.out.println("Project Name: " + projectName);
+        // // Extract Project Name
+        // String projectName = extractValue(description, projectNamePattern);
+        // System.out.println("Project Name: " + projectName);
 
         // Create the main structure
         Map<String, Object> map = new HashMap<>();
@@ -117,7 +125,7 @@ public class TestingProcessor implements Processor {
         // Create the "spec" map
         Map<String, Object> specMap = new HashMap<>();
         specMap.put("app_description", "VM description");
-        specMap.put("app_name", projectName);
+        specMap.put("app_name", "baru-lagi-nih");
 
         // Create the "app_profile_reference" map
         Map<String, String> appProfileReference = new HashMap<>();
@@ -135,7 +143,7 @@ public class TestingProcessor implements Processor {
         variable.put("description", "");
         variable.put("name", "card_id");
         Map<String, String> valueMap = new HashMap<>();
-        valueMap.put("value", key);
+        valueMap.put("value", "PEG-44");
         variable.put("value", valueMap);
         variable.put("type", "LOCAL");
         variable.put("uuid", "a0619650-9d3d-ba0c-3bbb-8c76deb5724e");
@@ -149,7 +157,7 @@ public class TestingProcessor implements Processor {
         substrate.put("name", "VM1");
         Map<String, Object> substrateValue = new HashMap<>();
         Map<String, String> specValue = new HashMap<>();
-        specValue.put("name", vmName);
+        specValue.put("name", "baru-lagi-nih");
         substrateValue.put("spec", specValue);
         substrate.put("value", substrateValue);
         substrate.put("type", "AHV_VM");
@@ -168,7 +176,7 @@ public class TestingProcessor implements Processor {
         String json = mapToJson(map);
         System.out.println(json);
 
-        exchange.getIn().setBody(json);
+        exchange.getIn().setBody(gson.toJson(map));
         exchange.getIn().setHeader("CamelHttpMethod", "POST");
     }
 
