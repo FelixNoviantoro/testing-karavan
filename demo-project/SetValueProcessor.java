@@ -28,7 +28,8 @@ public class SetValueProcessor implements Processor {
     Map<String, Object> issue = (Map<String, Object>) reqBody.get("issue");
 
     // Get the 'summary' value as a String
-    String summary = (String) issue.get("summary");
+    Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
+    String summary = (String) fields.get("summary");
     System.out.println("ISSUE : " + gson.toJson(issue));
     System.out.println("SUMMARY : " + summary);
     System.out.println("==================================================");
@@ -66,7 +67,7 @@ public class SetValueProcessor implements Processor {
     System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease);
 
     // Set the headers in the exchange
-    exchange.getIn().setHeader("isIncrease", false);
+    exchange.getIn().setHeader("isIncrease", isIncrease);
     exchange.getIn().setHeader("isComplete", statusMatch);
     }
     
