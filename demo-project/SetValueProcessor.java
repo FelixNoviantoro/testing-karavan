@@ -14,9 +14,15 @@ public class SetValueProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         System.out.println("========================= Set Value");
         Map<String,Map<String,Object>> reqBody = exchange.getIn().getBody(Map.class);
+
+        String summary = jsonObject.getAsJsonObject("issue").getAsJsonPrimitive("summary").getAsString();
+
         Gson gson = new Gson();
+
+        System.out.println(gson.toJson(reqBody));
         Map<String, Object> changelogMap = gson.fromJson(gson.toJson(reqBody.get("changelog")), Map.class);
         System.out.println(gson.toJson(changelogMap.get("items")));
+
         List<Map<String, Object>> itemList = (List<Map<String, Object>>) changelogMap.get("items");
         String fromString = "";
         String toString = "";
@@ -34,7 +40,9 @@ public class SetValueProcessor implements Processor {
         }
 
         boolean statusMatch = "On Process Create VM".equals(fromString) && "Done".equals(toString);
-        System.out.println("BOOLEAN : " + statusMatch);
+        boolean isIncrease = summary.startsWith("Increase");
+        System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease);
+        exchange.getIn().setHeader("isIncrease", isIncrease);
         exchange.getIn().setHeader("isComplete", statusMatch);
     }
     
