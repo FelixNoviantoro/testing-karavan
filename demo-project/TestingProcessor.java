@@ -14,6 +14,14 @@ import org.apache.camel.component.http.HttpComponent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Configuration
 @BindToRegistry("TestingProcessor")
@@ -58,29 +66,106 @@ public class TestingProcessor implements Processor {
         System.out.println("Testing Processor end");
         System.out.println("==========================");
 
-        // Root Map
-        Map<String, Object> rootMap = new HashMap<>();
+        // // Root Map
+        // Map<String, Object> rootMap = new HashMap<>();
         
-        // Inner map for "spec"
+        // // Inner map for "spec"
+        // Map<String, Object> specMap = new HashMap<>();
+        // specMap.put("app_description", "simple dulu");
+        // specMap.put("app_name", "testing-dihari-jumat");
+
+        // // Inner map for "app_profile_reference"
+        // Map<String, Object> appProfileRefMap = new HashMap<>();
+        // appProfileRefMap.put("kind", "app_profile");
+        // appProfileRefMap.put("name", "Default");
+        // appProfileRefMap.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
+
+        // // Put "app_profile_reference" into "spec"
+        // specMap.put("app_profile_reference", appProfileRefMap);
+
+        // // Put "spec" into root
+        // rootMap.put("spec", specMap);
+
+        String jsonBody = exchange.getIn().getBody(String.class);
+
+        // Parse the JSON body
+        JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
+        
+        // Get the description from the issue fields
+        String key = jsonObject.getAsJsonObject("issue")
+                                       .getAsJsonPrimitive("key").getAsString();
+
+        // Get the description from the issue fields
+        String description = jsonObject.getAsJsonObject("issue")
+                                       .getAsJsonPrimitive("description").getAsString();
+
+        // Regular expression patterns to match VM Name and Project Name
+        String vmNamePattern = "VM Name = ([^,]+)";
+        String projectNamePattern = "Project Name = ([^,]+)";
+
+        // Extract VM Name
+        String vmName = extractValue(description, vmNamePattern);
+        System.out.println("VM Name: " + vmName);
+
+        // Extract Project Name
+        String projectName = extractValue(description, projectNamePattern);
+        System.out.println("Project Name: " + projectName);
+
+        // Create the main structure
+        Map<String, Object> map = new HashMap<>();
+
+        // Create the "spec" map
         Map<String, Object> specMap = new HashMap<>();
-        specMap.put("app_description", "DECRIPTION TERBARU ");
-        specMap.put("app_name", "testing-dulu-aja-kali-ya");
+        specMap.put("app_description", "VM description");
+        specMap.put("app_name", projectName);
 
-        // Inner map for "app_profile_reference"
-        Map<String, Object> appProfileRefMap = new HashMap<>();
-        appProfileRefMap.put("kind", "app_profile");
-        appProfileRefMap.put("name", "Default");
-        appProfileRefMap.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
+        // Create the "app_profile_reference" map
+        Map<String, String> appProfileReference = new HashMap<>();
+        appProfileReference.put("kind", "app_profile");
+        appProfileReference.put("name", "Default");
+        appProfileReference.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
+        specMap.put("app_profile_reference", appProfileReference);
 
-        // Put "app_profile_reference" into "spec"
-        specMap.put("app_profile_reference", appProfileRefMap);
+        // Create the "runtime_editables" map
+        Map<String, Object> runtimeEditables = new HashMap<>();
 
-        // Put "spec" into root
-        rootMap.put("spec", specMap);
+        // Create the "variable_list"
+        List<Map<String, Object>> variableList = new ArrayList<>();
+        Map<String, Object> variable = new HashMap<>();
+        variable.put("description", "");
+        variable.put("name", "card_id");
+        Map<String, String> valueMap = new HashMap<>();
+        valueMap.put("value", key);
+        variable.put("value", valueMap);
+        variable.put("type", "LOCAL");
+        variable.put("uuid", "a0619650-9d3d-ba0c-3bbb-8c76deb5724e");
+        variableList.add(variable);
+        runtimeEditables.put("variable_list", variableList);
+
+        // Create the "substrate_list"
+        List<Map<String, Object>> substrateList = new ArrayList<>();
+        Map<String, Object> substrate = new HashMap<>();
+        substrate.put("description", "");
+        substrate.put("name", "VM1");
+        Map<String, Object> substrateValue = new HashMap<>();
+        Map<String, String> specValue = new HashMap<>();
+        specValue.put("name", vmName);
+        substrateValue.put("spec", specValue);
+        substrate.put("value", substrateValue);
+        substrate.put("type", "AHV_VM");
+        substrate.put("uuid", "11e4696c-d3ad-dcba-a279-63792720e6b3");
+        substrateList.add(substrate);
+        runtimeEditables.put("substrate_list", substrateList);
+
+        // Add "runtime_editables" to specMap
+        specMap.put("runtime_editables", runtimeEditables);
+
+        // Finally, add "spec" to the main map
+        map.put("spec", specMap);
 
         // Example of how to access the data
-        System.out.println(rootMap);
-        String json = mapToJson(rootMap);
+        System.out.println(map);
+        String json = mapToJson(map);
         System.out.println(json);
 
         exchange.getIn().setBody(json);
@@ -108,5 +193,14 @@ public class TestingProcessor implements Processor {
         json.append("}");
         
         return json.toString();
+    }
+
+    private static String extractValue(String description, String pattern) {
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(description);
+        if (matcher.find()) {
+            return matcher.group(1).trim(); // Return the matched value
+        }
+        return null; // Return null if not found
     }
 }
