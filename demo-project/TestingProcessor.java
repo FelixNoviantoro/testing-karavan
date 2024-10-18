@@ -93,22 +93,16 @@ public class TestingProcessor implements Processor {
 
         Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
+        Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
         String key = (String) issue.get("key");
-        String description = (String) issue.get("description");
+        String description = (String) fields.get("description");
 
         System.out.println("ISSUE : " + issue);
+        System.out.println("==========================");
         System.out.println("Key : " + key);
-
-        // Parse the JSON body
-        // JsonObject jsonObject = JsonParser.parseString(jsonBody).getAsJsonObject();
-        
-        // // Get the description from the issue fields
-        // String key = jsonObject.getAsJsonObject("issue")
-        //                                .getAsJsonPrimitive("key").getAsString();
-
-        // // Get the description from the issue fields
-        // String description = jsonObject.getAsJsonObject("issue")
-        //                                .getAsJsonPrimitive("description").getAsString();
+        System.out.println("==========================");
+        System.out.println("description : " + description);
+        System.out.println("==========================");
 
         // Regular expression patterns to match VM Name and Project Name
         String vmNamePattern = "VM Name = ([^,]+)";
@@ -117,11 +111,11 @@ public class TestingProcessor implements Processor {
         // Extract VM Name
         String vmName = extractValue(description, vmNamePattern);
         System.out.println("VM Name: " + vmName);
-
+        System.out.println("==========================");
         // // Extract Project Name
         String projectName = extractValue(description, projectNamePattern);
         System.out.println("Project Name: " + projectName);
-
+        System.out.println("==========================");
         // Create the main structure
         Map<String, Object> map = new HashMap<>();
 
