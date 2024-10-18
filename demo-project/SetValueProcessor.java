@@ -59,7 +59,7 @@ public class SetValueProcessor implements Processor {
     }
 
     // Check if the status matches "On Process Create VM" -> "Done" and if the summary starts with "Increase"
-    boolean statusMatch = "On Process Create VM".equals(fromString) && "Done".equals(toString);
+    boolean statusMatch = "On Process Create VM".equals(toString);
     boolean isIncrease = summary != null && summary.startsWith("Increase");
     
     // Print the boolean results
