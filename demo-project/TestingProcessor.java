@@ -66,31 +66,6 @@ public class TestingProcessor implements Processor {
 
         Gson gson = new Gson();
 
-        // // Root Map
-        // Map<String, Object> rootMap = new HashMap<>();
-        
-        // // Inner map for "spec"
-        // Map<String, Object> specMap = new HashMap<>();
-        // specMap.put("app_description", "simple dulu");
-        // specMap.put("app_name", "testing-dihari-jumat");
-
-        // // Inner map for "app_profile_reference"
-        // Map<String, Object> appProfileRefMap = new HashMap<>();
-        // appProfileRefMap.put("kind", "app_profile");
-        // appProfileRefMap.put("name", "Default");
-        // appProfileRefMap.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
-
-        // // Put "app_profile_reference" into "spec"
-        // specMap.put("app_profile_reference", appProfileRefMap);
-
-        // // Put "spec" into root
-        // rootMap.put("spec", specMap);
-
-
-
-
-
-
         Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
         Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
@@ -107,6 +82,8 @@ public class TestingProcessor implements Processor {
         // Regular expression patterns to match VM Name and Project Name
         String vmNamePattern = "VM Name = ([^,]+)";
         String projectNamePattern = "Project Name = ([^,]+)";
+        String bpTemplatePattern = "Bp template = ([^,]+)";
+        String sizePattern = "Size = ([^,]+)";
 
         // Extract VM Name
         String vmName = extractValue(description, vmNamePattern);
@@ -116,6 +93,15 @@ public class TestingProcessor implements Processor {
         String projectName = extractValue(description, projectNamePattern);
         System.out.println("Project Name: " + projectName);
         System.out.println("==========================");
+        // Extract Bp template
+        String bpTemplate = extractValue(description, bpTemplatePattern);
+        System.out.println("Bp Template: " + bpTemplate);
+        System.out.println("==========================");
+        // Extract Size
+        String size = extractValue(description, sizePattern);
+        System.out.println("Size: " + size);
+        System.out.println("==========================");
+
         // Create the main structure
         Map<String, Object> map = new HashMap<>();
 
@@ -124,11 +110,25 @@ public class TestingProcessor implements Processor {
         specMap.put("app_description", "VM description");
         specMap.put("app_name", projectName);
 
-        // Create the "app_profile_reference" map
-        Map<String, String> appProfileReference = new HashMap<>();
-        appProfileReference.put("kind", "app_profile");
-        appProfileReference.put("name", "Default");
-        appProfileReference.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
+        if ("L".equals(size)){
+            // Create the "app_profile_reference" map
+            Map<String, String> appProfileReference = new HashMap<>();
+            appProfileReference.put("kind", "app_profile");
+            appProfileReference.put("name", "L");
+            appProfileReference.put("uuid", "1343a108-1668-0156-7cdd-ed68149c4923");
+        } else if("XL".equals(size)){
+            // Create the "app_profile_reference" map
+            Map<String, String> appProfileReference = new HashMap<>();
+            appProfileReference.put("kind", "app_profile");
+            appProfileReference.put("name", "XL");
+            appProfileReference.put("uuid", "cad0f8fa-6aee-0a98-07e8-f547c8e1aa89");
+        } else{
+            // Create the "app_profile_reference" map
+            Map<String, String> appProfileReference = new HashMap<>();
+            appProfileReference.put("kind", "app_profile");
+            appProfileReference.put("name", "S");
+            appProfileReference.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
+        }
         specMap.put("app_profile_reference", appProfileReference);
 
         // Create the "runtime_editables" map
