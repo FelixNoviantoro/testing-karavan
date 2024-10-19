@@ -110,22 +110,16 @@ public class TestingProcessor implements Processor {
         specMap.put("app_description", "VM description");
         specMap.put("app_name", projectName);
 
+        // Create the "app_profile_reference" map
+        Map<String, String> appProfileReference = new HashMap<>();
+        appProfileReference.put("kind", "app_profile");
         if ("L".equals(size)){
-            // Create the "app_profile_reference" map
-            Map<String, String> appProfileReference = new HashMap<>();
-            appProfileReference.put("kind", "app_profile");
             appProfileReference.put("name", "L");
             appProfileReference.put("uuid", "1343a108-1668-0156-7cdd-ed68149c4923");
         } else if("XL".equals(size)){
-            // Create the "app_profile_reference" map
-            Map<String, String> appProfileReference = new HashMap<>();
-            appProfileReference.put("kind", "app_profile");
             appProfileReference.put("name", "XL");
             appProfileReference.put("uuid", "cad0f8fa-6aee-0a98-07e8-f547c8e1aa89");
         } else{
-            // Create the "app_profile_reference" map
-            Map<String, String> appProfileReference = new HashMap<>();
-            appProfileReference.put("kind", "app_profile");
             appProfileReference.put("name", "S");
             appProfileReference.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
         }
