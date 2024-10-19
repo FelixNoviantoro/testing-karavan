@@ -145,7 +145,15 @@ public class TestingProcessor implements Processor {
         List<Map<String, Object>> substrateList = new ArrayList<>();
         Map<String, Object> substrate = new HashMap<>();
         substrate.put("description", "");
-        substrate.put("name", "VM1");
+        
+        if ("L".equals(size)){
+            substrate.put("name", "VM1_L");
+        } else if("XL".equals(size)){
+            substrate.put("name", "VM1_XL");
+        } else{
+            substrate.put("name", "VM1_S");
+        }
+
         Map<String, Object> substrateValue = new HashMap<>();
         Map<String, String> specValue = new HashMap<>();
         specValue.put("name", vmName);
@@ -163,9 +171,11 @@ public class TestingProcessor implements Processor {
         map.put("spec", specMap);
 
         // Example of how to access the data
+        System.out.println("======================================================================= Hasil waktu create");
         System.out.println(map);
         String json = mapToJson(map);
         System.out.println(json);
+        System.out.println("======================================================================= Hasil waktu create END");
 
         exchange.getIn().setBody(gson.toJson(map));
         exchange.getIn().setHeader("CamelHttpMethod", "POST");
