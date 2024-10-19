@@ -99,8 +99,7 @@
               type: addIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - setHeader:
             id: setResponseCode
             name: CamelHttpResponseCode
@@ -158,8 +157,7 @@
               type: addIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - setHeader:
             id: setHeader-86c5
             name: CamelHttpResponseCode
@@ -198,8 +196,7 @@
               type: addComment
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - log:
             id: log-4e91
             message: "Issue created: ${body}"
@@ -225,8 +222,7 @@
               type: attach
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - log:
             id: log-13f1
             message: "Issue created: ${body}"
@@ -265,8 +261,7 @@
               type: transitionIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - log:
             id: log-7341
             message: "transition : ${body}"
@@ -292,8 +287,7 @@
               type: deleteIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - log:
             id: log-37c4
             message: "delete : ${body}"
@@ -319,8 +313,7 @@
               type: updateIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: >-
-                ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         - log:
             id: log-60ad
             message: "update : ${body}"
@@ -332,8 +325,7 @@
       parameters:
         jiraUrl: https://pocntnx46.atlassian.net
         username: pocntnx46@gmail.com
-        password: >-
-          ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+        password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         type: newIssues
         jql: project=PEG
       steps:
@@ -348,8 +340,7 @@
       parameters:
         jiraUrl: https://pocntnx46.atlassian.net
         username: pocntnx46@gmail.com
-        password: >-
-          ATATT3xFfGF00-foHlg2GSpsHFjyIM79tYzFgcLu2imf2DbLSVYfM9UuAJcP7iyE7dLKEAOoZdKbgfbDjnLTCHSXUVKrvhRuw1VvIcSI_Ffv7i5bMq8T3kBu2TdFMOThmTVF-k7o2YxTh4UMlwUdhfpIazq3pDOuYN9aoeFEQrEAhtZIJUgIOxw=40BB63DA
+        password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
         type: watchUpdates
         jql: project=PEG
       steps:
