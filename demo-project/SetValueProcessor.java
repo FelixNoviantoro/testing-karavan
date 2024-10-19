@@ -38,8 +38,7 @@ public class SetValueProcessor implements Processor {
     System.out.println(gson.toJson(reqBody));
 
     // Parse the changelog map from the request body
-    Map<String, Object> changelogMap = gson.fromJson(gson.toJson(reqBody.get("changelog")), Map.class);
-    System.out.println(gson.toJson(changelogMap.get("items")));
+    Map<String, Object> changelogMap = (Map<String, Object>) reqBody.get("changelog");
 
     // Get the items list from the changelog map
     List<Map<String, Object>> itemList = (List<Map<String, Object>>) changelogMap.get("items");
