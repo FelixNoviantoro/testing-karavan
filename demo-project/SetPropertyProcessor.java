@@ -13,7 +13,8 @@ import com.google.gson.Gson;
 public class SetPropertyProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
-        Map<String, Object> pbReq = exchange.getProperty("pbReq", Map.class);
-        System.out.println("palybook req : " + pbReq);
+        Map<String, Object> reqBody = exchange.getIn().getBody(Map.class);
+        exchange.setProperty("pbReq", reqBody);
+        System.out.println("palybook req : " + reqBody);
     }
 }
