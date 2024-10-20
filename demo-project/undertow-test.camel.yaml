@@ -30,7 +30,7 @@
         to: direct:jira-attach
       - id: get-8fd4
         path: /jira/transition
-        to: direct:jira-transition
+        to: direct:jira-fetch
       - id: get-webhook
         path: /jira/webhook
         to: direct:direct-webhook
@@ -44,9 +44,6 @@
       - id: get-8fd3
         path: /jira/update/transition
         to: direct:jira-update-transition
-      - id: get-8fd4
-        path: /jira/fetch
-        to: direct:jira-fetch
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -479,7 +476,7 @@
                       expression:
                         simple:
                           id: simple-6319
-                          expression: Basic Ym90LWNhbG06VGFiZWxkYXRhLzR1
+                          expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
                   - removeHeader:
                       id: removeHeader-9bfa
                       name: CamelHttpPath
@@ -504,7 +501,7 @@
                                 uri: netty-http
                                 parameters:
                                   protocol: https
-                                  host: 192.168.100.51
+                                  host: 10.8.130.168
                                   port: "9440"
                                   path: api/nutanix/v3/action_rules/trigger
                                   bridgeEndpoint: true
@@ -514,15 +511,22 @@
                           - process:
                               id: process-58e6
                               ref: TestingProcessor
-                          - log:
-                              id: log-68bd
-                              message: ${body}
+                          - to:
+                              id: to-5d50
+                              uri: netty-http
+                              parameters:
+                                protocol: https
+                                host: 10.8.130.168
+                                port: "9440"
+                                path: >-
+                                  api/nutanix/v3/blueprints/2397fd48-ac2d-47ee-a710-e4132cce72d2/simple_launch
+                                bridgeEndpoint: true
             otherwise:
               id: otherwise-b58e
               steps:
                 - log:
                     id: log-a2d1
-                    message: KOSYONG GAES
+                    message: Condition false
 - route:
     id: nutanix-trigger-playbook
     from:
@@ -544,7 +548,7 @@
             expression:
               simple:
                 id: simple-9398
-                expression: Basic Ym90LWNhbG06VGFiZWxkYXRhLzR1
+                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
         - setHeader:
             id: setHeader-acdf
             name: Content-Type
@@ -566,6 +570,6 @@
             parameters:
               bridgeEndpoint: true
               protocol: https
-              host: 192.168.100.51
+              host: 10.8.130.168
               port: "9440"
               reuseAddress: false
