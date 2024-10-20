@@ -15,9 +15,6 @@
       - id: get-8fd6
         path: /jira/addcomment
         to: direct:jira-addcomment
-      - id: get-8fd4
-        path: /jira/fetch
-        to: direct:jira-fetch
     post:
       - id: get-8fd2
         path: /jira/addissue
@@ -44,6 +41,12 @@
       - id: get-webhook-2
         path: /nutanix/v3/action_rules/trigger
         to: direct:direct-trigger-playbook
+      - id: get-8fd3
+        path: /jira/update/transition
+        to: direct:jira-update-transition
+      - id: get-8fd4
+        path: /jira/fetch
+        to: direct:jira-fetch
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -244,13 +247,16 @@
       parameters:
         name: jira-fetch
       steps:
+        - process:
+            id: process-ca8d
+            ref: SetPropertyProcessor
         - setHeader:
             id: setHeader-9efe
             name: IssueKey
             expression:
               simple:
                 id: simple-ca1c
-                expression: PEG-36
+                expression: ${body[cardId]}
         - to:
             id: to-37b8
             uri: jira
@@ -263,6 +269,30 @@
         - process:
             id: process-22aa
             ref: FetchIssueProcessor
+        - to:
+            id: to-2084
+            uri: jira
+            parameters:
+              type: UPDATEISSUE
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - log:
+            id: log-d8eb
+            message: "update : ${body}"
+        - process:
+            id: process-22aa
+            ref: SetUpdateBodyProcessor
+        - to:
+            id: to-eff3
+            uri: jira
+            parameters:
+              type: transitionIssue
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
 - route:
     id: jira-transition
     from:
@@ -304,27 +334,6 @@
             id: log-7341
             message: "transition : ${body}"
 - route:
-    id: jira-update-transition
-    from:
-      id: from-c3c5
-      uri: direct
-      parameters:
-        name: jira-update-transition
-      steps:
-        - multicast:
-            id: multicast-3a01
-            steps:
-              - to:
-                  id: to-07de
-                  uri: direct
-                  parameters:
-                    name: jira-fetch
-              - to:
-                  id: to-1ace
-                  uri: direct
-                  parameters:
-                    name: jira-update
-- route:
     id: jira-delete
     from:
       id: from-fc7d
@@ -343,7 +352,7 @@
             id: to-23f1
             uri: jira
             parameters:
-              type: deleteIssue
+              type: DELETEISSUE
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
               password: >-
@@ -389,7 +398,7 @@
               password: >-
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
-            id: log-60ad
+            id: log-1fcb
             message: "update : ${body}"
 - route:
     id: jira-watch-create-issue
