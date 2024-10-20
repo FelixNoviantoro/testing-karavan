@@ -60,12 +60,18 @@ public class FetchIssueProcessor implements Processor {
         //     CPU : cpu
         //     memory : memory 
         //     """;
-        
+
+        String multiLineString = description + ",\n" +
+                         "IP : "+ pbReq.get("vmIpAddress") +",\n" +
+                         "CPU : " + pbReq.get("cpu") +",\n" +
+                         "Memory : " + pbReq.get("memory") +",\n";
         exchange.setProperty("dataFetch", reqBody);
+
         // exchange.getIn().setBody(respBody);
 
         exchange.getIn().setHeader("IssueKey", cardId);
         // exchange.getIn().setHeader("IssueSummary", data.get("cardId"));
-        exchange.getIn().setBody(description + " IP : " + pbReq.get("vmIpAddress") + " CPU : " + pbReq.get("vmIpAddress") + " Memory : " + pbReq.get("memory"));
+        // exchange.getIn().setBody(description + " IP : " + pbReq.get("vmIpAddress") + " CPU : " + pbReq.get("cpu") + " Memory : " + pbReq.get("memory"));
+        exchange.getIn().setBody(multiLineString);
     }
 }
