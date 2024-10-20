@@ -12,9 +12,12 @@
       - id: get-test
         path: /users
         to: direct:direct-test
-      - id: get-8fd3
+      - id: get-8fd6
         path: /jira/addcomment
         to: direct:jira-addcomment
+      - id: get-8fd4
+        path: /jira/fetch
+        to: direct:jira-fetch
     post:
       - id: get-8fd2
         path: /jira/addissue
@@ -22,6 +25,9 @@
       - id: get-8fd3
         path: /jira/addissue/cpu
         to: direct:jira-increase-cpu
+      - id: get-8fd3
+        path: /jira/update
+        to: direct:jira-update
       - id: post-attach
         path: /jira/attach
         to: direct:jira-attach
@@ -99,7 +105,8 @@
               type: addIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - setHeader:
             id: setResponseCode
             name: CamelHttpResponseCode
@@ -157,7 +164,8 @@
               type: addIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - setHeader:
             id: setHeader-86c5
             name: CamelHttpResponseCode
@@ -196,7 +204,8 @@
               type: addComment
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
             id: log-4e91
             message: "Issue created: ${body}"
@@ -222,10 +231,38 @@
               type: attach
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
             id: log-13f1
             message: "Issue created: ${body}"
+- route:
+    id: jira-fetch
+    from:
+      id: from-615e
+      uri: direct
+      parameters:
+        name: jira-fetch
+      steps:
+        - setHeader:
+            id: setHeader-9efe
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-ca1c
+                expression: PEG-36
+        - to:
+            id: to-37b8
+            uri: jira
+            parameters:
+              type: FETCHISSUE
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - process:
+            id: process-22aa
+            ref: FetchIssueProcessor
 - route:
     id: jira-transition
     from:
@@ -261,10 +298,32 @@
               type: transitionIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
             id: log-7341
             message: "transition : ${body}"
+- route:
+    id: jira-update-transition
+    from:
+      id: from-c3c5
+      uri: direct
+      parameters:
+        name: jira-update-transition
+      steps:
+        - multicast:
+            id: multicast-3a01
+            steps:
+              - to:
+                  id: to-07de
+                  uri: direct
+                  parameters:
+                    name: jira-fetch
+              - to:
+                  id: to-1ace
+                  uri: direct
+                  parameters:
+                    name: jira-update
 - route:
     id: jira-delete
     from:
@@ -287,7 +346,8 @@
               type: deleteIssue
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
             id: log-37c4
             message: "delete : ${body}"
@@ -305,15 +365,29 @@
             expression:
               simple:
                 id: simple-e7df
-                expression: PEG-2
+                expression: PEG-36
+        - setHeader:
+            id: setHeader-ec41
+            name: IssueSummary
+            expression:
+              simple:
+                id: simple-179e
+                expression: summary testing
+        - setBody:
+            id: setBody-e764
+            expression:
+              simple:
+                id: simple-a2f6
+                expression: testing description from body ${body[description]}
         - to:
             id: to-5371
             uri: jira
             parameters:
-              type: updateIssue
+              type: UPDATEISSUE
               jiraUrl: https://pocntnx46.atlassian.net
               username: pocntnx46@gmail.com
-              password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
             id: log-60ad
             message: "update : ${body}"
@@ -325,7 +399,8 @@
       parameters:
         jiraUrl: https://pocntnx46.atlassian.net
         username: pocntnx46@gmail.com
-        password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+        password: >-
+          ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         type: newIssues
         jql: project=PEG
       steps:
@@ -340,7 +415,8 @@
       parameters:
         jiraUrl: https://pocntnx46.atlassian.net
         username: pocntnx46@gmail.com
-        password: ATATT3xFfGF05jNpO5UIVOGVn6oNwTIUoAj2HaRdtx0vdTc_4_jLIDiaahbkGqMatrWcX7cx39oTAKQniWMPTEHmTn0VMjmOQLgAH73waONyEr1b5EHM6MthCzK_CuFVr2t7INfib4VyDpqmeMCLI0ocZA4kckMwp-TvEsexTKYuhtF_NXUtsF8=F99178F0
+        password: >-
+          ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         type: watchUpdates
         jql: project=PEG
       steps:
@@ -429,16 +505,9 @@
                           - process:
                               id: process-58e6
                               ref: TestingProcessor
-                          - to:
-                              id: to-0766
-                              uri: netty-http
-                              parameters:
-                                protocol: https
-                                host: 192.168.100.51
-                                port: "9440"
-                                path: >-
-                                  api/nutanix/v3/blueprints/5d1d4765-f94e-abcb-6d82-7377046d0f24/simple_launch
-                                bridgeEndpoint: true
+                          - log:
+                              id: log-68bd
+                              message: ${body}
             otherwise:
               id: otherwise-b58e
               steps:
