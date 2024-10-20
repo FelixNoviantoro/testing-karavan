@@ -115,13 +115,13 @@ public class TestingProcessor implements Processor {
         appProfileReference.put("kind", "app_profile");
         if ("L".equals(size)){
             appProfileReference.put("name", "L");
-            appProfileReference.put("uuid", "1343a108-1668-0156-7cdd-ed68149c4923");
+            appProfileReference.put("uuid", "7e3debbd-2e53-4557-ba99-832e2771251f");
         } else if("XL".equals(size)){
             appProfileReference.put("name", "XL");
-            appProfileReference.put("uuid", "cad0f8fa-6aee-0a98-07e8-f547c8e1aa89");
+            appProfileReference.put("uuid", "f09dbf22-2128-4232-923c-d6de10de58c8");
         } else{
             appProfileReference.put("name", "S");
-            appProfileReference.put("uuid", "23bbca1d-4141-889a-36c0-68d64ab674be");
+            appProfileReference.put("uuid", "9ca75263-8f5c-4123-97b0-1950a9dc5a80");
         }
         specMap.put("app_profile_reference", appProfileReference);
 
@@ -181,8 +181,8 @@ public class TestingProcessor implements Processor {
         // Example of how to access the data
         System.out.println("======================================================================= Hasil waktu create");
         System.out.println(map);
-        String json = mapToJson(map);
-        System.out.println(json);
+        System.out.println("=======================================================================");
+        System.out.println(gson.toJson(map));
         System.out.println("======================================================================= Hasil waktu create END");
 
         exchange.getIn().setBody(gson.toJson(map));
