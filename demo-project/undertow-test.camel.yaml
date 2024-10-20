@@ -29,8 +29,14 @@
         path: /jira/attach
         to: direct:jira-attach
       - id: get-8fd4
-        path: /jira/transition
+        path: /jira/transition/update
         to: direct:jira-fetch
+      - id: get-8fd56
+        path: /jira/transition
+        to: direct:jira-transition
+      - id: get-8fd67
+        path: /jira/transition/init
+        to: direct:jira-transition-init
       - id: get-webhook
         path: /jira/webhook
         to: direct:direct-webhook
@@ -329,6 +335,46 @@
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
             id: log-7341
+            message: "transition : ${body}"
+- route:
+    id: jira-transition-init
+    from:
+      id: from-e8b8
+      uri: direct
+      parameters:
+        name: jira-transition-init
+      steps:
+        - setHeader:
+            id: setHeader-aef1
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-dbdd
+                expression: ${body[cardId]}
+        - setHeader:
+            id: setHeader-79c5
+            name: IssueTransitionId
+            expression:
+              simple:
+                id: simple-4495
+                expression: "2"
+        - setBody:
+            id: setBody-44f3
+            expression:
+              constant:
+                id: constant-4516
+                expression: On create VM transition to Done.
+        - to:
+            id: to-63db
+            uri: jira
+            parameters:
+              type: transitionIssue
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - log:
+            id: log-23f2
             message: "transition : ${body}"
 - route:
     id: jira-delete
