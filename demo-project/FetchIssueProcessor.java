@@ -61,7 +61,7 @@ public class FetchIssueProcessor implements Processor {
         //     memory : memory 
         //     """;
 
-        String multiLineString = description + ",\n" +
+        String multiLineString = "Vm Name : "+ pbReq.get("vmName") +",\n" +
                          "IP : "+ pbReq.get("vmIpAddress") +",\n" +
                          "CPU : " + pbReq.get("cpu") +",\n" +
                          "Memory : " + pbReq.get("memory") +",\n";
