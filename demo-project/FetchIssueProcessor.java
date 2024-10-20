@@ -20,14 +20,18 @@ public class FetchIssueProcessor implements Processor {
         System.out.println("========================= FETCHED");
         System.out.println(respBody);
         System.out.println("========================= fromjson");
+        exchange.getProperty("pbReq", reqBody);
 
         // Regex pattern for description
         Pattern descriptionPattern = Pattern.compile("description=([^,}]+)");
         Matcher descriptionMatcher = descriptionPattern.matcher(respBody);
 
+        String description = "";
+        String cardId = "";
+
         // Extract description
         if (descriptionMatcher.find()) {
-            String description = descriptionMatcher.group(1).trim();
+            description = descriptionMatcher.group(1).trim();
             System.out.println("Description: " + description);
         } else {
             System.out.println("Description not found.");
@@ -37,8 +41,8 @@ public class FetchIssueProcessor implements Processor {
         Matcher keyMatcher = keyPattern.matcher(respBody);
 
         // Extract description
-        if (descriptionMatcher.find()) {
-            String cardId = keyMatcher.group(1).trim();
+        if (keyMatcher.find()) {
+            cardId = keyMatcher.group(1).trim();
             System.out.println("Key : " + cardId);
         } else {
             System.out.println("Description not found.");
@@ -47,7 +51,19 @@ public class FetchIssueProcessor implements Processor {
         Map<String, String> reqBody = new HashMap<>();
         reqBody.put("description", description);
         reqBody.put("cardId", cardId);
+
+        String multiLineString = """
+            description
+            VM Created address:
+            
+            """;
         
-        exchange.getIn().setBody(gson.toJson(reqBody));
+        exchange.setProperty("dataFetch", reqBody);
+        // exchange.getIn().setBody(respBody);
+
+        exchange.getIn().setHeader("IssueKey", cardId);
+        // exchange.getIn().setHeader("IssueSummary", data.get("cardId"));
+        exchange.getIn().setBody(description);
+
     }
 }
