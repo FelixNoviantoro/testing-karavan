@@ -137,7 +137,7 @@ public class TestingProcessor implements Processor {
         valueMap.put("value", key);
         variable.put("value", valueMap);
         variable.put("type", "LOCAL");
-        variable.put("uuid", "a0619650-9d3d-ba0c-3bbb-8c76deb5724e");
+        variable.put("uuid", "243063ba-d401-4993-9121-a59fc7a5256a");
         variableList.add(variable);
         runtimeEditables.put("variable_list", variableList);
 
@@ -160,7 +160,15 @@ public class TestingProcessor implements Processor {
         substrateValue.put("spec", specValue);
         substrate.put("value", substrateValue);
         substrate.put("type", "AHV_VM");
-        substrate.put("uuid", "11e4696c-d3ad-dcba-a279-63792720e6b3");
+
+        if ("L".equals(size)){
+            substrate.put("uuid", "ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4");
+        } else if("XL".equals(size)){
+            substrate.put("uuid", "729eba71-92ac-4583-b84f-617b3d26b7ed");
+        } else{
+            substrate.put("uuid", "543d66fc-ece0-4493-9bea-1f84b279a48d");
+        }
+        
         substrateList.add(substrate);
         runtimeEditables.put("substrate_list", substrateList);
 
