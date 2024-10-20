@@ -20,7 +20,7 @@ public class FetchIssueProcessor implements Processor {
         System.out.println("========================= FETCHED");
         System.out.println(respBody);
         System.out.println("========================= fromjson");
-        exchange.getProperty("pbReq", reqBody);
+        Map<String, Object> pbReq = exchange.getProperty("pbReq", Map.class);
 
         // Regex pattern for description
         Pattern descriptionPattern = Pattern.compile("description=([^,}]+)");
@@ -52,18 +52,20 @@ public class FetchIssueProcessor implements Processor {
         reqBody.put("description", description);
         reqBody.put("cardId", cardId);
 
-        String multiLineString = """
-            description
-            VM Created address:
-            
-            """;
+        // String multiLineString = """
+        //     description
+        //     VM Created address:
+        //     Name : vmName
+        //     IP : vmIpAddress
+        //     CPU : cpu
+        //     memory : memory 
+        //     """;
         
         exchange.setProperty("dataFetch", reqBody);
         // exchange.getIn().setBody(respBody);
 
         exchange.getIn().setHeader("IssueKey", cardId);
         // exchange.getIn().setHeader("IssueSummary", data.get("cardId"));
-        exchange.getIn().setBody(description);
-
+        exchange.getIn().setBody(description + " IP : " + pbReq.get("vmIpAddress") + " CPU : " + pbReq.get("vmIpAddress") + " Memory : " + pbReq.get("memory"));
     }
 }
