@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 import com.google.gson.Gson;
 
 import com.google.gson.JsonObject;
@@ -84,6 +85,8 @@ public class TestingProcessor implements Processor {
         String projectNamePattern = "Project Name = ([^,]+)";
         String bpTemplatePattern = "Bp template = ([^,]+)";
         String sizePattern = "Size = ([^,]+)";
+        String usernamePattern = "Username = ([^,]+)";
+        String passwordPattern = "Password = ([^,]+)";
 
         // Extract VM Name
         String vmName = extractValue(description, vmNamePattern);
@@ -100,6 +103,14 @@ public class TestingProcessor implements Processor {
         // Extract Size
         String size = extractValue(description, sizePattern);
         System.out.println("Size: " + size);
+        System.out.println("==========================");
+        // Extract Bp template
+        String usernameValue = extractValue(description, usernamePattern);
+        System.out.println("Username: " + usernameValue);
+        System.out.println("==========================");
+        // Extract Size
+        String passwordValue = extractValue(description, passwordPattern);
+        System.out.println("Password: " + passwordValue);
         System.out.println("==========================");
 
         // Create the main structure
@@ -139,6 +150,25 @@ public class TestingProcessor implements Processor {
         variable.put("type", "LOCAL");
         variable.put("uuid", "243063ba-d401-4993-9121-a59fc7a5256a");
         variableList.add(variable);
+
+        Map<String, Object> username = new HashMap<>();
+        // Map<String, String> valueUsername = new HashMap<>();
+        // valueUsername.put("value", )
+        username.put("description", "");
+        username.put("name", "username");
+        username.put("value", Collections.singletonMap("value", usernameValue));
+        username.put("type", "LOCAL");
+        username.put("uuid", "19ce41a2-e7ac-ae85-bfb3-96a334766569");
+        variableList.add(username);
+
+        Map<String, Object> password = new HashMap<>();
+        password.put("description", "");
+        password.put("name", "password");
+        password.put("value", Collections.singletonMap("value", passwordValue));
+        password.put("type", "LOCAL");
+        password.put("uuid", "d1faee84-7de4-0b8f-b9b6-6a0cd676d682");
+        variableList.add(password);
+
         runtimeEditables.put("variable_list", variableList);
 
         // Create the "substrate_list"
