@@ -15,6 +15,9 @@
       - id: get-8fd6
         path: /jira/addcomment
         to: direct:jira-addcomment
+      - id: get-8fd7
+        path: /jira/exec
+        to: direct:jira-exec
     post:
       - id: get-8fd2
         path: /jira/addissue
@@ -620,3 +623,21 @@
               host: 10.8.130.168
               port: "9440"
               reuseAddress: false
+- route:
+    id: route-be66
+    nodePrefixId: route-72b
+    from:
+      id: from-5865
+      uri: direct
+      parameters:
+        name: jira-exec
+      steps:
+        - to:
+            id: to-bc42
+            uri: exec
+            parameters:
+              executable: ansible-playbook
+              args: clusters_info.yml
+        - log:
+            id: log-bc83
+            message: ${body}
