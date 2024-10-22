@@ -29,10 +29,10 @@
         path: /jira/attach
         to: direct:jira-attach
       - id: get-8fd4
-        path: /jira/transition/update
+        path: /jira/transition
         to: direct:jira-fetch
       - id: get-8fd56
-        path: /jira/transition
+        path: /jira/transition/update
         to: direct:jira-transition
       - id: get-8fd67
         path: /jira/transition/init
@@ -103,7 +103,8 @@
                 expression: >-
                   Detail VM: VM Name = ${body[vm_name]}, Project Name =
                   ${body[project_name]}, Bp template = rocky 8, Size =
-                  ${body[size]}
+                  ${body[size]}, Username = ${body[username]}, Password =
+                  ${body[password]}
         - to:
             id: to-5ea6
             uri: jira
