@@ -53,6 +53,9 @@
       - id: get-8fd3
         path: /jira/update/transition
         to: direct:jira-update-transition
+      - id: get-8fd3
+        path: /ntnx/bp/list
+        to: direct:ntnx-bplist
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -638,6 +641,83 @@
             parameters:
               executable: ansible-playbook
               args: clusters_info.yml
+              workingDir: /karavan/code
         - log:
             id: log-bc83
+            message: ${body}
+- route:
+    id: route-44c6
+    nodePrefixId: route-bbb
+    from:
+      id: from-583e
+      uri: direct
+      parameters:
+        name: ntnx-bplist
+      steps:
+        - setHeader:
+            id: setHeader-62ab
+            name: Content-Type
+            expression:
+              simple:
+                id: simple-cdb1
+                expression: application/json
+        - setHeader:
+            id: setHeader-1d60
+            name: Accept
+            expression:
+              simple:
+                id: simple-9956
+                expression: application/json
+        - setHeader:
+            id: setHeader-d7a8
+            name: Authorization
+            expression:
+              simple:
+                id: simple-6319
+                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+        - setHeader:
+            id: setHeader-28ca
+            name: CamelHttpCharacterEncoding
+            expression:
+              constant:
+                id: constant-ed9e
+                expression: UTF-8
+        - removeHeader:
+            id: removeHeader-b8b7
+            name: CamelHttpPath
+        - setBody:
+            id: setBody-93ab
+            expression:
+              simple:
+                id: simple-f950
+                expression: |-
+                  {
+                      "length": 2,
+                      "offset": 0,
+                      "sort_attribute": "ASCENDING",
+                      "sort_order": "ASCENDING"
+                  }
+        - log:
+            id: log-f6e6
+            message: ${body}
+        - to:
+            id: to-0ecb
+            uri: netty-http
+            parameters:
+              protocol: https
+              host: 10.8.130.168
+              port: "9440"
+              path: api/nutanix/v3/blueprints/list
+              bridgeEndpoint: true
+        - to:
+            id: to-ddb1
+            uri: log
+            parameters:
+              loggerName: debug
+        - convertBodyTo:
+            id: convertBodyTo-0148
+            type: java.lang.String
+            charset: UTF-8
+        - log:
+            id: log-3878
             message: ${body}
