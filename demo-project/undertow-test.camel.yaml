@@ -685,18 +685,9 @@
         - removeHeader:
             id: removeHeader-b8b7
             name: CamelHttpPath
-        - setBody:
-            id: setBody-93ab
-            expression:
-              simple:
-                id: simple-f950
-                expression: |-
-                  {
-                      "length": 2,
-                      "offset": 0,
-                      "sort_attribute": "ASCENDING",
-                      "sort_order": "ASCENDING"
-                  }
+        - process:
+            id: process-72d8
+            ref: NutanixBpListProcessor
         - log:
             id: log-f6e6
             message: ${body}
@@ -709,15 +700,9 @@
               port: "9440"
               path: api/nutanix/v3/blueprints/list
               bridgeEndpoint: true
-        - to:
-            id: to-ddb1
-            uri: log
-            parameters:
-              loggerName: debug
-        - convertBodyTo:
-            id: convertBodyTo-0148
-            type: java.lang.String
-            charset: UTF-8
-        - log:
-            id: log-3878
-            message: ${body}
+        - process:
+            id: process-8758
+            ref: ByteToStringProcessor
+        - removeHeader:
+            id: removeHeader-8194
+            name: Content-Encoding
