@@ -36,10 +36,10 @@ public class ByteToStringProcessor implements Processor {
                     String respBody = new String(gzipStream.readAllBytes(), StandardCharsets.UTF_8);
                     System.out.println("==========================");
                     System.out.println(respBody);
-                    Map<String, Object> jsonMap = gson.fromJson(jsonResponse, Map.class);
+                    Map<String, Object> jsonMap = gson.fromJson(respBody, Map.class);
                     System.out.println("==========================");
                     System.out.println(gson.toJson(jsonMap));
-                    exchange.getIn().setBody(respBody);
+                    exchange.getIn().setBody(gson.toJson(jsonMap));
                 }
             } else {
                 // Assume UTF-8 for uncompressed body
