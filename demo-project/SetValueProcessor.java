@@ -32,8 +32,23 @@ public class SetValueProcessor implements Processor {
     String summary = (String) fields.get("summary");
     System.out.println("ISSUE : " + gson.toJson(issue));
     System.out.println("SUMMARY : " + summary);
-    System.out.println("==================================================");
+    
 
+    // customfileds
+    String username = (String) fields.get("customfield_10085");
+    String password = (String) fields.get("customfield_10084");
+    String vmName = (String) fields.get("customfield_10086");
+    Map<String,Object> vmType = (Map<String, Object>) fields.get("customfield_10087");
+    String vmTypeValue = (String) vmType.get("value");
+    Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10079");
+    String bpTypeValue = (String) bpType.get("value");
+
+    System.out.println("USERNAME : " + username);
+    System.out.println("PASSWORD : " + password);
+    System.out.println("NAME : " + vmName);
+    System.out.println("VM TYPE : " + vmTypeValue);
+    System.out.println("BP TYPE : " + bpTypeValue);
+    System.out.println("==================================================");
     // Print the entire request body in JSON format
     System.out.println(gson.toJson(reqBody));
 
