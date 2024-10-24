@@ -7,3 +7,10 @@ services:
       - "8083:8080"
     networks:
       - karavan
+    user: root # Run commands as root without using sudo
+    entrypoint: >
+      /bin/bash -c "
+      apt-get update &&
+      apt-get install -y ansible &&
+      chown -R karavan /karavan &&
+      su karavan -c 'jbang $JBANG_OPTIONS -Dcamel.jbang.version=$CAMEL_VERSION camel@apache/camel run --source-dir=$CODE_DIR --console'"
