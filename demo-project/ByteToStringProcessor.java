@@ -17,7 +17,7 @@ public class ByteToStringProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
 
-        Gson gson = new Gson();
+        Gson gson = new Gson(); 
 
         // Log the headers for debugging purposes
         System.out.println("Headers: " + exchange.getIn().getHeaders());
