@@ -33,9 +33,9 @@
         to: direct:jira-attach
       - id: get-8fd4
         path: /jira/transition
-        to: direct:jira-fetch
+        to: direct:jira-fetch/update
       - id: get-8fd56
-        path: /jira/transition/update
+        path: /jira/transition
         to: direct:jira-transition
       - id: get-8fd67
         path: /jira/transition/init
@@ -640,7 +640,7 @@
             uri: exec
             parameters:
               executable: ansible-playbook
-              args: clusters_info.yml
+              args: ansible-test.yml
               workingDir: /karavan/code
         - log:
             id: log-bc83
