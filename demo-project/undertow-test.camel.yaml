@@ -32,8 +32,8 @@
         path: /jira/attach
         to: direct:jira-attach
       - id: get-8fd4
-        path: /jira/transition
-        to: direct:jira-fetch/update
+        path: /jira/transition/update
+        to: direct:jira-fetch
       - id: get-8fd56
         path: /jira/transition
         to: direct:jira-transition
