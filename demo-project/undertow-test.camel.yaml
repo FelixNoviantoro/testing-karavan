@@ -562,18 +562,28 @@
                         id: otherwise-cf67
                         steps:
                           - process:
-                              id: process-58e6
-                              ref: TestingProcessor
+                              id: process-00a1
+                              ref: StringExecFormat
+                          - setHeader:
+                              id: setHeader-4e70
+                              name: CamelExecCommandArgs
+                              expression:
+                                simple:
+                                  id: simple-06bb
+                                  expression: ${header.execArgs}
                           - to:
-                              id: to-5d50
-                              uri: netty-http
+                              id: to-3613
+                              uri: exec
                               parameters:
-                                protocol: https
-                                host: 10.8.130.168
-                                port: "9440"
-                                path: >-
-                                  api/nutanix/v3/blueprints/2397fd48-ac2d-47ee-a710-e4132cce72d2/simple_launch
-                                bridgeEndpoint: true
+                                executable: ansible-playbook
+                                workingDir: /karavan/playbook
+                          - setHeader:
+                              id: setHeader-c32c
+                              name: CamelHttpResponseCode
+                              expression:
+                                constant:
+                                  id: constant-8a55
+                                  expression: "200"
             otherwise:
               id: otherwise-b58e
               steps:

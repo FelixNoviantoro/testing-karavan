@@ -85,7 +85,7 @@ public class StringExecFormat implements Processor {
             "10.8.130.168",
             "9145e6c8-a25d-482a-a6f4-52cffa7bf744",
             "YWRtaW46bnV0NG5peFBAc3N3MHJk",
-            "testing descripttion",
+            "testing_descripttion_ansible",
             projectName,
             size,
             appProfileReferenceId,
@@ -108,4 +108,12 @@ public class StringExecFormat implements Processor {
         }
         return null; // Return null if not found
     }
+
+    public static String escapeForExec(String value) {
+    // Wrap the value in double quotes if it contains spaces
+    if (value.contains(" ")) {
+        return String.format("\"%s\"", value);
+    }
+    return value;
+}
 }
