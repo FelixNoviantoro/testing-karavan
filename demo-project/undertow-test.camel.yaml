@@ -638,15 +638,24 @@
         - process:
             id: process-d70f
             ref: StringExecFormat
+        - setHeader:
+            id: setHeader-79ae
+            name: CamelExecCommandArgs
+            expression:
+              simple:
+                id: simple-06bb
+                expression: ${header.execArgs}
         - to:
             id: to-bc42
             uri: exec
             parameters:
               executable: ansible-playbook
               workingDir: /karavan/playbook
-              args: >-
-                launch_bluerprint.yml -e
-                {'pc_ip':'10.8.130.168','bp_id':'9145e6c8-a25d-482a-a6f4-52cffa7bf744','basic_auth':'YWRtaW46bnV0NG5peFBAc3N3MHJk','app_description':'testing-vm-lagi','app_name':'felix-vm-2','app_profile_reference_name':'S','app_profile_reference_uuid':'1d6ba9ce-d1de-4047-bed0-d2a2dfcdad7c','card_id':'PEG-90','username':'felix','password':'password','vm_name':'felix-vm-2','substrate_list_uuid':'5d0f52b7-75ea-4c98-8c7e-459949823c1c'}
+        - to:
+            id: to-5cbb
+            uri: log
+            parameters:
+              loggerName: DEBUG?showBody=true&showHeaders=true
         - log:
             id: log-bc83
             message: ${body}
