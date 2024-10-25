@@ -74,7 +74,7 @@ public class StringExecFormat implements Processor {
         String vmName = (String) fields.get("customfield_10086");
         Map<String,Object> vmType = (Map<String, Object>) fields.get("customfield_10087");
         String vmTypeValue = (String) vmType.get("value");
-        Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10079");
+        Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10088");
         String bpTypeValue = (String) bpType.get("value");
 
         System.out.println("String EXEC ==================================================");
@@ -99,7 +99,7 @@ public class StringExecFormat implements Processor {
 
         // Build the ansible-playbook args string dynamically
         String execArgs = String.format(
-            "launch_bluerprint.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s'}",
+            "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','card_id_uuid_variable':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s'}",
             "10.8.130.168",
             "2397fd48-ac2d-47ee-a710-e4132cce72d2",
             "YWRtaW46bnV0NG5peFBAc3N3MHJk",
@@ -111,7 +111,10 @@ public class StringExecFormat implements Processor {
             username,
             password,
             vmName,
-            substrateListId
+            substrateListId,
+            "243063ba-d401-4993-9121-a59fc7a5256a",
+            "19ce41a2-e7ac-ae85-bfb3-96a334766569",
+            "d1faee84-7de4-0b8f-b9b6-6a0cd676d682"
         );
 
         // Set the dynamically built args in the header
