@@ -1,3 +1,4 @@
+import com.google.gson.Gson;
 import org.apache.camel.BindToRegistry;
 import org.apache.camel.Configuration;
 import org.apache.camel.Exchange;
@@ -6,24 +7,22 @@ import org.apache.camel.Processor;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.zip.GZIPInputStream;
-import com.google.gson.Gson;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 @Configuration
 @BindToRegistry("ByteToStringProcessor")
 public class ByteToStringProcessor implements Processor {
 
+    private final Gson gson = new Gson();
+
+    @Override
     public void process(Exchange exchange) throws Exception {
-
-        Gson gson = new Gson(); 
-
-        // Log the headers for debugging purposes
-        System.out.println("Headers: " + exchange.getIn().getHeaders());
+        // Log headers for debugging
+        System.out.println("Headers ==============================================================: " + exchange.getIn().getHeaders());
 
         Object body = exchange.getIn().getBody();
-        
+
         // Check if the body is a byte array
         if (body instanceof byte[]) {
             byte[] byteBody = (byte[]) body;
@@ -34,25 +33,28 @@ public class ByteToStringProcessor implements Processor {
                 // Handle gzip-encoded body
                 try (InputStream gzipStream = new GZIPInputStream(new ByteArrayInputStream(byteBody))) {
                     String respBody = new String(gzipStream.readAllBytes(), StandardCharsets.UTF_8);
-                    System.out.println("==========================");
-                    System.out.println(respBody);
+                    System.out.println("GZIP Decoded Body: " + respBody);
+
+                    // Convert the JSON string to a Map
                     Map<String, Object> jsonMap = gson.fromJson(respBody, Map.class);
-                    System.out.println("==========================");
-                    System.out.println(gson.toJson(jsonMap));
-                    exchange.getIn().setBody(gson.toJson(jsonMap));
+                    // Set the JSON string representation of the Map as the body
+                    exchange.getIn().setBody(jsonMap);
                 }
             } else {
                 // Assume UTF-8 for uncompressed body
                 String respBody = new String(byteBody, StandardCharsets.UTF_8);
                 exchange.getIn().setBody(respBody);
             }
+        } else if (body instanceof Map) {
+            // If the body is already a Map, convert it to JSON string format
+            String jsonString = gson.toJson(body);
+            exchange.getIn().setBody(jsonString);
         } else if (body instanceof String) {
-            // Handle case when body is already a String
-            String respBody = (String) body;
-            exchange.getIn().setBody(respBody);
+            // If the body is already a String, set it as is
+            exchange.getIn().setBody(body);
         } else {
             // Unknown body type
-            exchange.getIn().setBody("Body with unknown encoding or format");
+            exchange.getIn().setBody("Unsupported body format");
         }
     }
 }
