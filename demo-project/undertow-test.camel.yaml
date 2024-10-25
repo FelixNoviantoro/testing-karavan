@@ -15,9 +15,6 @@
       - id: get-8fd6
         path: /jira/addcomment
         to: direct:jira-addcomment
-      - id: get-8fd7
-        path: /jira/exec
-        to: direct:jira-exec
     post:
       - id: get-8fd2
         path: /jira/addissue
@@ -56,6 +53,9 @@
       - id: get-8fd3
         path: /ntnx/bp/list
         to: direct:ntnx-bplist
+      - id: get-8fd7
+        path: /jira/exec
+        to: direct:jira-exec
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -562,28 +562,21 @@
                         id: otherwise-cf67
                         steps:
                           - process:
-                              id: process-00a1
+                              id: process-98d0
                               ref: StringExecFormat
                           - setHeader:
-                              id: setHeader-4e70
+                              id: setHeader-62bf
                               name: CamelExecCommandArgs
                               expression:
                                 simple:
                                   id: simple-06bb
                                   expression: ${header.execArgs}
                           - to:
-                              id: to-3613
+                              id: to-b8f2
                               uri: exec
                               parameters:
                                 executable: ansible-playbook
                                 workingDir: /karavan/playbook
-                          - setHeader:
-                              id: setHeader-c32c
-                              name: CamelHttpResponseCode
-                              expression:
-                                constant:
-                                  id: constant-8a55
-                                  expression: "200"
             otherwise:
               id: otherwise-b58e
               steps:
@@ -645,22 +638,15 @@
       parameters:
         name: jira-exec
       steps:
-        - process:
-            id: process-d70f
-            ref: StringExecFormat
-        - setHeader:
-            id: setHeader-79ae
-            name: CamelExecCommandArgs
-            expression:
-              simple:
-                id: simple-06bb
-                expression: ${header.execArgs}
         - to:
             id: to-bc42
             uri: exec
             parameters:
               executable: ansible-playbook
               workingDir: /karavan/playbook
+              args: >-
+                launch_bluerprint.yml -e
+                "{'pc_ip':'10.8.130.168','bp_id':'2397fd48-ac2d-47ee-a710-e4132cce72d2','basic_auth':'YWRtaW46bnV0NG5peFBAc3N3MHJk','app_description':'testing_descripttion_ansible','app_name':'project-testing-dulu','app_profile_reference_name':'L','app_profile_reference_uuid':'7e3debbd-2e53-4557-ba99-832e2771251f','card_id':'PEG-93','username':'root','password':'password','vm_name':'testing-vm','substrate_list_uuid':'ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4'}"
         - to:
             id: to-5cbb
             uri: log
