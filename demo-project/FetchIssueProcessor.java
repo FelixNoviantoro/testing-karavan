@@ -61,12 +61,12 @@ public class FetchIssueProcessor implements Processor {
         //     memory : memory 
         //     """;
 
-        String multiLineString = "Vm Name : "+ pbReq.get("vmName") +",\n" +
-                         "IP : "+ pbReq.get("vmIpAddress") +",\n" +
-                         "Username : "+ pbReq.get("username") +",\n" +
-                         "Password : "+ pbReq.get("password") +",\n" +
-                         "CPU : " + pbReq.get("cpu") +",\n" +
-                         "Memory : " + pbReq.get("memory") +",\n";
+        String multiLineString = "Vm Name : "+ pbReq.get("vmName") +"\n" +
+                         "IP : "+ pbReq.get("vmIpAddress") +"\n" +
+                         "Username : "+ pbReq.get("username") +"\n" +
+                         "Password : "+ pbReq.get("password") +"\n" +
+                         "CPU : " + pbReq.get("cpu") +"\n" +
+                         "Memory : " + pbReq.get("memory") +"\n";
         exchange.setProperty("dataFetch", reqBody);
 
         // exchange.getIn().setBody(respBody);
