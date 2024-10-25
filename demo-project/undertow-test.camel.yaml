@@ -577,6 +577,9 @@
                               parameters:
                                 executable: ansible-playbook
                                 workingDir: /karavan/playbook
+                          - log:
+                              id: log-9d06
+                              message: ${body}
             otherwise:
               id: otherwise-b58e
               steps:
