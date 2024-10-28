@@ -761,7 +761,7 @@
             id: log-f6e6
             message: ${body}
         - to:
-            id: to-0ecb
+            id: to-c326
             uri: netty-http
             parameters:
               protocol: https
@@ -770,10 +770,10 @@
               path: api/nutanix/v3/blueprints/list
               bridgeEndpoint: true
         - process:
-            id: process-8758
+            id: process-8174
             ref: ByteToStringProcessor
         - removeHeader:
-            id: removeHeader-8194
+            id: removeHeader-57a4
             name: Content-Encoding
 - route:
     id: route-7fd7
