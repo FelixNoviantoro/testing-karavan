@@ -547,17 +547,24 @@
                               expression: ${header.isIncrease} == 'true'
                           steps:
                             - process:
-                                id: process-6464
-                                ref: IncreaseCpuProcessor
+                                id: process-65f6
+                                ref: PalaybookAlert
+                            - setHeader:
+                                id: setHeader-6538
+                                name: CamelExecCommandArgs
+                                expression:
+                                  simple:
+                                    id: simple-c359
+                                    expression: ${header.execArgs}
                             - to:
-                                id: to-5d50
-                                uri: netty-http
+                                id: to-f99e
+                                uri: exec
                                 parameters:
-                                  protocol: https
-                                  host: 10.8.130.168
-                                  port: "9440"
-                                  path: api/nutanix/v3/action_rules/trigger
-                                  bridgeEndpoint: true
+                                  executable: ansible-playbook
+                                  workingDir: /karavan/playbook
+                            - log:
+                                id: log-1a14
+                                message: ${body}
                       otherwise:
                         id: otherwise-cf67
                         steps:
