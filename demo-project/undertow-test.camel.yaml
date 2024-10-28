@@ -56,6 +56,9 @@
       - id: get-8fd7
         path: /jira/exec
         to: direct:jira-exec
+      - id: get-8fd12
+        path: /ntnx/apps/list
+        to: direct:ntnx-apps-list
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -590,9 +593,55 @@
             otherwise:
               id: otherwise-b58e
               steps:
-                - log:
-                    id: log-a2d1
-                    message: Condition false
+                - choice:
+                    id: choice-0267
+                    when:
+                      - id: when-43c6
+                        expression:
+                          simple:
+                            id: simple-be53
+                            expression: ${header.isToDo} == 'true'
+                        steps:
+                          - setHeader:
+                              id: setHeader-76f0
+                              name: Authorization
+                              expression:
+                                simple:
+                                  id: simple-21a6
+                                  expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                          - setBody:
+                              id: setBody-fcc6
+                              expression:
+                                simple:
+                                  id: simple-e57c
+                                  expression: |-
+                                    {
+                                        "length": 10,
+                                        "offset": 0,
+                                        "sort_attribute": "ASCENDING",
+                                        "sort_order": "ASCENDING"
+                                    }
+                          - removeHeader:
+                              id: removeHeader-17d7
+                              name: CamelHttpPath
+                          - to:
+                              id: to-3a7d
+                              uri: netty-http
+                              parameters:
+                                protocol: https
+                                host: 10.8.130.168
+                                port: "9440"
+                                path: api/nutanix/v3/apps/list
+                                bridgeEndpoint: true
+                          - log:
+                              id: log-77eb
+                              message: "application name validation : ${body}"
+                    otherwise:
+                      id: otherwise-3c83
+                      steps:
+                        - log:
+                            id: log-a2d1
+                            message: Condition false
 - route:
     id: nutanix-trigger-playbook
     from:
@@ -726,3 +775,57 @@
         - removeHeader:
             id: removeHeader-8194
             name: Content-Encoding
+- route:
+    id: route-7fd7
+    from:
+      id: from-017e
+      uri: direct
+      parameters:
+        name: ntnx-apps-list
+      steps:
+        - setHeader:
+            id: setHeader-667d
+            name: Content-Type
+            expression:
+              simple:
+                id: simple-8b70
+                expression: application/json
+        - setHeader:
+            id: setHeader-c168
+            name: Accept
+            expression:
+              simple:
+                id: simple-50e3
+                expression: application/json
+        - setHeader:
+            id: setHeader-fccb
+            name: Authorization
+            expression:
+              simple:
+                id: simple-4c59
+                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+        - setHeader:
+            id: setHeader-7469
+            name: CamelHttpCharacterEncoding
+            expression:
+              constant:
+                id: constant-4bc9
+                expression: UTF-8
+        - removeHeader:
+            id: removeHeader-b8b9
+            name: CamelHttpPath
+        - log:
+            id: log-fa90
+            message: ${body}
+        - to:
+            id: to-0ecb
+            uri: netty-http
+            parameters:
+              protocol: https
+              host: 10.8.130.168
+              port: "9440"
+              path: api/nutanix/v3/apps/list
+              bridgeEndpoint: true
+        - log:
+            id: log-e390
+            message: "application name validation : ${body}"

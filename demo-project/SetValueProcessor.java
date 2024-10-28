@@ -29,6 +29,7 @@ public class SetValueProcessor implements Processor {
 
     // Get the 'summary' value as a String
     Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
+    Map<String, Object> status = (Map<String, Object>) fields.get("status");
     String summary = (String) fields.get("summary");
     System.out.println("ISSUE : " + gson.toJson(issue));
     System.out.println("SUMMARY : " + summary);
@@ -75,14 +76,17 @@ public class SetValueProcessor implements Processor {
 
     // Check if the status matches "On Process Create VM" -> "Done" and if the summary starts with "Increase"
     boolean statusMatch = "On Process Create VM".equals(toString);
+    boolean statusToDo = "To Do".equals(status.get("name"));
     boolean isIncrease = summary != null && summary.startsWith("Increase");
     
     // Print the boolean results
-    System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease);
+    System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease + " is todo : " + statusToDo + " status : " + status.get("name"));
 
     // Set the headers in the exchange
     exchange.getIn().setHeader("isIncrease", isIncrease);
     exchange.getIn().setHeader("isComplete", statusMatch);
+    exchange.getIn().setHeader("isToDo", statusToDo);
+
     }
     
 }
