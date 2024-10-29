@@ -31,6 +31,8 @@ public class SetValueProcessor implements Processor {
     Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
     Map<String, Object> status = (Map<String, Object>) fields.get("status");
     String summary = (String) fields.get("summary");
+    String projectName = (String) fields.get("customfield_10080");
+
     System.out.println("ISSUE : " + gson.toJson(issue));
     System.out.println("SUMMARY : " + summary);
     
@@ -78,6 +80,10 @@ public class SetValueProcessor implements Processor {
     boolean statusMatch = "On Process Create VM".equals(toString);
     boolean statusToDo = "To Do".equals(status.get("name"));
     boolean isIncrease = summary != null && summary.startsWith("Increase");
+
+    if(statusToDo){
+        exchange.setProperty("appName", projectName);
+    }
     
     // Print the boolean results
     System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease + " is todo : " + statusToDo + " status : " + status.get("name"));
