@@ -16,6 +16,8 @@ public class ValidationCardProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         String appName = exchange.getProperty("appName", String.class);
+        System.out.println("================================= VALIDATION CARD bodyReq : " + appName + " ->" + respBody);
+
         boolean isExist = false;
 
         List<Map<String, Object>> entities = (List<Map<String, Object>>) respBody.get("entities");
@@ -23,12 +25,15 @@ public class ValidationCardProcessor implements Processor {
         for (Map<String, Object> entity : entities) {
             Map<String, Object> status = (Map<String, Object>) entity.get("status");
             String name = (String) status.get("name");
+            System.out.println("=========================");
+            System.out.println(name);
             if (name.equals(appName)){
                 isExist = true;
                 break;
             }
         }
 
+        System.out.println(isExist);
         exchange.getIn().setHeader("isAppnameExist", isExist);
     }
 }

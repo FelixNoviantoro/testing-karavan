@@ -32,6 +32,7 @@ public class SetValueProcessor implements Processor {
     Map<String, Object> status = (Map<String, Object>) fields.get("status");
     String summary = (String) fields.get("summary");
     String projectName = (String) fields.get("customfield_10080");
+    String key = (String) issue.get("key");
 
     System.out.println("ISSUE : " + gson.toJson(issue));
     System.out.println("SUMMARY : " + summary);
@@ -83,6 +84,7 @@ public class SetValueProcessor implements Processor {
 
     if(statusToDo){
         exchange.setProperty("appName", projectName);
+        exchange.setProperty("issueKey", key);
     }
     
     // Print the boolean results

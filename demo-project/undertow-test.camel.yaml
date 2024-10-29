@@ -359,21 +359,21 @@
             name: IssueKey
             expression:
               simple:
-                id: simple-dbdd
+                id: simple-71f1
                 expression: ${body[cardId]}
         - setHeader:
             id: setHeader-79c5
             name: IssueTransitionId
             expression:
               simple:
-                id: simple-4495
+                id: simple-fb04
                 expression: "2"
         - setBody:
             id: setBody-44f3
             expression:
               constant:
                 id: constant-4516
-                expression: On create VM transition to Done.
+                expression: On create VM transition from todo.
         - to:
             id: to-63db
             uri: jira
@@ -609,6 +609,23 @@
                                 simple:
                                   id: simple-21a6
                                   expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                          - setHeader:
+                              id: setHeader-5e17
+                              name: CamelHttpMethod
+                              expression:
+                                constant:
+                                  id: constant-6133
+                                  expression: POST
+                          - setHeader:
+                              id: setHeader-497f
+                              name: Content-Type
+                              expression:
+                                simple:
+                                  id: simple-53f1
+                                  expression: application/json
+                          - removeHeader:
+                              id: removeHeader-4ec6
+                              name: CamelHttpPath
                           - setBody:
                               id: setBody-fcc6
                               expression:
@@ -621,9 +638,11 @@
                                         "sort_attribute": "ASCENDING",
                                         "sort_order": "ASCENDING"
                                     }
-                          - removeHeader:
-                              id: removeHeader-17d7
-                              name: CamelHttpPath
+                          - to:
+                              id: to-52f1
+                              uri: log
+                              parameters:
+                                loggerName: DEBUG?showBody=true&showHeaders=true
                           - to:
                               id: to-3a7d
                               uri: netty-http
@@ -633,9 +652,75 @@
                                 port: "9440"
                                 path: api/nutanix/v3/apps/list
                                 bridgeEndpoint: true
-                          - log:
-                              id: log-77eb
-                              message: "application name validation : ${body}"
+                          - process:
+                              id: process-41a4
+                              ref: ByteToStringProcessor
+                          - process:
+                              id: process-983e
+                              ref: ValidationCardProcessor
+                          - choice:
+                              id: choice-ddea
+                              when:
+                                - id: when-5d7e
+                                  expression:
+                                    simple:
+                                      id: simple-2e4d
+                                      expression: ${header.isAppnameExist} == 'false'
+                                  steps:
+                                    - setHeader:
+                                        id: setHeader-50fa
+                                        name: IssueKey
+                                        expression:
+                                          simple:
+                                            id: simple-1fc5
+                                            expression: ${exchangeProperty[issueKey]}
+                                    - setHeader:
+                                        id: setHeader-afb9
+                                        name: IssueTransitionId
+                                        expression:
+                                          simple:
+                                            id: simple-ec83
+                                            expression: "2"
+                                    - to:
+                                        id: to-b934
+                                        uri: jira
+                                        parameters:
+                                          type: transitionIssue
+                                          jiraUrl: https://pocntnx46.atlassian.net
+                                          username: pocntnx46@gmail.com
+                                          password: >-
+                                            ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+                                    - log:
+                                        id: log-c8d8
+                                        message: "transition : ${body}"
+                              otherwise:
+                                id: otherwise-0f8c
+                                steps:
+                                  - setHeader:
+                                      id: setHeader-d65b
+                                      name: IssueKey
+                                      expression:
+                                        simple:
+                                          id: simple-e961
+                                          expression: ${exchangeProperty[issueKey]}
+                                  - setBody:
+                                      id: setBody-e5a6
+                                      expression:
+                                        constant:
+                                          id: constant-5ba7
+                                          expression: Testing Comment dulu aja.
+                                  - to:
+                                      id: to-f0e8
+                                      uri: jira
+                                      parameters:
+                                        type: addComment
+                                        jiraUrl: https://pocntnx46.atlassian.net
+                                        username: pocntnx46@gmail.com
+                                        password: >-
+                                          ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+                                  - log:
+                                      id: log-2086
+                                      message: "Issue created: ${body}"
                     otherwise:
                       id: otherwise-3c83
                       steps:
@@ -814,6 +899,18 @@
         - removeHeader:
             id: removeHeader-b8b9
             name: CamelHttpPath
+        - setBody:
+            id: setBody-8f3f
+            expression:
+              simple:
+                id: simple-34eb
+                expression: |-
+                  {
+                      "length": 10,
+                      "offset": 0,
+                      "sort_attribute": "ASCENDING",
+                      "sort_order": "ASCENDING"
+                  }
         - log:
             id: log-fa90
             message: ${body}
@@ -826,6 +923,12 @@
               port: "9440"
               path: api/nutanix/v3/apps/list
               bridgeEndpoint: true
+        - process:
+            id: process-18d6
+            ref: ByteToStringProcessor
+        - removeHeader:
+            id: removeHeader-23e7
+            name: Content-Encoding
         - log:
             id: log-e390
             message: "application name validation : ${body}"
