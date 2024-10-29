@@ -706,9 +706,12 @@
                                   - setBody:
                                       id: setBody-e5a6
                                       expression:
-                                        constant:
-                                          id: constant-5ba7
-                                          expression: Testing Comment dulu aja.
+                                        simple:
+                                          id: simple-5e13
+                                          expression: >-
+                                            Application name dengan nama
+                                            '${exchangeProperty[appName]}' sudah
+                                            digunakan.
                                   - to:
                                       id: to-f0e8
                                       uri: jira
