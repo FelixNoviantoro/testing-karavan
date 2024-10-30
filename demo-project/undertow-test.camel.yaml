@@ -173,9 +173,11 @@
               simple:
                 id: simple-e436
                 expression: >-
-                  Detail Request : VM Name = ${body[name]}, IP = ${body[ip]},
-                  Playbook ID : ${body[id]}, Allert UUID : ${body[alert_uuid]},
-                  Allert Name : ${body[alert_name]}
+                  VM Name : ${body[name]}, IP : ${body[ip]}, Existing CPU :
+                  ${body[cpu_count]}, CPU usage : ${body[cpu_metric]}, Monitor
+                  Duration : ${body[monitor_duration]}, Monitor Agregate :
+                  ${body[monitor_aggregate]}, Playbook ID : ${body[id]}, Allert
+                  UUID : ${body[alert_uuid]}, Allert Name : ${body[alert_name]}
         - to:
             id: to-fdfa
             uri: jira
@@ -709,6 +711,12 @@
                                           simple:
                                             id: simple-ec83
                                             expression: "2"
+                                    - setBody:
+                                        id: setBody-d95d
+                                        expression:
+                                          simple:
+                                            id: simple-c008
+                                            expression: ${null}
                                     - to:
                                         id: to-ee93
                                         uri: jira
