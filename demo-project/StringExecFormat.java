@@ -23,6 +23,8 @@ public class StringExecFormat implements Processor {
         Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
         Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
         String key = (String) issue.get("key");
+
+        String issuetypeName = exchange.getProperty("issuetypeName", String.class);
         // // String description = (String) fields.get("description");
 
         // System.out.println("ISSUE : " + issue);
@@ -68,57 +70,101 @@ public class StringExecFormat implements Processor {
         // System.out.println("Password: " + passwordValue);
         // System.out.println("==========================");
 
-        String projectName = (String) fields.get("customfield_10080");
-        String username = (String) fields.get("customfield_10085");
-        String password = (String) fields.get("customfield_10084");
-        String vmName = (String) fields.get("customfield_10086");
-        Map<String,Object> vmType = (Map<String, Object>) fields.get("customfield_10087");
-        String vmTypeValue = (String) vmType.get("value");
-        Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10088");
-        String bpTypeValue = (String) bpType.get("value");
+        String execArgs = "";
 
-        System.out.println("String EXEC ==================================================");
-        System.out.println("USERNAME : " + username);
-        System.out.println("PASSWORD : " + password);
-        System.out.println("NAME : " + vmName);
-        System.out.println("VM TYPE : " + vmTypeValue);
-        System.out.println("BP TYPE : " + bpTypeValue);
-        System.out.println("Key : " + key);
-        System.out.println("==================================================");
+        if(issuetypeName.equals("Vm Creation")){
+            String projectName = (String) fields.get("customfield_10080");
+            String username = (String) fields.get("customfield_10085");
+            String password = (String) fields.get("customfield_10084");
+            String vmName = (String) fields.get("customfield_10086");
+            Map<String,Object> vmType = (Map<String, Object>) fields.get("customfield_10087");
+            String vmTypeValue = (String) vmType.get("value");
+            Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10088");
+            String bpTypeValue = (String) bpType.get("value");
 
-        if("S".equals(vmTypeValue)){
-            appProfileReferenceId = "9ca75263-8f5c-4123-97b0-1950a9dc5a80";
-            substrateListId = "543d66fc-ece0-4493-9bea-1f84b279a48d";
-        } else if("L".equals(vmTypeValue)) {
-            appProfileReferenceId = "7e3debbd-2e53-4557-ba99-832e2771251f";
-            substrateListId = "ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4";
+            System.out.println("String EXEC ==================================================");
+            System.out.println("USERNAME : " + username);
+            System.out.println("PASSWORD : " + password);
+            System.out.println("NAME : " + vmName);
+            System.out.println("VM TYPE : " + vmTypeValue);
+            System.out.println("BP TYPE : " + bpTypeValue);
+            System.out.println("Key : " + key);
+            System.out.println("==================================================");
+
+            if("S".equals(vmTypeValue)){
+                appProfileReferenceId = "9ca75263-8f5c-4123-97b0-1950a9dc5a80";
+                substrateListId = "543d66fc-ece0-4493-9bea-1f84b279a48d";
+            } else if("L".equals(vmTypeValue)) {
+                appProfileReferenceId = "7e3debbd-2e53-4557-ba99-832e2771251f";
+                substrateListId = "ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4";
+            } else {
+                appProfileReferenceId = "f09dbf22-2128-4232-923c-d6de10de58c8";
+                substrateListId = "729eba71-92ac-4583-b84f-617b3d26b7ed";
+            }
+
+            // Build the ansible-playbook args string dynamically
+            execArgs = String.format(
+                "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','card_id_uuid_variable':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s'}",
+                "10.8.130.168",
+                "2397fd48-ac2d-47ee-a710-e4132cce72d2",
+                "YWRtaW46bnV0NG5peFBAc3N3MHJk",
+                "testing_descripttion_ansible",
+                projectName,
+                vmTypeValue,
+                appProfileReferenceId,
+                key,
+                username,
+                password,
+                vmName,
+                substrateListId,
+                "243063ba-d401-4993-9121-a59fc7a5256a",
+                "19ce41a2-e7ac-ae85-bfb3-96a334766569",
+                "d1faee84-7de4-0b8f-b9b6-6a0cd676d682"
+            );
         } else {
-            appProfileReferenceId = "f09dbf22-2128-4232-923c-d6de10de58c8";
-            substrateListId = "729eba71-92ac-4583-b84f-617b3d26b7ed";
+
+            String projectName = (String) fields.get("customfield_10092");
+            String username = (String) fields.get("customfield_10090");
+            String password = (String) fields.get("customfield_10091");
+            String vmName = (String) fields.get("customfield_10093");
+
+            Integer customFieldValue = (Integer) fields.get("customfield_10094");
+            int customFieldInt = customFieldValue != null ? customFieldValue : 0;
+
+            System.out.println("String EXEC ==================================================");
+            System.out.println("USERNAME : " + username);
+            System.out.println("PASSWORD : " + password);
+            System.out.println("NAME : " + vmName);
+            System.out.println("VM TYPE : " + vmTypeValue);
+            System.out.println("BP TYPE : " + bpTypeValue);
+            System.out.println("Key : " + key);
+            System.out.println("==================================================");
+            
+            execArgs = String.format(
+                "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s','custom_cpu_num':%d,'custom_memory':%d,'custom_storage':%d,'card_id_uuid_variable':'%s'} -vvvv",
+                "10.8.130.168",
+                "2397fd48-ac2d-47ee-a710-e4132cce72d2",
+                "YWRtaW46bnV0NG5peFBAc3N3MHJk",
+                "testing_descripttion_ansible",
+                "project-testing-dulu-20", // should match "project-testing-dulu-15"
+                "custom",
+                "d81a91f4-89df-456c-8693-c2fb8cca4865",
+                "PEG-93",
+                "felix",
+                "password",
+                "testing-vm",
+                "866028f7-7b14-ae2d-fbfd-bd0ac8510443",
+                "19ce41a2-e7ac-ae85-bfb3-96a334766569",
+                "d1faee84-7de4-0b8f-b9b6-6a0cd676d682",
+                2,               // custom_cpu_num
+                8196,            // custom_memory
+                100000,          // custom_storage
+                "243063ba-d401-4993-9121-a59fc7a5256a"
+            );
         }
 
-        // Build the ansible-playbook args string dynamically
-        String execArgs = String.format(
-            "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','card_id_uuid_variable':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s'}",
-            "10.8.130.168",
-            "2397fd48-ac2d-47ee-a710-e4132cce72d2",
-            "YWRtaW46bnV0NG5peFBAc3N3MHJk",
-            "testing_descripttion_ansible",
-            projectName,
-            vmTypeValue,
-            appProfileReferenceId,
-            key,
-            username,
-            password,
-            vmName,
-            substrateListId,
-            "243063ba-d401-4993-9121-a59fc7a5256a",
-            "19ce41a2-e7ac-ae85-bfb3-96a334766569",
-            "d1faee84-7de4-0b8f-b9b6-6a0cd676d682"
-        );
-
-        // Set the dynamically built args in the header
         exchange.getIn().setHeader("execArgs", execArgs);
+
     }
 
     private static String extractValue(String description, String pattern) {

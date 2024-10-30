@@ -30,13 +30,15 @@ public class SetValueProcessor implements Processor {
     // Get the 'summary' value as a String
     Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
     Map<String, Object> status = (Map<String, Object>) fields.get("status");
+    Map<String, Object> issuetype = (Map<String, Object>) fields.get("issuetype");
     String summary = (String) fields.get("summary");
     String projectName = (String) fields.get("customfield_10080");
     String key = (String) issue.get("key");
+    String issuetypeName = (String) issuetype.get("name");
 
     System.out.println("ISSUE : " + gson.toJson(issue));
     System.out.println("SUMMARY : " + summary);
-    
+    System.out.println("issuetypeName : " + issuetypeName);
 
     // customfileds
     // String username = (String) fields.get("customfield_10085");
@@ -94,6 +96,8 @@ public class SetValueProcessor implements Processor {
     exchange.getIn().setHeader("isIncrease", isIncrease);
     exchange.getIn().setHeader("isComplete", statusMatch);
     exchange.getIn().setHeader("isToDo", statusToDo);
+
+    exchange.setProperty("issuetypeName", issuetypeName);
 
     }
     
