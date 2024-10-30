@@ -591,32 +591,30 @@
                                   expression:
                                     simple:
                                       id: simple-219b
-                                      expression: >-
-                                        ${exchangeProperty[issuetypeName].equals('Vm
-                                        Creation')}
+                                      expression: ${header.isCustom} == 'true'
                                   steps:
                                     - log:
                                         id: log-041a
-                                        message: masuk ke VM CREATION
+                                        message: masuk ke Custom Vm
                                     - to:
-                                        id: to-b8f2
+                                        id: to-c868
                                         uri: exec
                                         parameters:
+                                          workingDir: >-
+                                            /karavan/ansible-role-launch-blueprint/tests
                                           executable: ansible-playbook
-                                          workingDir: /karavan/playbook
                               otherwise:
                                 id: otherwise-3dc7
                                 steps:
                                   - log:
                                       id: log-2453
-                                      message: masuk ke CUSTOM VM
+                                      message: masuk ke Creation Vm (template)
                                   - to:
-                                      id: to-c868
+                                      id: to-b8f2
                                       uri: exec
                                       parameters:
-                                        workingDir: >-
-                                          /karavan/ansible-role-launch-blueprint/tests
                                         executable: ansible-playbook
+                                        workingDir: /karavan/playbook
                           - log:
                               id: log-9d06
                               message: ${body}
@@ -712,7 +710,7 @@
                                             id: simple-ec83
                                             expression: "2"
                                     - to:
-                                        id: to-b934
+                                        id: to-ee93
                                         uri: jira
                                         parameters:
                                           type: transitionIssue
@@ -743,7 +741,7 @@
                                             '${exchangeProperty[appName]}' sudah
                                             digunakan.
                                   - to:
-                                      id: to-f0e8
+                                      id: to-0a01
                                       uri: jira
                                       parameters:
                                         type: addComment
@@ -753,7 +751,7 @@
                                           ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
                                   - log:
                                       id: log-2086
-                                      message: "Issue created: ${body}"
+                                      message: "Add Comment: ${body}"
                     otherwise:
                       id: otherwise-3c83
                       steps:

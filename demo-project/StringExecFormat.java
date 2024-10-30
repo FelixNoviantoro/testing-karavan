@@ -175,6 +175,7 @@ public class StringExecFormat implements Processor {
             );
         }
 
+        exchange.getIn().setHeader("isCustom", issuetypeName.equals("Custom Vm"));
         exchange.getIn().setHeader("execArgs", execArgs);
 
     }
