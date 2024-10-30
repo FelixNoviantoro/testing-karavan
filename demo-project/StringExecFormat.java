@@ -135,9 +135,12 @@ public class StringExecFormat implements Processor {
             password = (String) fields.get("customfield_10091");
             vmName = (String) fields.get("customfield_10093");
 
-            Integer cpu = (Integer) fields.get("customfield_10094");
-            Integer memory = (Integer) fields.get("customfield_10095");
-            Integer storage = (Integer) fields.get("customfield_10096");
+            Double cpuDouble = (Double) fields.get("customfield_10094");
+            Integer cpu = cpuDouble != null ? cpuDouble.intValue() : null;
+            Double memoryDouble = (Double) fields.get("customfield_10095");
+            Integer memory = memoryDouble != null ? memoryDouble.intValue() : null;
+            Double storageDouble = (Double) fields.get("customfield_10096");
+            Integer storage = storageDouble != null ? storageDouble.intValue() : null;
 
             System.out.println("String EXEC ==================================================");
             System.out.println("USERNAME : " + username);

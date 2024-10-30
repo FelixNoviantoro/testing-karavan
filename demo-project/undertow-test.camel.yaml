@@ -274,7 +274,7 @@
                 id: simple-ca1c
                 expression: ${body[cardId]}
         - to:
-            id: to-37b8
+            id: to-8207
             uri: jira
             parameters:
               type: FETCHISSUE
@@ -570,8 +570,8 @@
                                       simple:
                                         id: simple-9146
                                         expression: >-
-                                          ${exchangeProperty[issuetypeName]}== 'Vm
-                                          Creation'
+                                          ${exchangeProperty[issuetypeName].equals('Vm
+                                          Creation')}
                                     steps:
                                       - log:
                                           id: log-041a
