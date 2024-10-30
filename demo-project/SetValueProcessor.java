@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.Collections;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -58,46 +59,57 @@ public class SetValueProcessor implements Processor {
     // Print the entire request body in JSON format
     System.out.println(gson.toJson(reqBody));
 
-    // Parse the changelog map from the request body
-    Map<String, Object> changelogMap = (Map<String, Object>) reqBody.get("changelog");
+    if (reqBody.containsKey("changelog")){
 
-    // Get the items list from the changelog map
-    List<Map<String, Object>> itemList = (List<Map<String, Object>>) changelogMap.get("items");
-    String fromString = "";
-    String toString = "";
+        // Parse the changelog map from the request body
+        Map<String, Object> changelogMap = (Map<String, Object>) reqBody.get("changelog");
 
-    // Iterate through the items to find the status field
-    for (Map<String, Object> item : itemList) {
-        if ("status".equals(item.get("field"))) {
-            // Retrieve fromString and toString values
-            fromString = (String) item.get("fromString");
-            toString = (String) item.get("toString");
+        List<Map<String, Object>> itemList = (List<Map<String, Object>>) changelogMap.get("items");
+        String fromString = "";
+        String toString = "";
 
-            // Print the status change
-            System.out.println("From Status: " + fromString);
-            System.out.println("To Status: " + toString);
+        // Iterate through the items to find the status field
+        for (Map<String, Object> item : itemList) {
+            if ("status".equals(item.get("field"))) {
+                // Retrieve fromString and toString values
+                fromString = (String) item.get("fromString");
+                toString = (String) item.get("toString");
+
+                // Print the status change
+                System.out.println("From Status: " + fromString);
+                System.out.println("To Status: " + toString);
+            }
         }
+
+        // Check if the status matches "On Process Create VM" -> "Done" and if the summary starts with "Increase"
+        boolean statusMatch = "On Process Create VM".equals(toString);
+        boolean statusToDo = "To Do".equals(status.get("name"));
+        boolean isIncrease = summary != null && summary.startsWith("Increase");
+
+        if(statusToDo){
+            exchange.setProperty("appName", projectName);
+            exchange.setProperty("issueKey", key);
+        }
+        
+        // Print the boolean results
+        System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease + " is todo : " + statusToDo + " status : " + status.get("name"));
+
+        // Set the headers in the exchange
+        exchange.getIn().setHeader("isIncrease", isIncrease);
+        exchange.getIn().setHeader("isComplete", statusMatch);
+        exchange.getIn().setHeader("isToDo", statusToDo);
+
+        exchange.setProperty("issuetypeName", issuetypeName);
+
+    } else {
+
+        exchange.getIn().setHeader("isIncrease", false);
+        exchange.getIn().setHeader("isComplete", false);
+        exchange.getIn().setHeader("isToDo", false);
+
     }
 
-    // Check if the status matches "On Process Create VM" -> "Done" and if the summary starts with "Increase"
-    boolean statusMatch = "On Process Create VM".equals(toString);
-    boolean statusToDo = "To Do".equals(status.get("name"));
-    boolean isIncrease = summary != null && summary.startsWith("Increase");
-
-    if(statusToDo){
-        exchange.setProperty("appName", projectName);
-        exchange.setProperty("issueKey", key);
-    }
     
-    // Print the boolean results
-    System.out.println("BOOLEAN status : " + statusMatch + " increase : " + isIncrease + " is todo : " + statusToDo + " status : " + status.get("name"));
-
-    // Set the headers in the exchange
-    exchange.getIn().setHeader("isIncrease", isIncrease);
-    exchange.getIn().setHeader("isComplete", statusMatch);
-    exchange.getIn().setHeader("isToDo", statusToDo);
-
-    exchange.setProperty("issuetypeName", issuetypeName);
 
     }
     

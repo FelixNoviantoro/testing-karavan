@@ -459,22 +459,6 @@
             id: log-1fcb
             message: "update : ${body}"
 - route:
-    id: jira-watch-create-issue
-    from:
-      id: from-f17e
-      uri: jira
-      parameters:
-        jiraUrl: https://pocntnx46.atlassian.net
-        username: pocntnx46@gmail.com
-        password: >-
-          ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
-        type: newIssues
-        jql: project=PEG
-      steps:
-        - log:
-            id: log-0920
-            message: "watch card : ${body}"
-- route:
     id: jira-watch-update
     from:
       id: from-f17e

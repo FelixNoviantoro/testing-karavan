@@ -28,7 +28,7 @@ public class PalaybookAlert implements Processor {
         String description = (String) fields.get("description");
 
         // Regular expressions to extract the values
-        String vmNameRegex = "VM Name = ([\\w-]+)";
+        String vmNameRegex = "VM Name : ([\\w-]+)";
         String playbookIdRegex = "Playbook ID : ([\\w-]+)";
         String alertUuidRegex = "Allert UUID : ([\\w-]+)";
         String alertNameRegex = "Allert Name : ([\\w-]+)";
