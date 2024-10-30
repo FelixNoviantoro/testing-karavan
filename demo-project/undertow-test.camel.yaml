@@ -562,39 +562,12 @@
                                   simple:
                                     id: simple-c359
                                     expression: ${header.execArgs}
-                            - choice:
-                                id: choice-f809
-                                when:
-                                  - id: when-435f
-                                    expression:
-                                      simple:
-                                        id: simple-9146
-                                        expression: >-
-                                          ${exchangeProperty[issuetypeName].equals('Vm
-                                          Creation')}
-                                    steps:
-                                      - log:
-                                          id: log-041a
-                                          message: masuk ke VM CREATION
-                                      - to:
-                                          id: to-f99e
-                                          uri: exec
-                                          parameters:
-                                            executable: ansible-playbook
-                                            workingDir: /karavan/playbook
-                                otherwise:
-                                  id: otherwise-6d48
-                                  steps:
-                                    - log:
-                                        id: log-2453
-                                        message: masuk ke CUSTOM VM
-                                    - to:
-                                        id: to-c868
-                                        uri: exec
-                                        parameters:
-                                          workingDir: >-
-                                            /karavan/ansible-role-launch-blueprint/tests
-                                          executable: ansible-playbook
+                            - to:
+                                id: to-f99e
+                                uri: exec
+                                parameters:
+                                  executable: ansible-playbook
+                                  workingDir: /karavan/playbook
                             - log:
                                 id: log-1a14
                                 message: ${body}
@@ -611,12 +584,39 @@
                                 simple:
                                   id: simple-306e
                                   expression: ${header.execArgs}
-                          - to:
-                              id: to-b8f2
-                              uri: exec
-                              parameters:
-                                executable: ansible-playbook
-                                workingDir: /karavan/playbook
+                          - choice:
+                              id: choice-2425
+                              when:
+                                - id: when-db09
+                                  expression:
+                                    simple:
+                                      id: simple-219b
+                                      expression: >-
+                                        ${exchangeProperty[issuetypeName].equals('Vm
+                                        Creation')}
+                                  steps:
+                                    - log:
+                                        id: log-041a
+                                        message: masuk ke VM CREATION
+                                    - to:
+                                        id: to-b8f2
+                                        uri: exec
+                                        parameters:
+                                          executable: ansible-playbook
+                                          workingDir: /karavan/playbook
+                              otherwise:
+                                id: otherwise-3dc7
+                                steps:
+                                  - log:
+                                      id: log-2453
+                                      message: masuk ke CUSTOM VM
+                                  - to:
+                                      id: to-c868
+                                      uri: exec
+                                      parameters:
+                                        workingDir: >-
+                                          /karavan/ansible-role-launch-blueprint/tests
+                                        executable: ansible-playbook
                           - log:
                               id: log-9d06
                               message: ${body}
