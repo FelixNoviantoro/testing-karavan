@@ -70,13 +70,19 @@ public class StringExecFormat implements Processor {
         // System.out.println("Password: " + passwordValue);
         // System.out.println("==========================");
 
+        String projectName = "";
+        String username = "";
+        String password = "";
+        String vmName = "";
+
         String execArgs = "";
 
         if(issuetypeName.equals("Vm Creation")){
-            String projectName = (String) fields.get("customfield_10080");
-            String username = (String) fields.get("customfield_10085");
-            String password = (String) fields.get("customfield_10084");
-            String vmName = (String) fields.get("customfield_10086");
+
+            projectName = (String) fields.get("customfield_10080");
+            username = (String) fields.get("customfield_10085");
+            password = (String) fields.get("customfield_10084");
+            vmName = (String) fields.get("customfield_10086");
             Map<String,Object> vmType = (Map<String, Object>) fields.get("customfield_10087");
             String vmTypeValue = (String) vmType.get("value");
             Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10088");
@@ -121,22 +127,25 @@ public class StringExecFormat implements Processor {
                 "19ce41a2-e7ac-ae85-bfb3-96a334766569",
                 "d1faee84-7de4-0b8f-b9b6-6a0cd676d682"
             );
+            
         } else {
 
-            String projectName = (String) fields.get("customfield_10092");
-            String username = (String) fields.get("customfield_10090");
-            String password = (String) fields.get("customfield_10091");
-            String vmName = (String) fields.get("customfield_10093");
+            projectName = (String) fields.get("customfield_10092");
+            username = (String) fields.get("customfield_10090");
+            password = (String) fields.get("customfield_10091");
+            vmName = (String) fields.get("customfield_10093");
 
-            Integer customFieldValue = (Integer) fields.get("customfield_10094");
-            int customFieldInt = customFieldValue != null ? customFieldValue : 0;
+            Integer cpu = (Integer) fields.get("customfield_10094");
+            Integer memory = (Integer) fields.get("customfield_10095");
+            Integer storage = (Integer) fields.get("customfield_10096");
 
             System.out.println("String EXEC ==================================================");
             System.out.println("USERNAME : " + username);
             System.out.println("PASSWORD : " + password);
             System.out.println("NAME : " + vmName);
-            System.out.println("VM TYPE : " + vmTypeValue);
-            System.out.println("BP TYPE : " + bpTypeValue);
+            System.out.println("CPU : " + cpu);
+            System.out.println("MEMORY : " + memory);
+            System.out.println("STORAGE : " + storage);
             System.out.println("Key : " + key);
             System.out.println("==================================================");
             
@@ -146,19 +155,19 @@ public class StringExecFormat implements Processor {
                 "2397fd48-ac2d-47ee-a710-e4132cce72d2",
                 "YWRtaW46bnV0NG5peFBAc3N3MHJk",
                 "testing_descripttion_ansible",
-                "project-testing-dulu-20", // should match "project-testing-dulu-15"
+                projectName, // should match "project-testing-dulu-15"
                 "custom",
                 "d81a91f4-89df-456c-8693-c2fb8cca4865",
-                "PEG-93",
-                "felix",
-                "password",
-                "testing-vm",
+                key,
+                username,
+                password,
+                vmName,
                 "866028f7-7b14-ae2d-fbfd-bd0ac8510443",
                 "19ce41a2-e7ac-ae85-bfb3-96a334766569",
                 "d1faee84-7de4-0b8f-b9b6-6a0cd676d682",
-                2,               // custom_cpu_num
-                8196,            // custom_memory
-                100000,          // custom_storage
+                cpu,               // custom_cpu_num
+                memory,            // custom_memory
+                storage,          // custom_storage
                 "243063ba-d401-4993-9121-a59fc7a5256a"
             );
         }
