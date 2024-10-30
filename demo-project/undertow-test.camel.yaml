@@ -56,6 +56,9 @@
       - id: get-8fd7
         path: /jira/exec
         to: direct:jira-exec
+      - id: get-8fd7
+        path: /jira/exec/custom
+        to: direct:jira-exec-custom
       - id: get-8fd12
         path: /ntnx/apps/list
         to: direct:ntnx-apps-list
@@ -801,6 +804,32 @@
               loggerName: DEBUG?showBody=true&showHeaders=true
         - log:
             id: log-bc83
+            message: ${body}
+- route:
+    id: route-3ecf
+    nodePrefixId: route-72bsdf
+    from:
+      id: from-1030
+      uri: direct
+      parameters:
+        name: jira-exec-custom
+      steps:
+        - to:
+            id: to-8661
+            uri: exec
+            parameters:
+              executable: ansible-playbook
+              workingDir: /karavan/custom
+              args: >-
+                ./tests/main.yml -e
+                "{'pc_ip':'10.8.130.168','bp_id':'2397fd48-ac2d-47ee-a710-e4132cce72d2','basic_auth':'YWRtaW46bnV0NG5peFBAc3N3MHJk','app_description':'testing_descripttion_ansible','app_name':'project-testing-dulu','app_profile_reference_name':'custom','app_profile_reference_uuid':'d81a91f4-89df-456c-8693-c2fb8cca4865','card_id':'PEG-93','username':'felix','password':'password','vm_name':'testing-vm','substrate_list_uuid':'ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4','username_uuid_variable':'19ce41a2-e7ac-ae85-bfb3-96a334766569','password_uuid_variable':'d1faee84-7de4-0b8f-b9b6-6a0cd676d682','custom_cpu_num':'2','custom_memory':'8196','custom_storage':'100000','card_id_uuid_variable':'243063ba-d401-4993-9121-a59fc7a5256a'}"
+        - to:
+            id: to-d7d3
+            uri: log
+            parameters:
+              loggerName: DEBUG?showBody=true&showHeaders=true
+        - log:
+            id: log-e3f2
             message: ${body}
 - route:
     id: route-44c6
