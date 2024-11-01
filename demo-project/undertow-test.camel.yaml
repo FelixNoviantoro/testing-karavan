@@ -15,6 +15,12 @@
       - id: get-8fd6
         path: /jira/addcomment
         to: direct:jira-addcomment
+      - id: get-1cfa
+        path: /testing
+        to: direct:test-call
+      - id: get-4f3c
+        path: /test/multi
+        to: direct:test-multi
     post:
       - id: get-8fd2
         path: /jira/addissue
@@ -988,3 +994,94 @@
         - log:
             id: log-e390
             message: "application name validation : ${body}"
+- route:
+    id: route-b73c
+    nodePrefixId: route-822
+    from:
+      id: from-aecd
+      uri: direct
+      parameters:
+        name: test-call
+      steps:
+        - choice:
+            id: choice-2b65
+            when:
+              - id: when-907c
+                expression:
+                  simple:
+                    id: simple-ce59
+                    expression: ${header.foo} == 'bar'
+                steps:
+                  - to:
+                      id: to-b608
+                      uri: direct
+                      parameters:
+                        name: test-receive
+              - id: when-78f0
+                expression:
+                  simple:
+                    id: simple-c255
+                    expression: ${header.foo} == 'bar2'
+                steps:
+                  - to:
+                      id: to-0b3a
+                      uri: direct
+                      parameters:
+                        name: test-receive-2
+            otherwise:
+              id: otherwise-c0f4
+              steps:
+                - log:
+                    id: log-acc9
+                    message: "no condition "
+- route:
+    id: route-d373
+    nodePrefixId: route-89f
+    from:
+      id: from-def0
+      uri: direct
+      parameters:
+        name: test-receive
+      steps:
+        - log:
+            id: log-b3a2
+            message: berhasil!!!
+- route:
+    id: route-b6cc
+    nodePrefixId: route-fdb
+    from:
+      id: from-9383
+      uri: direct
+      parameters:
+        name: test-receive-2
+      steps:
+        - log:
+            id: log-56a9
+            message: berhasil receive 2
+- route:
+    id: route-825c
+    nodePrefixId: route-443
+    from:
+      id: from-03a7
+      uri: direct
+      parameters:
+        name: test-multi
+      steps:
+        - multicast:
+            id: multicast-06f4
+            steps:
+              - to:
+                  id: to-5ef0
+                  uri: direct
+                  parameters:
+                    name: test-receive
+              - to:
+                  id: to-df2e
+                  uri: direct
+                  parameters:
+                    name: test-receive-2
+        - to:
+            id: to-fff6
+            uri: direct
+            parameters:
+              name: test-receive
