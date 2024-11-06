@@ -1043,9 +1043,30 @@
       parameters:
         name: test-receive
       steps:
+        - process:
+            id: process-2663
+            ref: NdbRequest
+        - setHeader:
+            id: setHeader-5fd3
+            name: CamelExecCommandArgs
+            expression:
+              simple:
+                id: simple-7fec
+                expression: ${header.execArgs}
         - log:
             id: log-b3a2
             message: berhasil!!!
+        - to:
+            id: to-2946
+            uri: log
+            parameters:
+              loggerName: DEBUG?showBody=true&showHeaders=true
+        - to:
+            id: to-3181
+            uri: exec
+            parameters:
+              executable: ansible-playbook
+              workingDir: /karavan/playbook
 - route:
     id: route-b6cc
     nodePrefixId: route-fdb
