@@ -1,0 +1,8 @@
+services:
+  peg-jira:
+    image: peg-jira
+    restart: always
+    ports:
+      - "8084:8080"
+    networks:
+      - karavan

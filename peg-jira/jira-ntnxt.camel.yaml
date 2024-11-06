@@ -1,0 +1,23 @@
+- restConfiguration:
+    component: platform-http
+    contextPath: /api
+- rest:
+    id: rest-ec7d
+    post:
+      - id: post-a9ef
+        path: /jira/addissue
+      - id: post-7b4d
+        path: /jira/addissue/cpu
+      - id: post-7bb8
+        path: /jira/transition
+      - id: post-9fc8
+        path: /jira/transition/update
+      - id: post-177d
+        path: /jira/webhook
+- rest:
+    id: rest-770d
+    post:
+      - id: post-8103
+        path: /ntnx/bp/list
+      - id: post-6cf0
+        path: /ntnx/apps/list
