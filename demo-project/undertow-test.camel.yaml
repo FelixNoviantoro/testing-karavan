@@ -1079,6 +1079,20 @@
       parameters:
         name: test-receive-2
       steps:
+        - choice:
+            id: choice-dd20
+            when:
+              - id: when-e520
+                expression:
+                  simple:
+                    id: simple-c8f0
+                    expression: test
+              - id: when-b24f
+                expression:
+                  groovy:
+                    id: groovy-707b
+            otherwise:
+              id: otherwise-3521
         - log:
             id: log-56a9
             message: berhasil receive 2
@@ -1109,3 +1123,64 @@
             uri: direct
             parameters:
               name: test-receive
+- route:
+    id: route-44234
+    nodePrefixId: route-bbb
+    from:
+      id: from-512
+      uri: direct
+      parameters:
+        name: ntnx-bplist
+      steps:
+        - setHeader:
+            id: setHeader-62ab
+            name: Content-Type
+            expression:
+              simple:
+                id: simple-cdb1
+                expression: application/json
+        - setHeader:
+            id: setHeader-1d60
+            name: Accept
+            expression:
+              simple:
+                id: simple-9956
+                expression: application/json
+        - setHeader:
+            id: setHeader-d7a8
+            name: Authorization
+            expression:
+              simple:
+                id: simple-6319
+                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+        - setHeader:
+            id: setHeader-28ca
+            name: CamelHttpCharacterEncoding
+            expression:
+              constant:
+                id: constant-ed9e
+                expression: UTF-8
+        - removeHeader:
+            id: removeHeader-b8b7
+            name: CamelHttpPath
+        - process:
+            id: process-72d8
+            ref: NutanixBpListProcessor
+        - log:
+            id: log-f6e6
+            message: ${body}
+        - to:
+            id: to-c326
+            uri: netty-http
+            parameters:
+              protocol: https
+              host: 10.8.130.168
+              port: "9440"
+              path: api/nutanix/v3/blueprints/list
+              bridgeEndpoint: true
+        - process:
+            id: process-8174
+            ref: ByteToStringProcessor
+        - removeHeader:
+            id: removeHeader-57a4
+            name: Content-Encoding
