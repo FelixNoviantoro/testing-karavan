@@ -68,6 +68,9 @@
       - id: get-8fd12
         path: /ntnx/apps/list
         to: direct:ntnx-apps-list
+      - id: post-8fd12as
+        path: /ndb/test
+        to: direct:test-receive
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -1053,20 +1056,20 @@
               simple:
                 id: simple-7fec
                 expression: ${header.execArgs}
-        - log:
-            id: log-b3a2
-            message: berhasil!!!
         - to:
-            id: to-2946
+            id: to-2946w
             uri: log
             parameters:
               loggerName: DEBUG?showBody=true&showHeaders=true
         - to:
-            id: to-3181
+            id: to-3181w
             uri: exec
             parameters:
               executable: ansible-playbook
-              workingDir: /karavan/playbook
+              workingDir: /karavan/ansible-role-create-db-from-ndb/tests
+        - log:
+            id: log-1a11
+            message: "Exec Output: ${body} - Headers: ${headers}"
 - route:
     id: route-b6cc
     nodePrefixId: route-fdb
