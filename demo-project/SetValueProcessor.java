@@ -98,6 +98,8 @@ public class SetValueProcessor implements Processor {
         exchange.getIn().setHeader("isIncrease", isIncrease);
         exchange.getIn().setHeader("isComplete", statusMatch);
         exchange.getIn().setHeader("isToDo", statusToDo);
+        
+        exchange.getIn().setHeader("issuetypeName", issuetypeName);
 
         exchange.setProperty("issuetypeName", issuetypeName);
 

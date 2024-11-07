@@ -545,7 +545,7 @@
                           expression:
                             simple:
                               id: simple-3c91
-                              expression: ${header.isIncrease} == 'true'
+                              expression: ${header.issuetypeName} == 'Task'
                           steps:
                             - process:
                                 id: process-65f6
@@ -566,6 +566,17 @@
                             - log:
                                 id: log-1a14
                                 message: ${body}
+                        - id: when-63cf
+                          expression:
+                            simple:
+                              id: simple-6d94
+                              expression: ${header.issuetypeName} == 'NDB Provision'
+                          steps:
+                            - to:
+                                id: to-3007
+                                uri: direct
+                                parameters:
+                                  name: test-receive
                       otherwise:
                         id: otherwise-cf67
                         steps:
