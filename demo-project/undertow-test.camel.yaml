@@ -21,6 +21,9 @@
       - id: get-4f3c
         path: /test/multi
         to: direct:test-multi
+      - id: get-4fsd
+        path: /ndb/*
+        to: direct:ndb-software
     post:
       - id: get-8fd2
         path: /jira/addissue
@@ -530,7 +533,7 @@
                       expression:
                         simple:
                           id: simple-6319
-                          expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                          expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
                   - removeHeader:
                       id: removeHeader-9bfa
                       name: CamelHttpPath
@@ -572,11 +575,31 @@
                               id: simple-6d94
                               expression: ${header.issuetypeName} == 'NDB Provision'
                           steps:
+                            - process:
+                                id: process-2663
+                                ref: NdbRequest
+                            - setHeader:
+                                id: setHeader-5fd3
+                                name: CamelExecCommandArgs
+                                expression:
+                                  simple:
+                                    id: simple-be60
+                                    expression: ${header.execArgs}
                             - to:
-                                id: to-3007
-                                uri: direct
+                                id: to-2946w
+                                uri: log
                                 parameters:
-                                  name: test-receive
+                                  loggerName: DEBUG?showBody=true&showHeaders=true
+                            - to:
+                                id: to-3181w
+                                uri: exec
+                                parameters:
+                                  executable: ansible-playbook
+                                  workingDir: >-
+                                    /karavan/ansible-role-create-db-from-ndb/tests
+                            - log:
+                                id: log-1a11
+                                message: "Exec Output: ${body} - Headers: ${headers}"
                       otherwise:
                         id: otherwise-cf67
                         steps:
@@ -642,7 +665,7 @@
                               expression:
                                 simple:
                                   id: simple-21a6
-                                  expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                                  expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
                           - setHeader:
                               id: setHeader-5e17
                               name: CamelHttpMethod
@@ -791,7 +814,7 @@
             expression:
               simple:
                 id: simple-9398
-                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
             id: setHeader-acdf
             name: Content-Type
@@ -833,7 +856,7 @@
               workingDir: /karavan/playbook
               args: >-
                 launch_bluerprint.yml -e
-                "{'pc_ip':'10.8.130.168','bp_id':'2397fd48-ac2d-47ee-a710-e4132cce72d2','basic_auth':'YWRtaW46bnV0NG5peFBAc3N3MHJk','app_description':'testing_descripttion_ansible','app_name':'project-testing-dulu','app_profile_reference_name':'L','app_profile_reference_uuid':'7e3debbd-2e53-4557-ba99-832e2771251f','card_id':'PEG-93','username':'root','password':'password','vm_name':'testing-vm','substrate_list_uuid':'ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4'}"
+                "{'pc_ip':'10.8.130.168','bp_id':'2397fd48-ac2d-47ee-a710-e4132cce72d2','basic_auth':'YWRtaW46SGVsaW9zMTIzIQ==','app_description':'testing_descripttion_ansible','app_name':'project-testing-dulu','app_profile_reference_name':'L','app_profile_reference_uuid':'7e3debbd-2e53-4557-ba99-832e2771251f','card_id':'PEG-93','username':'root','password':'password','vm_name':'testing-vm','substrate_list_uuid':'ec1f15b5-4f5e-4c5c-9ca6-b36ce33fdcd4'}"
         - to:
             id: to-5cbb
             uri: log
@@ -904,7 +927,7 @@
             expression:
               simple:
                 id: simple-6319
-                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
             id: setHeader-28ca
             name: CamelHttpCharacterEncoding
@@ -964,7 +987,7 @@
             expression:
               simple:
                 id: simple-4c59
-                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
             id: setHeader-7469
             name: CamelHttpCharacterEncoding
@@ -1049,65 +1072,6 @@
                     id: log-acc9
                     message: "no condition "
 - route:
-    id: route-d373
-    nodePrefixId: route-89f
-    from:
-      id: from-def0
-      uri: direct
-      parameters:
-        name: test-receive
-      steps:
-        - process:
-            id: process-2663
-            ref: NdbRequest
-        - setHeader:
-            id: setHeader-5fd3
-            name: CamelExecCommandArgs
-            expression:
-              simple:
-                id: simple-7fec
-                expression: ${header.execArgs}
-        - to:
-            id: to-2946w
-            uri: log
-            parameters:
-              loggerName: DEBUG?showBody=true&showHeaders=true
-        - to:
-            id: to-3181w
-            uri: exec
-            parameters:
-              executable: ansible-playbook
-              workingDir: /karavan/ansible-role-create-db-from-ndb/tests
-        - log:
-            id: log-1a11
-            message: "Exec Output: ${body} - Headers: ${headers}"
-- route:
-    id: route-b6cc
-    nodePrefixId: route-fdb
-    from:
-      id: from-9383
-      uri: direct
-      parameters:
-        name: test-receive-2
-      steps:
-        - choice:
-            id: choice-dd20
-            when:
-              - id: when-e520
-                expression:
-                  simple:
-                    id: simple-c8f0
-                    expression: test
-              - id: when-b24f
-                expression:
-                  groovy:
-                    id: groovy-707b
-            otherwise:
-              id: otherwise-3521
-        - log:
-            id: log-56a9
-            message: berhasil receive 2
-- route:
     id: route-825c
     nodePrefixId: route-443
     from:
@@ -1135,63 +1099,133 @@
             parameters:
               name: test-receive
 - route:
-    id: route-44234
-    nodePrefixId: route-bbb
+    id: route-d0cd
+    nodePrefixId: route-dea
     from:
-      id: from-512
+      id: from-7fd8
       uri: direct
       parameters:
-        name: ntnx-bplist
+        name: test-receive-2
+      steps:
+        - process:
+            id: process-745f
+            ref: NdbRequest
+        - log:
+            id: log-1974
+            message: logger 3
+- route:
+    id: route-b53c
+    nodePrefixId: route-bbb
+    from:
+      id: from-b046
+      uri: direct
+      parameters:
+        name: ndb-software
       steps:
         - setHeader:
-            id: setHeader-62ab
+            id: setHeader-5f6a
             name: Content-Type
             expression:
               simple:
-                id: simple-cdb1
+                id: simple-1cc8
                 expression: application/json
         - setHeader:
-            id: setHeader-1d60
+            id: setHeader-b8da
             name: Accept
             expression:
               simple:
-                id: simple-9956
+                id: simple-5b26
                 expression: application/json
         - setHeader:
-            id: setHeader-d7a8
+            id: setHeader-cb45
             name: Authorization
             expression:
               simple:
-                id: simple-6319
-                expression: Basic YWRtaW46bnV0NG5peFBAc3N3MHJk
+                id: simple-25d9
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
-            id: setHeader-28ca
+            id: setHeader-d8c6
             name: CamelHttpCharacterEncoding
             expression:
               constant:
-                id: constant-ed9e
+                id: constant-9b23
                 expression: UTF-8
-        - removeHeader:
-            id: removeHeader-b8b7
-            name: CamelHttpPath
-        - process:
-            id: process-72d8
-            ref: NutanixBpListProcessor
         - log:
-            id: log-f6e6
-            message: ${body}
+            id: log-8493
+            message: "http path  : ${header.CamelHttpPath}"
+        - choice:
+            id: choice-2488
+            when:
+              - id: when-5df5
+                expression:
+                  simple:
+                    id: simple-d0cb
+                    expression: ${header.CamelHttpPath} == '/api/ndb/softwares'
+                steps:
+                  - setHeader:
+                      id: setHeader-1969
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-8ecb
+                          expression: type=Software&all-profiles=true
+              - id: when-aee7
+                expression:
+                  simple:
+                    id: simple-aebb
+                    expression: ${header.CamelHttpPath} == '/api/ndb/compute'
+                steps:
+                  - setHeader:
+                      id: setHeader-0036
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-0fc1
+                          expression: type=Compute&all-profiles=true
+              - id: when-9aae
+                expression:
+                  simple:
+                    id: simple-f2c2
+                    expression: ${header.CamelHttpPath} == '/api/ndb/network'
+                steps:
+                  - setHeader:
+                      id: setHeader-1f57
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-90eb
+                          expression: type=Network&all-profiles=true
+            otherwise:
+              id: otherwise-a038
+              steps:
+                - setHeader:
+                    id: setHeader-1bf9
+                    name: CamelHttpQuery
+                    expression:
+                      simple:
+                        id: simple-d276
+                        expression: type=Database_Parameter&all-profiles=true
+        - removeHeader:
+            id: removeHeader-ce9c
+            name: CamelHttpPath
+        - log:
+            id: log-df76
+            message: request ${body}
         - to:
-            id: to-c326
+            id: to-0a31
             uri: netty-http
             parameters:
               protocol: https
-              host: 10.8.130.168
-              port: "9440"
-              path: api/nutanix/v3/blueprints/list
+              host: 10.8.135.235
+              port: "443"
+              path: era/v0.9/profiles
               bridgeEndpoint: true
+        - log:
+            id: log-df12
+            message: response ${body}
         - process:
-            id: process-8174
+            id: process-a4c4
             ref: ByteToStringProcessor
         - removeHeader:
-            id: removeHeader-57a4
+            id: removeHeader-441f
             name: Content-Encoding

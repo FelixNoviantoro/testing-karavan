@@ -3,11 +3,32 @@ import org.apache.camel.Configuration;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 
+import com.google.gson.Gson;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Configuration
 @BindToRegistry("NdbRequest")
 public class NdbRequest implements Processor {
 
     public void process(Exchange exchange) throws Exception {
+
+        Gson gson = new Gson();
+
+        Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
+        Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
+        Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
+        String key = (String) issue.get("key");
+
+        projectName = (String) fields.get("customfield_10080");
+        username = (String) fields.get("customfield_10085");
+        password = (String) fields.get("customfield_10084");
+        vmName = (String) fields.get("customfield_10086");
+        Map<String,Object> vmType = (Map<String, Object>) fields.get("customfield_10087");
+        String vmTypeValue = (String) vmType.get("value");
+        Map<String,Object> bpType = (Map<String, Object>) fields.get("customfield_10088");
+        String bpTypeValue = (String) bpType.get("value"); 
 
         String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcarFKBmh2Zj5a/t8OwmAuPSPkAEABm6E8pUKn+QME+zTBNSiwgKDwKrHEcgnOU7As9jogHShLro1JLUUK4QcwwH6uLUZPBsjo8XORvO7rrQDalXK5V68FcKyDjtgt5xrtbrxTS18iqixMAjwLA2hUuM4t8a0lAKcaZOFRZuxSYSs2ya02qNLbO9S0e5L68eXZGldrIp7oMroWgK96NeBbhRBnWZlPdlZup3umKvVADQHZgznMjshQ9AV4ChZrTlk00MAJkXbBwhWC699k/X7b7qSppBhYEsHNo4QCc//RmlCE8/CRS4lS7CiLEsunESxsSZ222qUcdhiN61L5nOEDKXiLa7mwxoI6VuX5ZMmKZmOMkSm7F62NWOPUSobYB8QQH5qb5N1rjGFGWWfgII314WcNMK93vqCQiBczPsNffN2ROr5RO/4K4Drpo1HYZd47KYushy2EKRLkkeRWaeJzMSPB4klNmM9LL+X8bBQucLh5+EWTgabNc6k5VOIneaMqNxqgOIFKxd15n5O9sE8JZw7L9i1rFGq5wkk0u/1reVVIsh86vzneJxRCr3QwmFjV9G9849quADFH/NwdkRIP1aHPEs0u/PTiwJsjGsZbDqljALUCUeylhE9Y2BjBytZEzKKiNBDJn3dChjMJIlvUv7YxJWVHVXxPSqH8rZxaWQ== felixnoviantoro16@gmail.com,";
 
