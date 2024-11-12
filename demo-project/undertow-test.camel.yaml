@@ -1229,3 +1229,60 @@
         - removeHeader:
             id: removeHeader-441f
             name: Content-Encoding
+- route:
+    id: route-d0cd
+    nodePrefixId: route-dea
+    from:
+      id: from-7f32
+      uri: direct
+      parameters:
+        name: test-receive
+      steps:
+        - setHeader:
+            id: setHeader-af52
+            name: Content-Type
+            expression:
+              simple:
+                id: simple-6f9d
+                expression: application/json
+        - setHeader:
+            id: setHeader-9390
+            name: Accept
+            expression:
+              simple:
+                id: simple-a5c3
+                expression: application/json
+        - setHeader:
+            id: setHeader-f4f0
+            name: Authorization
+            expression:
+              simple:
+                id: simple-2fa4
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
+        - removeHeader:
+            id: removeHeader-dfac
+            name: CamelHttpPath
+        - process:
+            id: process-74r4
+            ref: NdbRequest
+        - setHeader:
+            id: setHeader-ac00
+            name: CamelExecCommandArgs
+            expression:
+              simple:
+                id: simple-b965
+                expression: ${header.execArgs}
+        - to:
+            id: to-294qw
+            uri: log
+            parameters:
+              loggerName: DEBUG?showBody=true&showHeaders=true
+        - to:
+            id: to-31rgg
+            uri: exec
+            parameters:
+              executable: ansible-playbook
+              workingDir: /karavan/ansible-role-create-db-from-ndb/tests
+        - log:
+            id: log-1as
+            message: "Exec Output: ${body} - Headers: ${headers}"
