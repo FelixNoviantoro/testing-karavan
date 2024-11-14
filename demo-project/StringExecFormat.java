@@ -113,7 +113,7 @@ public class StringExecFormat implements Processor {
                 "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','card_id_uuid_variable':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s'}",
                 "10.8.130.168",
                 "2397fd48-ac2d-47ee-a710-e4132cce72d2",
-                "YWRtaW46bnV0NG5peFBAc3N3MHJk",
+                "YWRtaW46SGVsaW9zMTIzIQ==",
                 "testing_descripttion_ansible",
                 projectName,
                 vmTypeValue,
@@ -156,7 +156,7 @@ public class StringExecFormat implements Processor {
                 "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s','custom_cpu_num':%d,'custom_memory':%d,'custom_storage':%d,'card_id_uuid_variable':'%s'} -vvvv",
                 "10.8.130.168",
                 "2397fd48-ac2d-47ee-a710-e4132cce72d2",
-                "YWRtaW46bnV0NG5peFBAc3N3MHJk",
+                "YWRtaW46SGVsaW9zMTIzIQ==",
                 "testing_descripttion_ansible",
                 projectName, // should match "project-testing-dulu-15"
                 "custom",

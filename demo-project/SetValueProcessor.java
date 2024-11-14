@@ -14,11 +14,53 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.camel.support.jsse.SSLContextParameters;
+import org.apache.camel.support.jsse.TrustManagersParameters;
+import org.apache.camel.component.netty.http.NettyHttpComponent;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
+import org.apache.camel.component.http.HttpComponent;
+
 @Configuration
 @BindToRegistry("SetValueProcessor")
 public class SetValueProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
+
+
+    TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                @Override
+                public X509Certificate[] getAcceptedIssuers() {
+                    return new X509Certificate[0];
+                }
+
+                @Override
+                public void checkClientTrusted(X509Certificate[] certs, String authType) {
+                    // Trust all client certificates
+                }
+
+                @Override
+                public void checkServerTrusted(X509Certificate[] certs, String authType) {
+                    // Trust all server certificates
+                }
+            }
+    };
+
+    TrustManagersParameters trustManagersParameters = new TrustManagersParameters();
+    trustManagersParameters.setTrustManager(trustAllCerts[0]);
+
+    SSLContextParameters sslContextParameters = new SSLContextParameters();
+    sslContextParameters.setSecureSocketProtocol("TLS");
+    sslContextParameters.setTrustManagers(trustManagersParameters);
+
+    HttpComponent httpComponent = exchange.getContext().getComponent("https", HttpComponent.class);
+    httpComponent.setSslContextParameters(sslContextParameters);
+    NettyHttpComponent nettyHttpComponent = exchange.getContext().getComponent("netty-http", NettyHttpComponent.class);
+    nettyHttpComponent.getConfiguration().setSslContextParameters(sslContextParameters);
+
     System.out.println("========================= Set Value");
     Gson gson = new Gson();
 
