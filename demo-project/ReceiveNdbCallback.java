@@ -17,6 +17,10 @@ public class ReceiveNdbCallback implements Processor {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
         }
 
+        exchange.setProperty("ndbCallback", headers);
+        exchange.setProperty("cardId", headers.get("cardId"));
+        exchange.getIn().setHeader("IssueKey", headers.get("cardId"));
+
         // try {
         //     //  Block of code to try
         //     String respBody = exchange.getIn().getBody(String.class);

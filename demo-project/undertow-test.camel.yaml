@@ -350,9 +350,53 @@
               username: pocntnx46@gmail.com
               password: >-
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - process:
+            id: process-3b84
+            ref: FetchIssueNDBProcessor
+        - removeHeader:
+            id: removeHeader-823b
+            name: CamelHttpPath
+        - setHeader:
+            id: setHeader-405e
+            name: CamelHttpMethod
+            expression:
+              constant:
+                id: constant-e218
+                expression: GET
+        - setHeader:
+            id: setHeader-eebc
+            name: Authorization
+            expression:
+              simple:
+                id: simple-8a5c
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
+        - setBody:
+            id: setBody-952f
+            expression:
+              constant:
+                id: constant-f22c
+                expression: "{}"
+        - to:
+            id: to-073c
+            uri: netty-http
+            parameters:
+              protocol: https
+              host: 10.8.135.235
+              port: "443"
+              path: era/v0.9/dbservers
+              bridgeEndpoint: true
+        - process:
+            id: process-c697
+            ref: ByteToStringProcessor
         - log:
-            id: log-e492
-            message: "FETCH ISSUE : ${body}"
+            id: log-924e
+            message: response ${body}
+        - removeHeader:
+            id: removeHeader-aa24
+            name: Content-Encoding
+        - process:
+            id: process-6c0c
+            ref: ProcessNdbListProcessor
 - route:
     id: jira-transition
     from:
@@ -442,30 +486,89 @@
         name: jira-transition-ndb
       steps:
         - process:
-            id: process-badsf
+            id: process-9c60
             ref: ReceiveNdbCallback
+        - to:
+            id: to-40e6
+            uri: jira
+            parameters:
+              type: FETCHISSUE
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - process:
+            id: process-3923
+            ref: FetchIssueNDBProcessor
+        - removeHeader:
+            id: removeHeader-1e61
+            name: CamelHttpPath
         - setHeader:
-            id: setHeader-a10c
+            id: setHeader-55db
+            name: CamelHttpMethod
+            expression:
+              constant:
+                id: constant-a2fa
+                expression: GET
+        - setHeader:
+            id: setHeader-1c70
+            name: Authorization
+            expression:
+              simple:
+                id: simple-9eb0
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
+        - setBody:
+            id: setBody-0c58
+            expression:
+              constant:
+                id: constant-e929
+                expression: "{}"
+        - to:
+            id: to-e979
+            uri: netty-http
+            parameters:
+              protocol: https
+              host: 10.8.135.235
+              port: "443"
+              path: era/v0.9/dbservers
+              bridgeEndpoint: true
+        - process:
+            id: process-9ce2
+            ref: ByteToStringProcessor
+        - log:
+            id: log-e197
+            message: response ${body}
+        - removeHeader:
+            id: removeHeader-f1b5
+            name: Content-Encoding
+        - process:
+            id: process-c50f
+            ref: ProcessNdbListProcessor
+        - to:
+            id: to-9d31
+            uri: jira
+            parameters:
+              type: UPDATEISSUE
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - setHeader:
+            id: setHeader-a007
             name: IssueKey
             expression:
               simple:
-                id: simple-10f7
-                expression: ${header[cardId]}
+                id: simple-9f67
+                expression: ${exchangeProperty[cardId]}
         - setHeader:
-            id: setHeader-a953
+            id: setHeader-8ba6
             name: IssueTransitionId
             expression:
               simple:
-                id: simple-636f
+                id: simple-e1f3
                 expression: "5"
-        - setBody:
-            id: setBody-131f
-            expression:
-              constant:
-                id: constant-0565
-                expression: Database transition from todo.
         - to:
-            id: to-aa30
+            id: to-b72c
             uri: jira
             parameters:
               type: transitionIssue
@@ -474,7 +577,7 @@
               password: >-
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - log:
-            id: log-e5ed
+            id: log-43cc
             message: "transition NDB : ${body}"
 - route:
     id: jira-delete
