@@ -74,6 +74,9 @@
       - id: get-8fd12
         path: /ntnx/apps/list
         to: direct:ntnx-apps-list
+      - id: post-4fda
+        path: /jira/fetch
+        to: direct:jira-fetch-test
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -324,6 +327,33 @@
               password: >-
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
 - route:
+    id: jira-fetch-test
+    from:
+      id: from-d592
+      uri: direct
+      parameters:
+        name: jira-fetch-test
+      steps:
+        - setHeader:
+            id: setHeader-a49e
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-f60d
+                expression: ${body[cardId]}
+        - to:
+            id: to-cd34
+            uri: jira
+            parameters:
+              type: FETCHISSUE
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - log:
+            id: log-e492
+            message: "FETCH ISSUE : ${body}"
+- route:
     id: jira-transition
     from:
       id: from-cdf0
@@ -411,16 +441,16 @@
       parameters:
         name: jira-transition-ndb
       steps:
-        - log:
-            id: log-ewer
-            message: "transition NDB request : ${body}"
+        - process:
+            id: process-badsf
+            ref: ReceiveNdbCallback
         - setHeader:
             id: setHeader-a10c
             name: IssueKey
             expression:
               simple:
                 id: simple-10f7
-                expression: ${body[cardId]}
+                expression: ${header[cardId]}
         - setHeader:
             id: setHeader-a953
             name: IssueTransitionId
@@ -639,7 +669,7 @@
                                 parameters:
                                   executable: ansible-playbook
                                   workingDir: >-
-                                    /karavan/ansible-role-create-db-from-ndb/tests
+                                    /karavan/ansible-role-create-db-from-ndb-2/tests
                             - log:
                                 id: log-1a11
                                 message: "Exec Output: ${body} - Headers: ${headers}"

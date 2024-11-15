@@ -136,13 +136,13 @@ public class NdbRequest implements Processor {
         sshKey = sshKey.trim().replaceAll("(^,+|,+$)", "");
 
         String execArgs = String.format(
-            "main.yml -e {'ndb_ip':'%s','ndb_port':'%s','basic_auth':'%s','database_type':'%s','instance_name':'%s','database_description':'%s','softwareProfileId':'%s','softwareProfileVersionId':'%s','computeProfileId':'%s','networkProfileId':'%s','dbParameterProfileId':'%s','time_machine_description':'%s','sla_id':'%s','listener_port':'%s','database_size':'%s','dbserver_description':'%s','database_names':'%s','db_password':'%s','nx_cluster_id':'%s','vm_name':'%s','network_profile_id':'%s','vm_password':'%s'} -vvvv",
+            "main.yml -e {'ndb_ip':'%s','ndb_port':'%s','basic_auth':'%s','database_type':'%s','instance_name':'%s','database_description':'%s','softwareProfileId':'%s','softwareProfileVersionId':'%s','computeProfileId':'%s','networkProfileId':'%s','dbParameterProfileId':'%s','time_machine_description':'%s','sla_id':'%s','listener_port':'%s','database_size':'%s','dbserver_description':'%s','database_names':'%s','db_password':'%s','nx_cluster_id':'%s','vm_name':'%s','network_profile_id':'%s','vm_password':'%s','card_id':'%s'} -vvvv",
             "10.8.135.235",
             "443",
             "YWRtaW46SGVsaW9zMTIzIQ==",
             "postgres_database",
-            "testing-instance-ansible-5",
-            "testing-dari-ansible",
+            "testing-instance-ansible-mid-1",
+            "testing-dari-ansible-mid-1",
             "246bc618-5afd-4811-83fc-95889849aafd",
             "a70c3202-b7a4-40cb-99a9-ec14e057fe4f",
             "54e557b6-2186-4c4a-aac0-09b7cd9ca879",
@@ -157,9 +157,10 @@ public class NdbRequest implements Processor {
             "nutanix/4u",
             "9a82460f-fb0b-4fa4-8359-a4f75788eaca",
             // sshKey,  // Sanitized SSH key with spaces preserved
-            "test-ndb-ansible-vm-5",
+            "test-ndb-ansible-mid-vm-1",
             "edb42bdb-a38f-4a6f-a5b5-fb8d90acd311",
-            "nutanix/4u"
+            "nutanix/4u",
+            "PEG-137"
         );
 
         // Set the dynamically built args in the header
