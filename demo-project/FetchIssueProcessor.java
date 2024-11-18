@@ -63,6 +63,7 @@ public class FetchIssueProcessor implements Processor {
 
         String multiLineString = "Vm Name : "+ pbReq.get("vmName") +"\n" +
                          "IP : "+ pbReq.get("vmIpAddress") +"\n" +
+                         "Data IP : "+ pbReq.get("dataIpAddress") +"\n" +
                          "Username : "+ pbReq.get("username") +"\n" +
                          "Password : "+ pbReq.get("password") +"\n" +
                          "CPU : " + pbReq.get("cpu") +"\n" +

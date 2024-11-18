@@ -762,17 +762,12 @@
                                     id: simple-be60
                                     expression: ${header.execArgs}
                             - to:
-                                id: to-2946w
-                                uri: log
-                                parameters:
-                                  loggerName: DEBUG?showBody=true&showHeaders=true
-                            - to:
                                 id: to-3181w
                                 uri: exec
                                 parameters:
                                   executable: ansible-playbook
                                   workingDir: >-
-                                    /karavan/ansible-role-create-db-from-ndb-2/tests
+                                    /karavan/ansible-role-create-db-from-ndb-4/tests
                             - log:
                                 id: log-1a11
                                 message: "Exec Output: ${body} - Headers: ${headers}"

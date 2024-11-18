@@ -141,26 +141,26 @@ public class NdbRequest implements Processor {
             "443",
             "YWRtaW46SGVsaW9zMTIzIQ==",
             "postgres_database",
-            "testing-instance-ansible-mid-1",
-            "testing-dari-ansible-mid-1",
-            "246bc618-5afd-4811-83fc-95889849aafd",
+            ndbInstanceName,
+            "postgres-database-instance-from-camel",
+            softwareProfileId,
             "a70c3202-b7a4-40cb-99a9-ec14e057fe4f",
-            "54e557b6-2186-4c4a-aac0-09b7cd9ca879",
-            "edb42bdb-a38f-4a6f-a5b5-fb8d90acd311",
-            "c380bc5d-577b-4cbc-987f-908e5b3ea37a",
+            computeProfileId,
+            networkProfileId,
+            paramProfileId,
             "testing-instance-ansible_TM",
             "4d9dcd6d-b6f8-47f0-8015-9e691c1d3cf4",
-            "5432",
-            "30",
+            databasePort,
+            databaseStorage,
             "testing-desc",
             "postgres",
-            "nutanix/4u",
+            databasePassword,
             "9a82460f-fb0b-4fa4-8359-a4f75788eaca",
             // sshKey,  // Sanitized SSH key with spaces preserved
-            "test-ndb-ansible-mid-vm-1",
+            vmName,
             "edb42bdb-a38f-4a6f-a5b5-fb8d90acd311",
-            "nutanix/4u",
-            "PEG-137"
+            vmPassword,
+            key
         );
 
         // Set the dynamically built args in the header
