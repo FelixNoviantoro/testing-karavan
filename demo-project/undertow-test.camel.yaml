@@ -1340,6 +1340,34 @@
                         simple:
                           id: simple-8ecb
                           expression: type=Software&all-profiles=true
+              - id: when-5sdfe
+                expression:
+                  simple:
+                    id: simple-e330
+                    expression: ${header.CamelHttpPath} == '/api/ndb/softwares/postgres'
+                steps:
+                  - setHeader:
+                      id: setHeader-5e20
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-c2b0
+                          expression: >-
+                            type=Software&all-profiles=true&engine=postgres_database
+              - id: when-4rga
+                expression:
+                  simple:
+                    id: simple-1716
+                    expression: ${header.CamelHttpPath} == '/api/ndb/softwares/mysql'
+                steps:
+                  - setHeader:
+                      id: setHeader-3c3a
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-f14c
+                          expression: >-
+                            type=Software&all-profiles=true&engine=mysql_database
               - id: when-aee7
                 expression:
                   simple:
@@ -1366,6 +1394,61 @@
                         simple:
                           id: simple-90eb
                           expression: type=Network&all-profiles=true
+              - id: when-4ffr
+                expression:
+                  simple:
+                    id: simple-7a7f
+                    expression: ${header.CamelHttpPath} == '/api/ndb/network/postgres'
+                steps:
+                  - setHeader:
+                      id: setHeader-160a
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-f54c
+                          expression: >-
+                            type=Network&all-profiles=true&engine=postgres_database
+              - id: when-3jfir
+                expression:
+                  simple:
+                    id: simple-c792
+                    expression: ${header.CamelHttpPath} == '/api/ndb/network/mysql'
+                steps:
+                  - setHeader:
+                      id: setHeader-13d3
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-b569
+                          expression: type=Network&all-profiles=true&engine=mysql_database
+              - id: when-1sdfa
+                expression:
+                  simple:
+                    id: simple-73f5
+                    expression: ${header.CamelHttpPath} == '/api/ndb/param/mysql'
+                steps:
+                  - setHeader:
+                      id: setHeader-f669
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-489a
+                          expression: >-
+                            type=Database_Parameter&all-profiles=true&engine=mysql_database
+              - id: when-2fdfa
+                expression:
+                  simple:
+                    id: simple-0341
+                    expression: ${header.CamelHttpPath} == '/api/ndb/param/postgres'
+                steps:
+                  - setHeader:
+                      id: setHeader-46ed
+                      name: CamelHttpQuery
+                      expression:
+                        simple:
+                          id: simple-050b
+                          expression: >-
+                            type=Database_Parameter&all-profiles=true&engine=postgres_database
             otherwise:
               id: otherwise-a038
               steps:
