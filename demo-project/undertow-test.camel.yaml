@@ -77,6 +77,9 @@
       - id: post-4fda
         path: /jira/fetch
         to: direct:jira-fetch-test
+      - id: post-4sfd
+        path: /jira/fetch/only
+        to: direct:jira-fetch-only
 - route:
     id: route-test
     nodePrefixId: route-123
@@ -326,6 +329,33 @@
               username: pocntnx46@gmail.com
               password: >-
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+- route:
+    id: jira-fetch-only
+    from:
+      id: from-1c39
+      uri: direct
+      parameters:
+        name: jira-fetch-only
+      steps:
+        - setHeader:
+            id: setHeader-dfd8
+            name: IssueKey
+            expression:
+              simple:
+                id: simple-9639
+                expression: ${body[cardId]}
+        - to:
+            id: to-a3c0
+            uri: jira
+            parameters:
+              type: FETCHISSUE
+              jiraUrl: https://pocntnx46.atlassian.net
+              username: pocntnx46@gmail.com
+              password: >-
+                ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+        - log:
+            id: log-d30a
+            message: response ${body}
 - route:
     id: jira-fetch-test
     from:
