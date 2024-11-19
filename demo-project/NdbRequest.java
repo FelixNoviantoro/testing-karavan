@@ -276,6 +276,7 @@ public class NdbRequest implements Processor {
 
         // Set the dynamically built args in the header
         exchange.getIn().setHeader("execArgs", execArgs);
+        exchange.getIn().setHeader("dbType", databaseType);
         
     }
 }

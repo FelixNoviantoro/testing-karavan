@@ -794,13 +794,32 @@
                                   simple:
                                     id: simple-be60
                                     expression: ${header.execArgs}
-                            - to:
-                                id: to-3181w
-                                uri: exec
-                                parameters:
-                                  executable: ansible-playbook
-                                  workingDir: >-
-                                    /karavan/ansible-role-create-db-from-ndb-4/tests
+                            - choice:
+                                id: choice-973e
+                                when:
+                                  - id: when-6d65
+                                    expression:
+                                      simple:
+                                        id: simple-c487
+                                        expression: ${header.dbType} == 'postgres_database'
+                                    steps:
+                                      - to:
+                                          id: to-3181w
+                                          uri: exec
+                                          parameters:
+                                            executable: ansible-playbook
+                                            workingDir: >-
+                                              /karavan/ansible-role-create-db-from-ndb-4/tests
+                                otherwise:
+                                  id: otherwise-8d3b
+                                  steps:
+                                    - to:
+                                        id: to-eff9
+                                        uri: exec
+                                        parameters:
+                                          executable: ansible-playbook
+                                          workingDir: >-
+                                            /karavan/ansible-role-create-db-from-ndb-5/tests
                             - log:
                                 id: log-1a11
                                 message: "Exec Output: ${body} - Headers: ${headers}"

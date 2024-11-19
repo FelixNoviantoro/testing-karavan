@@ -24,6 +24,14 @@ public class FetchIssueNDBProcessor implements Processor {
         String regex = "name=VM Name.*?value=([^\\s,}]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(respBody);
+
+        String regexPass = "name=Database Password (postgres).*?value=([^\\s,}]+)";
+        Pattern patternPass = Pattern.compile(regexPass);
+        Matcher matcherPass = patternPass.matcher(respBody);
+
+        String regexPassVm = "name=VM Password.*?value=([^\\s,}]+)";
+        Pattern patternPassVm = Pattern.compile(regexPassVm);
+        Matcher matcherPassVm = patternPassVm.matcher(respBody);
         
         if (matcher.find()) {
             String vmName = matcher.group(1); // Extracted value
@@ -34,5 +42,26 @@ public class FetchIssueNDBProcessor implements Processor {
         } else {
             System.out.println("NDB Instance Name not found.");
         }
+
+        if (matcherPass.find()) {
+            String dbPass = matcherPass.group(1); // Extracted value
+            System.out.println("NDB db pass: " + dbPass);
+
+            exchange.setProperty("dbPass", dbPass);
+
+        } else {
+            System.out.println("NDB db pass not found.");
+        }
+
+        if (matcherPassVm.find()) {
+            String vmPass = matcherPassVm.group(1); // Extracted value
+            System.out.println("NDB VM Pass: " + vmPass);
+
+            exchange.setProperty("vmPass", vmPass);
+
+        } else {
+            System.out.println("NDB Vm Pass not found.");
+        }
+
     }
 }
