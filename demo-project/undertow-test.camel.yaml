@@ -779,7 +779,10 @@
                           expression:
                             simple:
                               id: simple-6d94
-                              expression: ${header.issuetypeName} == 'NDB Provision'
+                              expression: >-
+                                ${header.issuetypeName} == 'NDB Provision' ||
+                                ${header.issuetypeName} == 'Postgres Provision'
+                                || ${header.issuetypeName} == 'Mysql Provision'
                           steps:
                             - process:
                                 id: process-2663

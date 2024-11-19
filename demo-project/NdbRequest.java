@@ -22,34 +22,130 @@ public class NdbRequest implements Processor {
         Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
         Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
+        Map<String, Object> issueType = (Map<String, Object>) fields.get("issuetype");
         String key = (String) issue.get("key");
+        String issueTypeName = (String) issueType.get("name");
 
-        String ndbInstanceName = (String) fields.get("customfield_10109");
+        String databaseType = "";
 
-        String databaseUsername = (String) fields.get("customfield_10103");
-        String databasePassword = (String) fields.get("customfield_10104");
-        String vmPassword = (String) fields.get("customfield_10105");
-        String vmName = (String) fields.get("customfield_10108");
+        String ndbInstanceName = "";
+        String databaseUsername = "";
+        String databasePassword = "";
+        String vmPassword = "";
+        String vmName = "";
 
-        Double databasePortDouble = (Double) fields.get("customfield_10106");
-        Integer databasePort = databasePortDouble != null ? databasePortDouble.intValue() : null;
+        Integer databasePort = 5432;
+        Integer databaseStorage = 50;
 
-        Double databaseStorageDouble = (Double) fields.get("customfield_10107");
-        Integer databaseStorage = databaseStorageDouble != null ? databaseStorageDouble.intValue() : null;
-
-        Map<String,Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10099");
-        String softwareProfile = (String) softwareProfileMap.get("value"); 
-        Map<String,Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
-        String computeProfile = (String) computeProfileMap.get("value");
-        Map<String,Object> networkProfileMap = (Map<String, Object>) fields.get("customfield_10101");
-        String networkProfile = (String) networkProfileMap.get("value"); 
-        Map<String,Object> paramProfileMap = (Map<String, Object>) fields.get("customfield_10102");
-        String paramProfile = (String) paramProfileMap.get("value");
+        String softwareProfile = ""; 
+        String computeProfile = "";
+        String networkProfile = ""; 
+        String paramProfile = "";
 
         String softwareProfileId = "";
         String computeProfileId = "";
         String networkProfileId = "";
         String paramProfileId = "";
+
+        System.out.println("========================= " + issueTypeName);
+
+
+        if (issueTypeName.equals("NDB Provision")){
+
+            System.out.println("masuk NDB Povision");
+
+            databaseType = "postgres_database";
+
+            ndbInstanceName = (String) fields.get("customfield_10109");
+
+            databaseUsername = "postgres";
+            databasePassword = (String) fields.get("customfield_10104");
+            vmPassword = (String) fields.get("customfield_10105");
+            vmName = (String) fields.get("customfield_10108");
+
+            Double databasePortDouble = (Double) fields.get("customfield_10106");
+            databasePort = databasePortDouble != null ? databasePortDouble.intValue() : null;
+
+            Double databaseStorageDouble = (Double) fields.get("customfield_10107");
+            databaseStorage = databaseStorageDouble != null ? databaseStorageDouble.intValue() : null;
+
+            Map<String, Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10099");
+            softwareProfile = (String) softwareProfileMap.get("value");
+
+            Map<String, Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
+            computeProfile = (String) computeProfileMap.get("value");
+
+            Map<String, Object> networkProfileMap = (Map<String, Object>) fields.get("customfield_10101");
+            networkProfile = (String) networkProfileMap.get("value");
+
+            Map<String, Object> paramProfileMap = (Map<String, Object>) fields.get("customfield_10102");
+            paramProfile = (String) paramProfileMap.get("value");
+
+
+        } else if (issueTypeName.equals("Postgres Provision")){
+
+            System.out.println("masuk Postgres Povision");
+
+            databaseType = "postgres_database";
+
+            ndbInstanceName = (String) fields.get("customfield_10109");
+
+            databaseUsername = "postgres";
+            databasePassword = (String) fields.get("customfield_10104");
+            vmPassword = (String) fields.get("customfield_10105");
+            vmName = (String) fields.get("customfield_10108");
+
+            Double databasePortDouble = (Double) fields.get("customfield_10106");
+            databasePort = databasePortDouble != null ? databasePortDouble.intValue() : null;
+
+            Double databaseStorageDouble = (Double) fields.get("customfield_10107");
+            databaseStorage = databaseStorageDouble != null ? databaseStorageDouble.intValue() : null;
+
+            Map<String, Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10111");
+            softwareProfile = (String) softwareProfileMap.get("value");
+
+            Map<String, Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
+            computeProfile = (String) computeProfileMap.get("value");
+
+            Map<String, Object> networkProfileMap = (Map<String, Object>) fields.get("customfield_10114");
+            networkProfile = (String) networkProfileMap.get("value");
+
+            Map<String, Object> paramProfileMap = (Map<String, Object>) fields.get("customfield_10116");
+            paramProfile = (String) paramProfileMap.get("value");
+
+
+        } else {
+
+            System.out.println("masuk Mysql Povision");
+
+            databaseType = "mysql_database";
+
+            ndbInstanceName = (String) fields.get("customfield_10109");
+
+            databaseUsername = "root";
+            databasePassword = (String) fields.get("customfield_10117");
+            vmPassword = (String) fields.get("customfield_10084");
+            vmName = (String) fields.get("customfield_10086");
+
+            Double databasePortDouble = (Double) fields.get("customfield_10106");
+            databasePort = databasePortDouble != null ? databasePortDouble.intValue() : null;
+
+            Double databaseStorageDouble = (Double) fields.get("customfield_10096");
+            databaseStorage = databaseStorageDouble != null ? databaseStorageDouble.intValue() : null;
+
+            Map<String, Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10110");
+            softwareProfile = (String) softwareProfileMap.get("value");
+
+            Map<String, Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
+            computeProfile = (String) computeProfileMap.get("value");
+
+            Map<String, Object> networkProfileMap = (Map<String, Object>) fields.get("customfield_10112");
+            networkProfile = (String) networkProfileMap.get("value");
+
+            Map<String, Object> paramProfileMap = (Map<String, Object>) fields.get("customfield_10115");
+            paramProfile = (String) paramProfileMap.get("value");
+
+        }
 
         switch(softwareProfile) {
             case "POSTGRES_15.6_ROCKY_LINUX_8_OOB":
@@ -129,6 +225,21 @@ public class NdbRequest implements Processor {
                 break;
         }
 
+        System.out.println("NDB Instance Name: " + ndbInstanceName);
+        System.out.println("Database Username: " + databaseUsername);
+        System.out.println("Database Password: " + databasePassword);
+        System.out.println("VM Password: " + vmPassword);
+        System.out.println("VM Name: " + vmName);
+        System.out.println("Database Port: " + databasePort);
+        System.out.println("Database Storage: " + databaseStorage);
+        System.out.println("Software Profile: " + softwareProfile);
+        System.out.println("Compute Profile: " + computeProfile);
+        System.out.println("Network Profile: " + networkProfile);
+        System.out.println("Parameter Profile: " + paramProfile);
+        System.out.println("Software Profile ID: " + softwareProfileId);
+        System.out.println("Compute Profile ID: " + computeProfileId);
+        System.out.println("Network Profile ID: " + networkProfileId);
+        System.out.println("Parameter Profile ID: " + paramProfileId);
 
         String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcarFKBmh2Zj5a/t8OwmAuPSPkAEABm6E8pUKn+QME+zTBNSiwgKDwKrHEcgnOU7As9jogHShLro1JLUUK4QcwwH6uLUZPBsjo8XORvO7rrQDalXK5V68FcKyDjtgt5xrtbrxTS18iqixMAjwLA2hUuM4t8a0lAKcaZOFRZuxSYSs2ya02qNLbO9S0e5L68eXZGldrIp7oMroWgK96NeBbhRBnWZlPdlZup3umKvVADQHZgznMjshQ9AV4ChZrTlk00MAJkXbBwhWC699k/X7b7qSppBhYEsHNo4QCc//RmlCE8/CRS4lS7CiLEsunESxsSZ222qUcdhiN61L5nOEDKXiLa7mwxoI6VuX5ZMmKZmOMkSm7F62NWOPUSobYB8QQH5qb5N1rjGFGWWfgII314WcNMK93vqCQiBczPsNffN2ROr5RO/4K4Drpo1HYZd47KYushy2EKRLkkeRWaeJzMSPB4klNmM9LL+X8bBQucLh5+EWTgabNc6k5VOIneaMqNxqgOIFKxd15n5O9sE8JZw7L9i1rFGq5wkk0u/1reVVIsh86vzneJxRCr3QwmFjV9G9849quADFH/NwdkRIP1aHPEs0u/PTiwJsjGsZbDqljALUCUeylhE9Y2BjBytZEzKKiNBDJn3dChjMJIlvUv7YxJWVHVXxPSqH8rZxaWQ== felixnoviantoro16@gmail.com,";
 
@@ -140,9 +251,9 @@ public class NdbRequest implements Processor {
             "10.8.135.235",
             "443",
             "YWRtaW46SGVsaW9zMTIzIQ==",
-            "postgres_database",
+            databaseType,
             ndbInstanceName,
-            "postgres-database-instance-from-camel",
+            "create-database-instance-from-camel",
             softwareProfileId,
             "a70c3202-b7a4-40cb-99a9-ec14e057fe4f",
             computeProfileId,
