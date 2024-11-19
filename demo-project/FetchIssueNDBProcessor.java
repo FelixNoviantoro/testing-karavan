@@ -25,7 +25,7 @@ public class FetchIssueNDBProcessor implements Processor {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(respBody);
 
-        String regexPass = "name=Database Password (postgres).*?value=([^\\s,}]+)";
+        String regexPass = "name=Database Password \(postgres\).*?value=([^\\s,}]+)";
         Pattern patternPass = Pattern.compile(regexPass);
         Matcher matcherPass = patternPass.matcher(respBody);
 

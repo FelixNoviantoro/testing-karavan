@@ -47,6 +47,8 @@ public class NdbRequest implements Processor {
         String networkProfileId = "";
         String paramProfileId = "";
 
+        String softwareProfileVersionId = "";
+
         System.out.println("========================= " + issueTypeName);
 
 
@@ -103,6 +105,7 @@ public class NdbRequest implements Processor {
 
             Map<String, Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10111");
             softwareProfile = (String) softwareProfileMap.get("value");
+            softwareProfileVersionId = "a70c3202-b7a4-40cb-99a9-ec14e057fe4f";
 
             Map<String, Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
             computeProfile = (String) computeProfileMap.get("value");
@@ -135,6 +138,7 @@ public class NdbRequest implements Processor {
 
             Map<String, Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10110");
             softwareProfile = (String) softwareProfileMap.get("value");
+            softwareProfileVersionId = "3388b8d5-9746-40c4-a442-919b9a719997";
 
             Map<String, Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
             computeProfile = (String) computeProfileMap.get("value");
@@ -255,7 +259,7 @@ public class NdbRequest implements Processor {
             ndbInstanceName,
             "create-database-instance-from-camel",
             softwareProfileId,
-            "a70c3202-b7a4-40cb-99a9-ec14e057fe4f",
+            softwareProfileVersionId,
             computeProfileId,
             networkProfileId,
             paramProfileId,
@@ -269,7 +273,7 @@ public class NdbRequest implements Processor {
             "9a82460f-fb0b-4fa4-8359-a4f75788eaca",
             // sshKey,  // Sanitized SSH key with spaces preserved
             vmName,
-            "edb42bdb-a38f-4a6f-a5b5-fb8d90acd311",
+            networkProfileId,
             vmPassword,
             key
         );
