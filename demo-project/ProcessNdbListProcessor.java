@@ -44,7 +44,9 @@ public class ProcessNdbListProcessor implements Processor {
                          "IP : "+ ipAddress +"\n" +
                          "Port : "+ ndbCallback.get("port") +"\n" +
                          "VM Username : "+ ndbCallback.get("vmUsername") +"\n" +
-                         "DB Username : postgres \n";
+                        //  "VM Password : "+ ndbCallback.get("vmPass") +"\n" +
+                         "DB Username : "+ ndbCallback.get("dbUsername") +"\n";
+                        //  "DB Password : "+ ndbCallback.get("dbPass") +"\n";
         exchange.getIn().setBody(multiLineString);
     }
 }

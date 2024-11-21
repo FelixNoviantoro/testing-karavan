@@ -33,6 +33,7 @@ public class NdbRequest implements Processor {
         String databasePassword = "";
         String vmPassword = "";
         String vmName = "";
+        String dbName = "";
 
         Integer databasePort = 5432;
         Integer databaseStorage = 50;
@@ -57,6 +58,7 @@ public class NdbRequest implements Processor {
             System.out.println("masuk NDB Povision");
 
             databaseType = "postgres_database";
+            dbName = "postgres";
 
             ndbInstanceName = (String) fields.get("customfield_10109");
 
@@ -73,6 +75,7 @@ public class NdbRequest implements Processor {
 
             Map<String, Object> softwareProfileMap = (Map<String, Object>) fields.get("customfield_10099");
             softwareProfile = (String) softwareProfileMap.get("value");
+            softwareProfileVersionId = "a70c3202-b7a4-40cb-99a9-ec14e057fe4f";
 
             Map<String, Object> computeProfileMap = (Map<String, Object>) fields.get("customfield_10100");
             computeProfile = (String) computeProfileMap.get("value");
@@ -89,6 +92,7 @@ public class NdbRequest implements Processor {
             System.out.println("masuk Postgres Povision");
 
             databaseType = "postgres_database";
+            dbName = "postgres";
 
             ndbInstanceName = (String) fields.get("customfield_10109");
 
@@ -122,6 +126,7 @@ public class NdbRequest implements Processor {
             System.out.println("masuk Mysql Povision");
 
             databaseType = "mysql_database";
+            dbName = "mysql";
 
             ndbInstanceName = (String) fields.get("customfield_10109");
 
@@ -244,6 +249,7 @@ public class NdbRequest implements Processor {
         System.out.println("Compute Profile ID: " + computeProfileId);
         System.out.println("Network Profile ID: " + networkProfileId);
         System.out.println("Parameter Profile ID: " + paramProfileId);
+        System.out.println("Software Profile Version ID: " + softwareProfileVersionId);
 
         String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDcarFKBmh2Zj5a/t8OwmAuPSPkAEABm6E8pUKn+QME+zTBNSiwgKDwKrHEcgnOU7As9jogHShLro1JLUUK4QcwwH6uLUZPBsjo8XORvO7rrQDalXK5V68FcKyDjtgt5xrtbrxTS18iqixMAjwLA2hUuM4t8a0lAKcaZOFRZuxSYSs2ya02qNLbO9S0e5L68eXZGldrIp7oMroWgK96NeBbhRBnWZlPdlZup3umKvVADQHZgznMjshQ9AV4ChZrTlk00MAJkXbBwhWC699k/X7b7qSppBhYEsHNo4QCc//RmlCE8/CRS4lS7CiLEsunESxsSZ222qUcdhiN61L5nOEDKXiLa7mwxoI6VuX5ZMmKZmOMkSm7F62NWOPUSobYB8QQH5qb5N1rjGFGWWfgII314WcNMK93vqCQiBczPsNffN2ROr5RO/4K4Drpo1HYZd47KYushy2EKRLkkeRWaeJzMSPB4klNmM9LL+X8bBQucLh5+EWTgabNc6k5VOIneaMqNxqgOIFKxd15n5O9sE8JZw7L9i1rFGq5wkk0u/1reVVIsh86vzneJxRCr3QwmFjV9G9849quADFH/NwdkRIP1aHPEs0u/PTiwJsjGsZbDqljALUCUeylhE9Y2BjBytZEzKKiNBDJn3dChjMJIlvUv7YxJWVHVXxPSqH8rZxaWQ== felixnoviantoro16@gmail.com,";
 
@@ -268,7 +274,7 @@ public class NdbRequest implements Processor {
             databasePort,
             databaseStorage,
             "testing-desc",
-            "postgres",
+            dbName,
             databasePassword,
             "9a82460f-fb0b-4fa4-8359-a4f75788eaca",
             // sshKey,  // Sanitized SSH key with spaces preserved
