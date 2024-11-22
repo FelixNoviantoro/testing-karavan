@@ -866,7 +866,8 @@
                                       uri: exec
                                       parameters:
                                         executable: ansible-playbook
-                                        workingDir: /karavan/playbook
+                                        workingDir: >-
+                                          /karavan/ansible-role-launch-blueprint-2/tests
                           - log:
                               id: log-9d06
                               message: ${body}

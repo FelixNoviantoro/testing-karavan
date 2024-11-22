@@ -110,7 +110,7 @@ public class StringExecFormat implements Processor {
 
             // Build the ansible-playbook args string dynamically
             execArgs = String.format(
-                "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','card_id_uuid_variable':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s'}",
+                "main.yml -e {'pc_ip':'%s','bp_id':'%s','basic_auth':'%s','app_description':'%s','app_name':'%s','app_profile_reference_name':'%s','app_profile_reference_uuid':'%s','card_id':'%s','username':'%s','password':'%s','vm_name':'%s','substrate_list_uuid':'%s','card_id_uuid_variable':'%s','username_uuid_variable':'%s','password_uuid_variable':'%s','disk_0_uuid':'%s','subnet_0_uuid':'%s','subnet_1_uuid':'%s'}",
                 "10.8.130.168",
                 "2397fd48-ac2d-47ee-a710-e4132cce72d2",
                 "YWRtaW46SGVsaW9zMTIzIQ==",
@@ -125,7 +125,10 @@ public class StringExecFormat implements Processor {
                 substrateListId,
                 "243063ba-d401-4993-9121-a59fc7a5256a",
                 "19ce41a2-e7ac-ae85-bfb3-96a334766569",
-                "d1faee84-7de4-0b8f-b9b6-6a0cd676d682"
+                "d1faee84-7de4-0b8f-b9b6-6a0cd676d682",
+                "c4600e15-fd9c-4fce-b6a7-1668692457fd",
+                "2dc286bb-da6f-4987-8a3f-cb7d0a694fc2",
+                "c3852d6a-d439-4b33-84e9-41b483cf7e6b"
             );
             
         } else {
