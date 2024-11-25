@@ -21,6 +21,8 @@ public class FetchIssueProcessor implements Processor {
         System.out.println(respBody);
         System.out.println("========================= fromjson");
         Map<String, Object> pbReq = exchange.getProperty("pbReq", Map.class);
+        String dataIp = exchange.getProperty("dataIp", String.class);
+        String manIp = exchange.getProperty("manIp", String.class);
 
         // Regex pattern for description
         Pattern descriptionPattern = Pattern.compile("description=([^,}]+)");
@@ -62,8 +64,8 @@ public class FetchIssueProcessor implements Processor {
         //     """;
 
         String multiLineString = "Vm Name : "+ pbReq.get("vmName") +"\n" +
-                         "IP : "+ pbReq.get("vmIpAddress") +"\n" +
-                         "Data IP : "+ pbReq.get("dataIpAddress") +"\n" +
+                         "IP : "+ manIp +"\n" +
+                         "Data IP : "+ dataIp +"\n" +
                          "Username : "+ pbReq.get("username") +"\n" +
                          "Password : "+ pbReq.get("password") +"\n" +
                          "CPU : " + pbReq.get("cpu") +"\n" +

@@ -287,12 +287,56 @@
             id: process-ca8d
             ref: SetPropertyProcessor
         - setHeader:
+            id: setHeader-e1db
+            name: Authorization
+            expression:
+              simple:
+                id: simple-9c1b
+                expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
+        - setHeader:
+            id: setHeader-6e35
+            name: CamelHttpMethod
+            expression:
+              simple:
+                id: simple-7455
+                expression: GET
+        - setHeader:
+            id: setHeader-7468
+            name: Content-Type
+            expression:
+              simple:
+                id: simple-1e29
+                expression: application/json
+        - removeHeader:
+            id: removeHeader-8b8a
+            name: CamelHttpPath
+        - marshal:
+            id: marshal-to-json
+            json:
+              id: json-4935
+              library: Jackson
+        - toD:
+            id: toD-8c1b
+            uri: netty-http
+            parameters:
+              protocol: https
+              host: 10.8.130.168
+              port: "9440"
+              path: /api/nutanix/v3/vms/${exchangeProperty[dataIpAddress]}
+              bridgeEndpoint: true
+        - process:
+            id: process-db33
+            ref: ByteToStringProcessor
+        - process:
+            id: process-2ec4
+            ref: GetVmDetailData
+        - setHeader:
             id: setHeader-9efe
             name: IssueKey
             expression:
               simple:
                 id: simple-ca1c
-                expression: ${body[cardId]}
+                expression: ${exchangeProperty[cardId]}
         - to:
             id: to-8207
             uri: jira
@@ -303,7 +347,7 @@
               password: >-
                 ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
         - process:
-            id: process-22aa
+            id: process-1234
             ref: FetchIssueProcessor
         - to:
             id: to-2084
