@@ -11,7 +11,7 @@ public class NdbProfileResponseProcessor implements Processor {
 
     public void process(Exchange exchange) throws Exception {
 
-        String cardId = exchange.getProperty("cardId", String.class);
+        String cardId = exchange.getProperty("issueKey", String.class);
 
         String respBody = exchange.getIn().getBody(String.class);
         String regex = "ok=(\\d+)";

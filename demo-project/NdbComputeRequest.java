@@ -41,6 +41,8 @@ public class NdbComputeRequest implements Processor {
         System.out.println("cpu : " + cpu);
         System.out.println("vcpu : " + vCpu);
         System.out.println("memory : " + memory);
+        System.out.println("issue key : " + key);
+
 
         String execArgs = String.format(
             "main.yml -e {'ndb_ip':'%s','ndb_port':'%s','basic_auth':'%s','cpu':'%s','core_per_cpu':'%s','memory':'%s','profile_name':'%s','profile_desc':'%s'} -vvvv",
@@ -55,6 +57,7 @@ public class NdbComputeRequest implements Processor {
         );
 
         exchange.getIn().setHeader("execArgs", execArgs);
+        exchange.setProperty("issueKey", key);
 
     }
 }

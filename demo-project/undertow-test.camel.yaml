@@ -920,7 +920,7 @@
                                           expression:
                                             simple:
                                               id: simple-75f4
-                                              expression: PEG-164
+                                              expression: ${exchangeProperty[issueKey]}
                                       - setHeader:
                                           id: setHeader-731f
                                           name: IssueTransitionId
