@@ -52,7 +52,6 @@ public class NdbRequest implements Processor {
 
         System.out.println("========================= " + issueTypeName);
 
-
         if (issueTypeName.equals("NDB Provision")){
 
             System.out.println("masuk NDB Povision");
@@ -156,6 +155,18 @@ public class NdbRequest implements Processor {
 
         }
 
+        String regex = "\\(([^)]+)\\)";
+        
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcherCompute = pattern.matcher(computeProfile);
+
+        if (matcherCompute.find()) {
+            computeProfileId = matcherCompute.group(1); 
+            System.out.println("Extracted Compute Profile ID: " + computeProfileId);
+        } else {
+            System.out.println("No match found");
+        }
+
         switch(softwareProfile) {
             case "POSTGRES_15.6_ROCKY_LINUX_8_OOB":
                 softwareProfileId = "246bc618-5afd-4811-83fc-95889849aafd";
@@ -174,14 +185,14 @@ public class NdbRequest implements Processor {
                 break;
         }
 
-        switch(computeProfile) {
-            case "DEFAULT_OOB_COMPUTE":
-                computeProfileId = "167b5d81-89ef-4816-8fe5-4b51a69bd0f4";
-                break;
-            case "DEFAULT_OOB_SMALL_COMPUTE":
-                computeProfileId = "54e557b6-2186-4c4a-aac0-09b7cd9ca879";
-                break;
-        }
+        // switch(computeProfile) {
+        //     case "DEFAULT_OOB_COMPUTE":
+        //         computeProfileId = "167b5d81-89ef-4816-8fe5-4b51a69bd0f4";
+        //         break;
+        //     case "DEFAULT_OOB_SMALL_COMPUTE":
+        //         computeProfileId = "54e557b6-2186-4c4a-aac0-09b7cd9ca879";
+        //         break;
+        // }
 
         switch(networkProfile) {
             case "DEFAULT_OOB_ORACLE_NETWORK":

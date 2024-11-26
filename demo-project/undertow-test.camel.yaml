@@ -867,6 +867,87 @@
                             - log:
                                 id: log-1a11
                                 message: "Exec Output: ${body} - Headers: ${headers}"
+                        - id: when-c91f
+                          expression:
+                            simple:
+                              id: simple-7617
+                              expression: ${header.issuetypeName} == 'Ndb Compute Profile'
+                          steps:
+                            - process:
+                                id: process-b166
+                                ref: NdbComputeRequest
+                            - setHeader:
+                                id: setHeader-8bd2
+                                name: CamelExecCommandArgs
+                                expression:
+                                  simple:
+                                    id: simple-a8b9
+                                    expression: ${header.execArgs}
+                            - to:
+                                id: to-52as
+                                uri: log
+                                parameters:
+                                  loggerName: DEBUG?showBody=true&showHeaders=true
+                            - to:
+                                id: to-e423
+                                uri: exec
+                                parameters:
+                                  executable: ansible-playbook
+                                  workingDir: /karavan/ansible-role-ndb-add-compute/tests
+                            - process:
+                                id: process-277c
+                                ref: NdbProfileResponseProcessor
+                            - log:
+                                id: log-59b9
+                                message: ndb profile ${body}
+                            - choice:
+                                id: choice-6a86
+                                when:
+                                  - id: when-2dc9
+                                    expression:
+                                      simple:
+                                        id: simple-1bd7
+                                        expression: ${header.status} == '3'
+                                    steps:
+                                      - to:
+                                          id: to-52f1
+                                          uri: log
+                                          parameters:
+                                            loggerName: DEBUG?showBody=true&showHeaders=true
+                                      - setHeader:
+                                          id: setHeader-8997
+                                          name: IssueKey
+                                          expression:
+                                            simple:
+                                              id: simple-75f4
+                                              expression: PEG-164
+                                      - setHeader:
+                                          id: setHeader-731f
+                                          name: IssueTransitionId
+                                          expression:
+                                            simple:
+                                              id: simple-aa48
+                                              expression: "5"
+                                      - setBody:
+                                          id: setBody-d42d
+                                          expression:
+                                            simple:
+                                              id: simple-02b7
+                                              expression: success
+                                      - to:
+                                          id: to-1d81
+                                          uri: jira
+                                          parameters:
+                                            type: transitionIssue
+                                            jiraUrl: https://pocntnx46.atlassian.net
+                                            username: pocntnx46@gmail.com
+                                            password: >-
+                                              ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
+                                      - log:
+                                          id: log-f652
+                                          message: ${body}
+                                otherwise:
+                                  id: otherwise-e949
                       otherwise:
                         id: otherwise-cf67
                         steps:
