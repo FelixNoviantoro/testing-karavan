@@ -884,7 +884,7 @@
                                     id: simple-a8b9
                                     expression: ${header.execArgs}
                             - to:
-                                id: to-52as
+                                id: to-c002
                                 uri: log
                                 parameters:
                                   loggerName: DEBUG?showBody=true&showHeaders=true
@@ -907,10 +907,10 @@
                                     expression:
                                       simple:
                                         id: simple-1bd7
-                                        expression: ${header.status} == '3'
+                                        expression: ${header.status} == '4'
                                     steps:
                                       - to:
-                                          id: to-52f1
+                                          id: to-52ce
                                           uri: log
                                           parameters:
                                             loggerName: DEBUG?showBody=true&showHeaders=true
@@ -946,8 +946,101 @@
                                       - log:
                                           id: log-f652
                                           message: ${body}
+                                  - id: when-96dd
+                                    expression:
+                                      simple:
+                                        id: simple-9968
+                                        expression: ${header.status} == '3'
+                                    steps:
+                                      - setHeader:
+                                          id: setHeader-ea35
+                                          name: Accept
+                                          expression:
+                                            simple:
+                                              id: simple-4ab6
+                                              expression: application/json
+                                      - setHeader:
+                                          id: setHeader-ef2a
+                                          name: Authorization
+                                          expression:
+                                            simple:
+                                              id: simple-2619
+                                              expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
+                                      - setHeader:
+                                          id: setHeader-8b5e
+                                          name: CamelHttpCharacterEncoding
+                                          expression:
+                                            constant:
+                                              id: constant-9357
+                                              expression: UTF-8
+                                      - setHeader:
+                                          id: setHeader-8ca8
+                                          name: CamelHttpMethod
+                                          expression:
+                                            constant:
+                                              id: constant-e218
+                                              expression: GET
+                                      - setHeader:
+                                          id: setHeader-65e4
+                                          name: CamelHttpQuery
+                                          expression:
+                                            simple:
+                                              id: simple-221d
+                                              expression: >-
+                                                type=Compute&name=${exchangeProperty[computeName]}
+                                      - removeHeader:
+                                          id: removeHeader-85e6
+                                          name: CamelHttpPath
+                                      - to:
+                                          id: to-e46b
+                                          uri: log
+                                          parameters:
+                                            loggerName: DEBUG?showBody=false&showHeaders=true
+                                      - to:
+                                          id: to-d324
+                                          uri: netty-http
+                                          parameters:
+                                            protocol: https
+                                            host: 10.8.135.235
+                                            port: "443"
+                                            path: era/v0.9/profiles
+                                            bridgeEndpoint: true
+                                      - process:
+                                          id: process-2805
+                                          ref: ByteToStringProcessor
+                                      - log:
+                                          id: log-4dbe
+                                          message: "========= NdbGetProfileId : ${body}"
+                                      - process:
+                                          id: process-152a
+                                          ref: NdbGetProfileId
+                                      - setHeader:
+                                          id: setHeader-2c5b
+                                          name: CamelExecCommandArgs
+                                          expression:
+                                            simple:
+                                              id: simple-677e
+                                              expression: ${header.execArgs}
+                                      - choice:
+                                          id: choice-058b
+                                          when:
+                                            - id: when-9eb7
+                                              expression:
+                                                simple:
+                                                  id: simple-a4ec
+                                                  expression: ${header.dbType} == 'postgres_database'
+                                          otherwise:
+                                            id: otherwise-ce2d
                                 otherwise:
                                   id: otherwise-e949
+                                  steps:
+                                    - setHeaders:
+                                        id: setHeaders-3af6
+                                        headers:
+                                          - id: setHeader-0205
+                                            expression:
+                                              groovy:
+                                                id: groovy-6b8e
                       otherwise:
                         id: otherwise-cf67
                         steps:
@@ -994,7 +1087,7 @@
                                         workingDir: >-
                                           /karavan/ansible-role-launch-blueprint-2/tests
                           - log:
-                              id: log-9d06
+                              id: log-3e85
                               message: ${body}
             otherwise:
               id: otherwise-b58e
@@ -1472,35 +1565,35 @@
         name: ndb-software
       steps:
         - setHeader:
-            id: setHeader-5f6a
+            id: setHeader-9682
             name: Content-Type
             expression:
               simple:
-                id: simple-1cc8
+                id: simple-96d5
                 expression: application/json
         - setHeader:
-            id: setHeader-b8da
+            id: setHeader-1451
             name: Accept
             expression:
               simple:
-                id: simple-5b26
+                id: simple-0cd4
                 expression: application/json
         - setHeader:
-            id: setHeader-cb45
+            id: setHeader-9d32
             name: Authorization
             expression:
               simple:
-                id: simple-25d9
+                id: simple-f826
                 expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
-            id: setHeader-d8c6
+            id: setHeader-0cc4
             name: CamelHttpCharacterEncoding
             expression:
               constant:
-                id: constant-9b23
+                id: constant-e509
                 expression: UTF-8
         - log:
-            id: log-8493
+            id: log-4930
             message: "http path  : ${header.CamelHttpPath}"
         - choice:
             id: choice-2488
@@ -1508,15 +1601,15 @@
               - id: when-5df5
                 expression:
                   simple:
-                    id: simple-d0cb
+                    id: simple-d1f6
                     expression: ${header.CamelHttpPath} == '/api/ndb/softwares'
                 steps:
                   - setHeader:
-                      id: setHeader-1969
+                      id: setHeader-f5d5
                       name: CamelHttpQuery
                       expression:
                         simple:
-                          id: simple-8ecb
+                          id: simple-8d0e
                           expression: type=Software&all-profiles=true
               - id: when-5sdfe
                 expression:
@@ -1638,13 +1731,13 @@
                         id: simple-d276
                         expression: type=Database_Parameter&all-profiles=true
         - removeHeader:
-            id: removeHeader-ce9c
+            id: removeHeader-96c7
             name: CamelHttpPath
         - log:
-            id: log-df76
+            id: log-9769
             message: request ${body}
         - to:
-            id: to-0a31
+            id: to-87f2
             uri: netty-http
             parameters:
               protocol: https
@@ -1653,10 +1746,10 @@
               path: era/v0.9/profiles
               bridgeEndpoint: true
         - log:
-            id: log-df12
+            id: log-0a2e
             message: response ${body}
         - process:
-            id: process-a4c4
+            id: process-9be9
             ref: ByteToStringProcessor
         - removeHeader:
             id: removeHeader-441f

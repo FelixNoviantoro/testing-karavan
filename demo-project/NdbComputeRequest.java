@@ -39,10 +39,15 @@ public class NdbComputeRequest implements Processor {
 
         System.out.println("Name : " + ndbProfileName);
         System.out.println("cpu : " + cpu);
-        System.out.println("vcpu : " + vCpu);
+        System.out.println("vCpu : " + vCpu);
         System.out.println("memory : " + memory);
         System.out.println("issue key : " + key);
 
+        Map<String, Object> dataReqMap = new HashMap<>();
+        dataReqMap.put("ndbProfileName", ndbProfileName);
+        dataReqMap.put("cpu", cpu);
+        dataReqMap.put("vCpu", vCpu);
+        dataReqMap.put("memory", memory);
 
         String execArgs = String.format(
             "main.yml -e {'ndb_ip':'%s','ndb_port':'%s','basic_auth':'%s','cpu':'%s','core_per_cpu':'%s','memory':'%s','profile_name':'%s','profile_desc':'%s'} -vvvv",
@@ -58,6 +63,9 @@ public class NdbComputeRequest implements Processor {
 
         exchange.getIn().setHeader("execArgs", execArgs);
         exchange.setProperty("issueKey", key);
+        exchange.setProperty("computeName", ndbProfileName);
+
+        exchange.setProperty("dataReqMap", dataReqMap);
 
     }
 }

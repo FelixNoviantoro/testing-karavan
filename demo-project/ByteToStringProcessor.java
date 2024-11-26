@@ -37,6 +37,7 @@ public class ByteToStringProcessor implements Processor {
                 try (InputStream gzipStream = new GZIPInputStream(new ByteArrayInputStream(byteBody))) {
                     String respBody = new String(gzipStream.readAllBytes(), StandardCharsets.UTF_8);
                     System.out.println("GZIP Decoded Body: " + respBody);
+                    System.out.println("====================================================== processJsonBody");
                     processJsonBody(respBody, exchange);
                 }
             } else {
