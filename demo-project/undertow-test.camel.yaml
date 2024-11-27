@@ -952,6 +952,9 @@
                                         id: simple-9968
                                         expression: ${header.status} == '3'
                                     steps:
+                                      - removeHeaders:
+                                          id: removeHeaders-4b14
+                                          pattern: "*"
                                       - setHeader:
                                           id: setHeader-ea35
                                           name: Accept
@@ -988,9 +991,6 @@
                                               id: simple-221d
                                               expression: >-
                                                 type=Compute&name=${exchangeProperty[computeName]}
-                                      - removeHeader:
-                                          id: removeHeader-85e6
-                                          name: CamelHttpPath
                                       - to:
                                           id: to-e46b
                                           uri: log
@@ -1021,16 +1021,23 @@
                                             simple:
                                               id: simple-677e
                                               expression: ${header.execArgs}
-                                      - choice:
-                                          id: choice-058b
-                                          when:
-                                            - id: when-9eb7
-                                              expression:
-                                                simple:
-                                                  id: simple-a4ec
-                                                  expression: ${header.dbType} == 'postgres_database'
-                                          otherwise:
-                                            id: otherwise-ce2d
+                                      - to:
+                                          id: to-dca7
+                                          uri: log
+                                          parameters:
+                                            loggerName: DEBUG?showBody=true&showHeaders=true
+                                      - to:
+                                          id: to-259f
+                                          uri: exec
+                                          parameters:
+                                            executable: ansible-playbook
+                                            workingDir: >-
+                                              /karavan/ansible-role-create-db-from-ndb-4/tests
+                                      - to:
+                                          id: to-e9e6
+                                          uri: log
+                                          parameters:
+                                            loggerName: DEBUG?showBody=true&showHeaders=true
                                 otherwise:
                                   id: otherwise-e949
                                   steps:
