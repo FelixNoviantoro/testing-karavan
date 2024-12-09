@@ -1011,6 +1011,9 @@
                                       - log:
                                           id: log-4dbe
                                           message: "========= NdbGetProfileId : ${body}"
+                                      - removeHeaders:
+                                          id: removeHeaders-2e4b
+                                          pattern: "*"
                                       - process:
                                           id: process-152a
                                           ref: NdbGetProfileId
@@ -1027,7 +1030,7 @@
                                           parameters:
                                             loggerName: DEBUG?showBody=true&showHeaders=true
                                       - to:
-                                          id: to-259f
+                                          id: to-9940
                                           uri: exec
                                           parameters:
                                             executable: ansible-playbook

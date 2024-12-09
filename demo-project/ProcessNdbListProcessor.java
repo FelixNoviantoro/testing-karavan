@@ -25,6 +25,9 @@ public class ProcessNdbListProcessor implements Processor {
         String ipAddress = "";
         String databaseName = "";
 
+        System.out.println("===========================");
+        System.out.println(vmName);
+
         for (Map<String, Object> n : response) {
             System.out.println(n.get("name") + " : " + vmName);
             if (vmName.equals(n.get("name"))) {
