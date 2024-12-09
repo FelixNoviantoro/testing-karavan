@@ -18,10 +18,10 @@ public class FetchIssueNDBProcessor implements Processor {
         Gson gson = new Gson();
         String respBody = exchange.getIn().getBody(String.class);
         System.out.println("========================= FETCHED");
-        // System.out.println(respBody);
+        System.out.println(respBody);
         System.out.println("========================= fromjson");
 
-        String regex = "name=VM Name.*?value=([^\\s,}]+)";
+        String regex = "name=Vm Name.*?value=([^\\s,}]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(respBody);
 
