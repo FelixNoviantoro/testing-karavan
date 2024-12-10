@@ -18,7 +18,7 @@ public class NdbGetProfileId implements Processor {
         
         Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         System.out.println("======================================================= NdbGetProfileId");
-        System.out.println("respBody NdbGetProfileId : " + gson.toJson(respBody));
+        // System.out.println("respBody NdbGetProfileId : " + gson.toJson(respBody));
 
         // String idCompute = exchange.getProperty("idCompute", String.class);
         // String id = (String) respBody.get("id");

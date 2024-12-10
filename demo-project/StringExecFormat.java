@@ -161,7 +161,7 @@ public class StringExecFormat implements Processor {
                 "2397fd48-ac2d-47ee-a710-e4132cce72d2",
                 "YWRtaW46SGVsaW9zMTIzIQ==",
                 "testing_descripttion_ansible",
-                projectName, // should match "project-testing-dulu-15"
+                projectName,
                 "custom",
                 "d81a91f4-89df-456c-8693-c2fb8cca4865",
                 key,

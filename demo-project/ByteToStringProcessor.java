@@ -23,6 +23,8 @@ public class ByteToStringProcessor implements Processor {
     public void process(Exchange exchange) throws Exception {
         // Log headers for debugging
         System.out.println("Headers: " + exchange.getIn().getHeaders());
+        Integer responseCode = (Integer) exchange.getIn().getHeader(Exchange.HTTP_RESPONSE_CODE);
+        System.out.println("response code inquiry ====================================================================================== " + gson.toJson(exchange.getIn().getHeaders()));
 
         Object body = exchange.getIn().getBody();
 
@@ -36,7 +38,7 @@ public class ByteToStringProcessor implements Processor {
                 // Handle gzip-encoded body
                 try (InputStream gzipStream = new GZIPInputStream(new ByteArrayInputStream(byteBody))) {
                     String respBody = new String(gzipStream.readAllBytes(), StandardCharsets.UTF_8);
-                    System.out.println("GZIP Decoded Body: " + respBody);
+                    System.out.println("GZIP Decoded Body ============================================= " + respBody);
                     System.out.println("====================================================== processJsonBody");
                     processJsonBody(respBody, exchange);
                 }

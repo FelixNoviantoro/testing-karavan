@@ -19,9 +19,9 @@ public class NdbComputeRequest implements Processor {
 
         Gson gson = new Gson();
 
-        Map<String, Object> reqBody = exchange.getProperty("reqBody", Map.class);
+        Map<String, Object> respBody = exchange.getProperty("reqBody", Map.class);
 
-        Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
+        // Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
         Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
         Map<String, Object> issueType = (Map<String, Object>) fields.get("issuetype");

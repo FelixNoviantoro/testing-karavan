@@ -873,6 +873,9 @@
                               id: simple-7617
                               expression: ${header.issuetypeName} == 'Ndb Compute Profile'
                           steps:
+                            - removeHeaders:
+                                id: removeHeaders-6905
+                                pattern: "*"
                             - process:
                                 id: process-7f1f
                                 ref: GetNdbComputeNameProcessor
@@ -919,9 +922,6 @@
                                     id: simple-4114
                                     expression: >-
                                       type=Compute&name=${exchangeProperty[computeName]}
-                            - removeHeader:
-                                id: removeHeader-7ce3
-                                name: CamelHttpPath
                             - to:
                                 id: to-8488
                                 uri: netty-http
@@ -929,19 +929,20 @@
                                   protocol: https
                                   host: 10.8.135.235
                                   port: "443"
-                                  path: era/v0.9/profiles
+                                  path: >-
+                                    era/v0.9/profiles?throwExceptionOnFailure=false
                                   bridgeEndpoint: true
-                            - to:
-                                id: to-6765
-                                uri: log
-                                parameters:
-                                  loggerName: DEBUG?showBody=true&showHeaders=true
                             - process:
                                 id: process-c39a
                                 ref: ByteToStringProcessor
                             - removeHeader:
                                 id: removeHeader-823d
                                 name: Content-Encoding
+                            - to:
+                                id: to-6765
+                                uri: log
+                                parameters:
+                                  loggerName: DEBUG?showBody=true&showHeaders=true
                             - choice:
                                 id: choice-4629
                                 when:
@@ -949,7 +950,7 @@
                                     expression:
                                       simple:
                                         id: simple-8c3a
-                                        expression: ${header.CamelHttpResponseCode} == '200'
+                                        expression: ${header.CamelHttpResponseCode} == 200
                                     steps:
                                       - process:
                                           id: process-57fa
@@ -994,43 +995,36 @@
                                         id: simple-1bd7
                                         expression: ${header.status} == '4'
                                     steps:
+                                      - removeHeaders:
+                                          id: removeHeaders-8c98
+                                          pattern: "*"
+                                      - process:
+                                          id: process-0614
+                                          ref: NdbGetProfileId
+                                      - setHeader:
+                                          id: setHeader-903c
+                                          name: CamelExecCommandArgs
+                                          expression:
+                                            simple:
+                                              id: simple-a674
+                                              expression: ${header.execArgs}
                                       - to:
-                                          id: to-52ce
+                                          id: to-e4d4
                                           uri: log
                                           parameters:
                                             loggerName: DEBUG?showBody=true&showHeaders=true
-                                      - setHeader:
-                                          id: setHeader-8997
-                                          name: IssueKey
-                                          expression:
-                                            simple:
-                                              id: simple-75f4
-                                              expression: ${exchangeProperty[issueKey]}
-                                      - setHeader:
-                                          id: setHeader-731f
-                                          name: IssueTransitionId
-                                          expression:
-                                            simple:
-                                              id: simple-aa48
-                                              expression: "5"
-                                      - setBody:
-                                          id: setBody-d42d
-                                          expression:
-                                            simple:
-                                              id: simple-02b7
-                                              expression: success
                                       - to:
-                                          id: to-1d81
-                                          uri: jira
+                                          id: to-4cd4
+                                          uri: exec
                                           parameters:
-                                            type: transitionIssue
-                                            jiraUrl: https://pocntnx46.atlassian.net
-                                            username: pocntnx46@gmail.com
-                                            password: >-
-                                              ATATT3xFfGF0tmezVRBtBlUH07obOpYjQr0gNIFGH_zxXMjvzFYCGnYfQ8ZWymdASV6_KnQA1e1WV9f0ptrt7Fqa_TYd5y2Ag4ptKCAD8469hjvW7R9Jx5Oq70vZFqYvrLPH-x6uATbBnEmf4K7GRtvql4X2_aNSCuMXuJdDL2qnrfaRVi901oU=0FB4A3D9
-                                      - log:
-                                          id: log-f652
-                                          message: ${body}
+                                            executable: ansible-playbook
+                                            workingDir: >-
+                                              /karavan/ansible-role-create-db-from-ndb-4/tests
+                                      - to:
+                                          id: to-f07b
+                                          uri: log
+                                          parameters:
+                                            loggerName: DEBUG?showBody=true&showHeaders=true
                                   - id: when-96dd
                                     expression:
                                       simple:

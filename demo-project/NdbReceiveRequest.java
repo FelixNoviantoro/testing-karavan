@@ -19,7 +19,7 @@ public class NdbReceiveRequest implements Processor {
         String id = (String) respBody.get("id");
 
         exchange.setProperty("idCompute", id);
-        exchange.getIn().setHeader("status", '3');
+        exchange.getIn().setHeader("status", '4');
         
     }
 }
