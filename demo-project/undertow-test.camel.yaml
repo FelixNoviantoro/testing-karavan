@@ -294,11 +294,11 @@
                 id: simple-9c1b
                 expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
-            id: setHeader-6e35
+            id: setHeader-a91d
             name: CamelHttpMethod
             expression:
               simple:
-                id: simple-7455
+                id: simple-7a2a
                 expression: GET
         - setHeader:
             id: setHeader-7468
@@ -874,29 +874,114 @@
                               expression: ${header.issuetypeName} == 'Ndb Compute Profile'
                           steps:
                             - process:
-                                id: process-b166
-                                ref: NdbComputeRequest
+                                id: process-7f1f
+                                ref: GetNdbComputeNameProcessor
                             - setHeader:
-                                id: setHeader-8bd2
-                                name: CamelExecCommandArgs
+                                id: setHeader-f7e5
+                                name: CamelHttpMethod
                                 expression:
                                   simple:
-                                    id: simple-a8b9
-                                    expression: ${header.execArgs}
+                                    id: simple-7fa8
+                                    expression: GET
+                            - setHeader:
+                                id: setHeader-f5f7
+                                name: Content-Type
+                                expression:
+                                  simple:
+                                    id: simple-b2ef
+                                    expression: application/json
+                            - setHeader:
+                                id: setHeader-c869
+                                name: Accept
+                                expression:
+                                  simple:
+                                    id: simple-ec09
+                                    expression: application/json
+                            - setHeader:
+                                id: setHeader-391c
+                                name: Authorization
+                                expression:
+                                  simple:
+                                    id: simple-208f
+                                    expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
+                            - setHeader:
+                                id: setHeader-6d08
+                                name: CamelHttpCharacterEncoding
+                                expression:
+                                  constant:
+                                    id: constant-6192
+                                    expression: UTF-8
+                            - setHeader:
+                                id: setHeader-d031
+                                name: CamelHttpQuery
+                                expression:
+                                  simple:
+                                    id: simple-4114
+                                    expression: >-
+                                      type=Compute&name=${exchangeProperty[computeName]}
+                            - removeHeader:
+                                id: removeHeader-7ce3
+                                name: CamelHttpPath
                             - to:
-                                id: to-c002
+                                id: to-8488
+                                uri: netty-http
+                                parameters:
+                                  protocol: https
+                                  host: 10.8.135.235
+                                  port: "443"
+                                  path: era/v0.9/profiles
+                                  bridgeEndpoint: true
+                            - to:
+                                id: to-6765
                                 uri: log
                                 parameters:
                                   loggerName: DEBUG?showBody=true&showHeaders=true
-                            - to:
-                                id: to-e423
-                                uri: exec
-                                parameters:
-                                  executable: ansible-playbook
-                                  workingDir: /karavan/ansible-role-ndb-add-compute/tests
                             - process:
-                                id: process-277c
-                                ref: NdbProfileResponseProcessor
+                                id: process-c39a
+                                ref: ByteToStringProcessor
+                            - removeHeader:
+                                id: removeHeader-823d
+                                name: Content-Encoding
+                            - choice:
+                                id: choice-4629
+                                when:
+                                  - id: when-77fa
+                                    expression:
+                                      simple:
+                                        id: simple-8c3a
+                                        expression: ${header.CamelHttpResponseCode} == '200'
+                                    steps:
+                                      - process:
+                                          id: process-57fa
+                                          ref: NdbReceiveRequest
+                                otherwise:
+                                  id: otherwise-2710
+                                  steps:
+                                    - process:
+                                        id: process-b166
+                                        ref: NdbComputeRequest
+                                    - setHeader:
+                                        id: setHeader-8bd2
+                                        name: CamelExecCommandArgs
+                                        expression:
+                                          simple:
+                                            id: simple-a8b9
+                                            expression: ${header.execArgs}
+                                    - to:
+                                        id: to-c002
+                                        uri: log
+                                        parameters:
+                                          loggerName: DEBUG?showBody=true&showHeaders=true
+                                    - to:
+                                        id: to-e423
+                                        uri: exec
+                                        parameters:
+                                          executable: ansible-playbook
+                                          workingDir: >-
+                                            /karavan/ansible-role-ndb-add-compute/tests
+                                    - process:
+                                        id: process-277c
+                                        ref: NdbProfileResponseProcessor
                             - log:
                                 id: log-59b9
                                 message: ndb profile ${body}
@@ -1081,7 +1166,7 @@
                                         uri: exec
                                         parameters:
                                           workingDir: >-
-                                            /karavan/ansible-role-launch-blueprint/tests
+                                            /karavan/ansible-role-launch-blueprint-2/tests
                                           executable: ansible-playbook
                               otherwise:
                                 id: otherwise-3dc7
@@ -1575,32 +1660,32 @@
         name: ndb-software
       steps:
         - setHeader:
-            id: setHeader-9682
+            id: setHeader-8f56
             name: Content-Type
             expression:
               simple:
-                id: simple-96d5
+                id: simple-c7f6
                 expression: application/json
         - setHeader:
-            id: setHeader-1451
+            id: setHeader-30ac
             name: Accept
             expression:
               simple:
-                id: simple-0cd4
+                id: simple-b504
                 expression: application/json
         - setHeader:
-            id: setHeader-9d32
+            id: setHeader-d066
             name: Authorization
             expression:
               simple:
-                id: simple-f826
+                id: simple-a951
                 expression: Basic YWRtaW46SGVsaW9zMTIzIQ==
         - setHeader:
-            id: setHeader-0cc4
+            id: setHeader-5e3f
             name: CamelHttpCharacterEncoding
             expression:
               constant:
-                id: constant-e509
+                id: constant-f8a4
                 expression: UTF-8
         - log:
             id: log-4930

@@ -19,14 +19,14 @@ public class NdbComputeRequest implements Processor {
 
         Gson gson = new Gson();
 
+        Map<String, Object> reqBody = exchange.getProperty("reqBody", Map.class);
+
         Map<String, Object> respBody = exchange.getIn().getBody(Map.class);
         Map<String, Object> issue = (Map<String, Object>) respBody.get("issue");
         Map<String, Object> fields = (Map<String, Object>) issue.get("fields");
         Map<String, Object> issueType = (Map<String, Object>) fields.get("issuetype");
         String key = (String) issue.get("key");
         String issueTypeName = (String) issueType.get("name");
-
-        String ndbProfileName = (String) fields.get("customfield_10118");
 
         Double cpuDouble = (Double) fields.get("customfield_10119");
         Integer cpu = cpuDouble != null ? cpuDouble.intValue() : null;
@@ -36,6 +36,9 @@ public class NdbComputeRequest implements Processor {
 
         Double memoryDouble = (Double) fields.get("customfield_10121");
         Integer memory = memoryDouble != null ? memoryDouble.intValue() : null;
+
+        // String ndbProfileName = (String) fields.get("customfield_10118");
+        String ndbProfileName = "COMPUTE_" + String.valueOf(cpu) + String.valueOf(vCpu) + String.valueOf(memory);
 
         String databaseType = "postgres_database";
 

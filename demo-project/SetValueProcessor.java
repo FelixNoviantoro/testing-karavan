@@ -144,6 +144,7 @@ public class SetValueProcessor implements Processor {
         exchange.getIn().setHeader("issuetypeName", issuetypeName);
 
         exchange.setProperty("issuetypeName", issuetypeName);
+        exchange.setProperty("reqBody", reqBody);
 
     } else {
 
