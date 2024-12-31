@@ -29,7 +29,6 @@ public class AnsibleCustomProcessor implements Processor {
             100000,          // custom_storage
             "243063ba-d401-4993-9121-a59fc7a5256a"
         );
-
         exchange.getIn().setHeader("execArgs", execArgs);
     }
 }
