@@ -1843,3 +1843,31 @@
         - removeHeader:
             id: removeHeader-441f
             name: Content-Encoding
+- route:
+    id: route-1df8
+    nodePrefixId: route-c30
+    from:
+      id: from-baa9
+      uri: timer
+      parameters:
+        timerName: database-schedule
+        delay: "100000"
+        repeatCount: "1"
+      steps:
+        - to:
+            id: to-8a63
+            uri: sql
+            parameters:
+              dataSource: "#bean:datasource"
+              query: >-
+                INSERT INTO public.vm_metadata (vm_name, owner_email,
+                lease_end_date, notification_sent, last_notification_date)
+                VALUES ('test2', 'test2@test.com', NOW(), false, NOW());
+- beans:
+    - name: datasource
+      type: org.apache.commons.dbcp2.BasicDataSource
+      properties:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://10.8.135.27:5432/postgres
+        username: postgres
+        password: password
