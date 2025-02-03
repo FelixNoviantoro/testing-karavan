@@ -59,3 +59,16 @@
         - process:
             id: process-f304
             ref: NdbReq
+        - setHeader:
+            id: setHeader-execArgs
+            name: CamelExecCommandArgs
+            expression:
+              simple:
+                id: simple-a539
+                expression: ${header.execArgs}
+        - to:
+            id: to-9667
+            uri: exec
+            parameters:
+              workingDir: /karavan/ansible-role-create-db-from-ndb-4/tests
+              executable: ansible-playbook
