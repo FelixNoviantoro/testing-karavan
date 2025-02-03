@@ -1,3 +1,61 @@
 - restConfiguration:
     component: platform-http
     contextPath: /api
+- rest:
+    id: rest-test
+    get:
+      - id: get-test-db
+        path: /test
+        to: direct:metadata-direct
+- beans:
+    - name: datasource
+      type: org.apache.commons.dbcp2.BasicDataSource
+      properties:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://10.2.0.111:5432/karavan
+        username: postgres
+        password: mysecretpassword
+- route:
+    id: parent-route
+    nodePrefixId: parent-node
+    from:
+      id: parent-from
+      uri: direct
+      parameters:
+        name: parent-direct
+      steps:
+        - to:
+            id: to-56a8
+            uri: log
+            parameters:
+              loggerName: parent-route?level=INFO
+- route:
+    id: metadata-route
+    nodePrefixId: metadata-node
+    from:
+      id: create-db-from
+      uri: direct
+      parameters:
+        name: metadata-direct
+      steps:
+        - to:
+            id: to-sql
+            uri: sql
+            parameters:
+              query: >-
+                INSERT INTO public.vm_metadata (vm_name, owner_email,
+                lease_end_date, notification_sent, last_notification_date)
+                VALUES ('test3', 'test3@test.com', NOW(), false, NOW());
+              dataSource: "#bean:datasource"
+- route:
+    id: create-db-route
+    nodePrefixId: create-db-node
+    from:
+      id: from-ec91
+      uri: direct
+      parameters:
+        name: create-db-direct
+      steps:
+        - process:
+            id: process-f304
+            ref: NdbReq
