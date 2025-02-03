@@ -7,14 +7,9 @@
       - id: get-test-db
         path: /test
         to: direct:metadata-direct
-- beans:
-    - name: datasource
-      type: org.apache.commons.dbcp2.BasicDataSource
-      properties:
-        driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://10.2.0.111:5432/karavan
-        username: postgres
-        password: mysecretpassword
+      - id: get-test-notif
+        path: /test-mail
+        to: direct:smtp-direct
 - route:
     id: parent-route
     nodePrefixId: parent-node
@@ -72,3 +67,31 @@
             parameters:
               workingDir: /karavan/ansible-role-create-db-from-ndb-4/tests
               executable: ansible-playbook
+- route:
+    id: smtp-route
+    nodePrefixId: smtp-node
+    from:
+      id: smtp-from
+      uri: direct
+      parameters:
+        name: smtp-direct
+      steps:
+        - to:
+            id: to-smpt
+            uri: smtp
+            parameters:
+              host: mail@tabeldata.com
+              port: "26"
+              username: testrnd@tabeldata.com
+              password: Tdi123!!
+              from: testrnd@tabeldata.com
+              to: felix.novianto@tabeldata.com
+              subject: Test Notification Senin
+- beans:
+    - name: datasource
+      type: org.apache.commons.dbcp2.BasicDataSource
+      properties:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://10.2.0.111:5432/karavan
+        username: postgres
+        password: mysecretpassword
