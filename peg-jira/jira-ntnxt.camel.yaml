@@ -6,10 +6,13 @@
     get:
       - id: get-test-db
         path: /test
-        to: direct:metadata-direct
+        to: direct:metadataDirect
       - id: get-test-notif
         path: /test-mail
-        to: direct:smtp-direct
+        to: direct:smtpDirect
+      - id: get-e634
+        path: /test-test
+        to: direct:multiDirect
 - route:
     id: parent-route
     nodePrefixId: parent-node
@@ -17,7 +20,7 @@
       id: parent-from
       uri: direct
       parameters:
-        name: parent-direct
+        name: parentDirect
       steps:
         - to:
             id: to-56a8
@@ -31,7 +34,7 @@
       id: create-db-from
       uri: direct
       parameters:
-        name: metadata-direct
+        name: metadataDirect
       steps:
         - to:
             id: to-sql
@@ -49,7 +52,7 @@
       id: from-ec91
       uri: direct
       parameters:
-        name: create-db-direct
+        name: createDbDirect
       steps:
         - process:
             id: process-f304
@@ -74,7 +77,7 @@
       id: smtp-from
       uri: direct
       parameters:
-        name: smtp-direct
+        name: smtpDirect
       steps:
         - to:
             id: to-smpt
@@ -87,6 +90,28 @@
               from: testrnd@tabeldata.com
               to: felix.novianto@tabeldata.com
               subject: Test Notification Senin
+- route:
+    id: multiRoute
+    nodePrefixId: multiNode
+    from:
+      id: fromMulti
+      uri: direct
+      parameters:
+        name: multiDirect
+      steps:
+        - multicast:
+            id: multicast-9fcd
+            steps:
+              - to:
+                  id: to-1440
+                  uri: direct
+                  parameters:
+                    name: smtpDirect
+              - to:
+                  id: to-c7eb
+                  uri: direct
+                  parameters:
+                    name: metadataDirect
 - beans:
     - name: datasource
       type: org.apache.commons.dbcp2.BasicDataSource
