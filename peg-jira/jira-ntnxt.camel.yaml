@@ -9,10 +9,18 @@
         to: direct:metadataDirect
       - id: get-test-notif
         path: /test-mail
-        to: direct:smtpDirect
+        to: direct:smtpdirect
       - id: get-e634
         path: /test-test
-        to: direct:multiDirect
+        to: direct:multidirect
+- beans:
+    - name: datasource
+      type: org.apache.commons.dbcp2.BasicDataSource
+      properties:
+        driverClassName: org.postgresql.Driver
+        url: jdbc:postgresql://10.2.0.111:5432/karavan
+        username: postgres
+        password: mysecretpassword
 - route:
     id: parent-route
     nodePrefixId: parent-node
@@ -30,11 +38,12 @@
 - route:
     id: metadata-route
     nodePrefixId: metadata-node
+    startupOrder: 100
     from:
       id: create-db-from
       uri: direct
       parameters:
-        name: metadataDirect
+        name: metadatadirect
       steps:
         - to:
             id: to-sql
@@ -73,11 +82,14 @@
 - route:
     id: smtp-route
     nodePrefixId: smtp-node
+    startupOrder: 50
     from:
       id: smtp-from
       uri: direct
       parameters:
-        name: smtpDirect
+        name: smtpdirect
+        synchronous: false
+        bridgeErrorHandler: false
       steps:
         - to:
             id: to-smpt
@@ -89,34 +101,29 @@
               password: Tdi123!!
               from: testrnd@tabeldata.com
               to: felix.novianto@tabeldata.com
-              subject: Test Notification Senin
+              subject: Test Notification Selasa nihh
 - route:
     id: multiRoute
     nodePrefixId: multiNode
+    startupOrder: 200
     from:
       id: fromMulti
       uri: direct
       parameters:
-        name: multiDirect
+        name: multidirect
       steps:
         - multicast:
-            id: multicast-9fcd
+            id: multicastRoute
+            parallelProcessing: true
             steps:
+              - log:
+                  id: log-0285
+                  message: ${body}
               - to:
                   id: to-1440
                   uri: direct
                   parameters:
-                    name: smtpDirect
-              - to:
-                  id: to-c7eb
-                  uri: direct
-                  parameters:
-                    name: metadataDirect
-- beans:
-    - name: datasource
-      type: org.apache.commons.dbcp2.BasicDataSource
-      properties:
-        driverClassName: org.postgresql.Driver
-        url: jdbc:postgresql://10.2.0.111:5432/karavan
-        username: postgres
-        password: mysecretpassword
+                    name: smtpdirect
+        - log:
+            id: log-d315
+            message: ${body}
