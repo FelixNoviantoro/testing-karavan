@@ -52,7 +52,7 @@
               query: >-
                 INSERT INTO public.vm_metadata (vm_name, owner_email,
                 lease_end_date, notification_sent, last_notification_date)
-                VALUES ('test3', 'test3@test.com', NOW(), false, NOW());
+                VALUES ('test4', 'test4@test.com', NOW(), false, NOW());
               dataSource: "#bean:datasource"
 - route:
     id: create-db-route
@@ -116,14 +116,13 @@
             id: multicastRoute
             parallelProcessing: true
             steps:
-              - log:
-                  id: log-0285
-                  message: ${body}
               - to:
                   id: to-1440
                   uri: direct
                   parameters:
+                    name: metadatadirect
+              - to:
+                  id: to-f9cc
+                  uri: direct
+                  parameters:
                     name: smtpdirect
-        - log:
-            id: log-d315
-            message: ${body}
